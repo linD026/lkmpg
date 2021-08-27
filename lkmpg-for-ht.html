@@ -3046,7 +3046,7 @@ hand apply the patch.
 <a id='x1-40125r41'></a><span class='ecrm-0500'>41</span> 
 <a id='x1-40127r42'></a><span class='ecrm-0500'>42</span><span id='textcolor1381'><span class='ectt-0800'>#else</span></span> 
 <a id='x1-40129r43'></a><span class='ecrm-0500'>43</span> 
-<a id='x1-40131r44'></a><span class='ecrm-0500'>44</span><span id='textcolor1382'><span class='ectt-0800'>#if !defined(CONFIG_KPROBES)</span></span> 
+<a id='x1-40131r44'></a><span class='ecrm-0500'>44</span><span id='textcolor1382'><span class='ectt-0800'>#if defined(CONFIG_KPROBES)</span></span> 
 <a id='x1-40133r45'></a><span class='ecrm-0500'>45</span><span id='textcolor1383'><span class='ectt-0800'>#define KPROBE_LOOKUP 1</span></span> 
 <a id='x1-40135r46'></a><span class='ecrm-0500'>46</span><span id='textcolor1384'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor1385'><span class='ectt-0800'>&lt;linux/kprobes.h&gt;</span></span> 
 <a id='x1-40137r47'></a><span class='ecrm-0500'>47</span><span id='textcolor1386'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1387'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> kprobe kp = {</span> 
