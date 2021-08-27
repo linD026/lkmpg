@@ -3039,7 +3039,7 @@ hand apply the patch.
 <a id='x1-40111r34'></a><span class='ecrm-0500'>34</span> 
 <a id='x1-40113r35'></a><span class='ecrm-0500'>35</span><span id='textcolor1372'><span class='ectt-0800'>#if LINUX_VERSION_CODE &gt;= KERNEL_VERSION(5, 7, 0)</span></span> 
 <a id='x1-40115r36'></a><span class='ecrm-0500'>36</span><span id='textcolor1373'><span class='ectt-0800'>#define KSYS_CLOSE 1</span></span> 
-<a id='x1-40117r37'></a><span class='ecrm-0500'>37</span><span id='textcolor1374'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor1375'><span class='ectt-0800'>&lt;linux/syscalls.h&gt; /* ksys_close() wrapper for backward compatibility */</span></span> 
+<a id='x1-40117r37'></a><span class='ecrm-0500'>37</span><span id='textcolor1374'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor1375'><span class='ectt-0800'>&lt;linux/syscalls.h&gt; /* For ksys_close() */</span></span> 
 <a id='x1-40119r38'></a><span class='ecrm-0500'>38</span><span id='textcolor1376'><span class='ectt-0800'>#else</span></span> 
 <a id='x1-40121r39'></a><span class='ecrm-0500'>39</span><span id='textcolor1377'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor1378'><span class='ectt-0800'>&lt;linux/kallsyms.h&gt; /* For kallsyms_lookup_name */</span></span> 
 <a id='x1-40123r40'></a><span class='ecrm-0500'>40</span><span id='textcolor1379'><span class='ectt-0800'>#endif</span></span> 
