@@ -2951,10 +2951,11 @@ ffffffff820023e0 R ia32_sys_call_table
 $ insmod syscall.ko addr=0xffffffff820013a0
 </pre>
 <!-- l. 1232 --><p class='nopar'>Using the address from <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>/boot/System.map</span></span></span>, be careful about the KASLR (Kernel
-Address Space Layout Randomization). The KASLR may randomize the kernel code
-at every boot time, such as the address listed in <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>/boot/System.map</span></span></span> will offset by
-some entropy. If <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>nokaslr</span></span></span> doesn’t set, the KASLR is enabled in your machine and it
-is different between <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>/boot/System.map</span></span></span> and <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>/proc/kallsyms</span></span></span>:
+Address Space Layout Randomization). The KASLR may randomize the kernel
+code at every boot time, such as the address listed in <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>/boot/System.map</span></span></span>
+will offset by some entropy. If <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>nokaslr</span></span></span> doesn’t set, the KASLR is enabled
+in your machine and address is different between <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>/boot/System.map</span></span></span> and
+<span class='obeylines-h'><span class='verb'><span class='ectt-1000'>/proc/kallsyms</span></span></span>:
                                                                   
 
                                                                   
