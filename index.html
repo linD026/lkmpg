@@ -2928,9 +2928,10 @@ symbol lookup and <code>  <span class='ectt-1000'>kallsyms_lookup_name</span>
 </p><!-- l. 1220 --><p class='indent'>   Up to Linux v5.4, we use manual symbol lookup. Why we do not use it after v5.4
 is because of the <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>control-flow integrity</span></span></span>. The <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>control-flow integrity</span></span></span> is a
 technique to reduce unexpected access for indirect calling, make sure that the
-indirect calls go to the expected addresses. In 2020, the kernel patched the series of
-<span class='obeylines-h'><span class='verb'><span class='ectt-1000'>control-flow enforcement</span></span></span> in x86. So, to guarantee the manual symbol lookup is
-working, we only use up to v5.4.
+indirect calls go to the expected addresses. In 2020, the kernel patched x86 for the
+series of <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>control-flow enforcement</span></span></span>, but disabled it in the kernel at v5.11.
+So, to guarantee the manual symbol lookup is working, we only use up to
+v5.4.
 </p><!-- l. 1226 --><p class='indent'>   Unfortunately, since Linux v5.7 <code>  <span class='ectt-1000'>kallsyms_lookup_name</span>
 </code> is also unexported, it needs certain trick to get the address of
 <code> <span class='ectt-1000'>kallsyms_lookup_name</span>
@@ -2942,10 +2943,10 @@ CPU hits the breakpoint, registers are stored, and the control will pass to <spa
 It passes the addresses of the saved registers and the <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>Kprobe struct</span></span></span> to the handler
 you defined, then executes it. <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>Kprobes</span></span></span> can be registered by symbol name
 or address. Within the symbol name, the address will be handled by the
-kernel.
                                                                   
 
                                                                   
+kernel.
 </p><!-- l. 1234 --><p class='indent'>   Otherwise, specify the address of <code>  <span class='ectt-1000'>sys_call_table</span>
 </code> from <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>/proc/kallsyms</span></span></span> and <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>/boot/System.map</span></span></span>. Following is the sample usage for
 finding the address from <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>/proc/kallsyms</span></span></span>:
