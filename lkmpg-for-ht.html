@@ -2928,12 +2928,12 @@ symbol lookup and <code>  <span class='ectt-1000'>kallsyms_lookup_name</span>
 </p><!-- l. 1220 --><p class='indent'>   Because of the <span class='ecti-1000'>control-flow integrity</span>, which is a technique to prevent the redirect
 execution code from the attacker, for making sure that the indirect calls go to the
 expected addresses and the return addresses are not changed. In 2020, since Linux
-v5.7, the kernel patched the series of <span class='ecti-1000'>control-flow enforcement </span>(<span class='obeylines-h'><span class='verb'><span class='ectt-1000'>CET</span></span></span>) for x86,
-and some configurations of <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>GCC</span></span></span>, like <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>GCC</span></span></span> versions 9 and 10 in <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>Ubuntu</span></span></span>, will
-add with <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>CET</span></span></span> (the option of <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>-fcf-protection</span></span></span>) in the kernel by default.
-Using that <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>GCC</span></span></span> to compile the kernel with <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>retpoline</span></span></span> off may result in <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>CET</span></span></span>
-being enabled in the kernel. You can use the following command to check
-out:
+v5.7, the kernel patched the series of <span class='ecti-1000'>control-flow enforcement </span>(<span class='obeylines-h'><span class='verb'><span class='ectt-1000'>CET</span></span></span>) for x86, and
+some configurations of <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>GCC</span></span></span>, like <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>GCC</span></span></span> versions 9 and 10 in <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>Ubuntu</span></span></span>, will add with <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>CET</span></span></span>
+(the <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>-fcf-protection</span></span></span> option) in the kernel by default. Using that <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>GCC</span></span></span> to compile
+the kernel with <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>retpoline</span></span></span> off may result in <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>CET</span></span></span> being enabled in the kernel. You can
+use the following command to check out the <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>-fcf-protection</span></span></span> option is enabled or
+not:
                                                                   
 
                                                                   
