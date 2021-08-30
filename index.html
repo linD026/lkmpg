@@ -3113,7 +3113,7 @@ hand apply the patch.
 <a id='x1-40116r37'></a><span class='ecrm-0500'>37</span><span id='textcolor1374'><span class='ectt-0800'>#if (LINUX_VERSION_CODE &lt; KERNEL_VERSION(5, 7, 0))</span></span> 
 <a id='x1-40118r38'></a><span class='ecrm-0500'>38</span> 
 <a id='x1-40120r39'></a><span class='ecrm-0500'>39</span><span id='textcolor1375'><span class='ectt-0800'>#if LINUX_VERSION_CODE &lt;= KERNEL_VERSION(5, 4, 0)</span></span> 
-<a id='x1-40122r40'></a><span class='ecrm-0500'>40</span><span id='textcolor1376'><span class='ectt-0800'>#define KSYS_CLOSE 1</span></span> 
+<a id='x1-40122r40'></a><span class='ecrm-0500'>40</span><span id='textcolor1376'><span class='ectt-0800'>#define HAVE_KSYS_CLOSE 1</span></span> 
 <a id='x1-40124r41'></a><span class='ecrm-0500'>41</span><span id='textcolor1377'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor1378'><span class='ectt-0800'>&lt;linux/syscalls.h&gt; /* For ksys_close() */</span></span> 
 <a id='x1-40126r42'></a><span class='ecrm-0500'>42</span><span id='textcolor1379'><span class='ectt-0800'>#else</span></span> 
 <a id='x1-40128r43'></a><span class='ecrm-0500'>43</span><span id='textcolor1380'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor1381'><span class='ectt-0800'>&lt;linux/kallsyms.h&gt; /* For kallsyms_lookup_name */</span></span> 
@@ -3122,7 +3122,7 @@ hand apply the patch.
 <a id='x1-40134r46'></a><span class='ecrm-0500'>46</span><span id='textcolor1383'><span class='ectt-0800'>#else</span></span> 
 <a id='x1-40136r47'></a><span class='ecrm-0500'>47</span> 
 <a id='x1-40138r48'></a><span class='ecrm-0500'>48</span><span id='textcolor1384'><span class='ectt-0800'>#if defined(CONFIG_KPROBES)</span></span> 
-<a id='x1-40140r49'></a><span class='ecrm-0500'>49</span><span id='textcolor1385'><span class='ectt-0800'>#define KPROBES_LOOKUP 1</span></span> 
+<a id='x1-40140r49'></a><span class='ecrm-0500'>49</span><span id='textcolor1385'><span class='ectt-0800'>#define HAVE_KPROBES 1</span></span> 
 <a id='x1-40142r50'></a><span class='ecrm-0500'>50</span><span id='textcolor1386'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor1387'><span class='ectt-0800'>&lt;linux/kprobes.h&gt;</span></span> 
 <a id='x1-40144r51'></a><span class='ecrm-0500'>51</span><span id='textcolor1388'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1389'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> kprobe kp = {</span> 
 <a id='x1-40146r52'></a><span class='ecrm-0500'>52</span><span class='ectt-0800'>    .symbol_name = </span><span id='textcolor1390'><span class='ectt-0800'>"kallsyms_lookup_name"</span></span><span class='ectt-0800'>,</span> 
@@ -3193,7 +3193,7 @@ hand apply the patch.
 <a id='x1-40276r117'></a><span class='ecrm-0500'>117</span><span class='ectt-0800'>{</span> 
 <a id='x1-40278r118'></a><span class='ecrm-0500'>118</span><span class='ectt-0800'>    </span><span id='textcolor1459'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor1460'><span class='ectt-0800'>long</span></span><span class='ectt-0800'> **sct;</span> 
 <a id='x1-40280r119'></a><span class='ecrm-0500'>119</span> 
-<a id='x1-40282r120'></a><span class='ecrm-0500'>120</span><span id='textcolor1461'><span class='ectt-0800'>#ifdef KSYS_CLOSE</span></span> 
+<a id='x1-40282r120'></a><span class='ecrm-0500'>120</span><span id='textcolor1461'><span class='ectt-0800'>#ifdef HAVE_KSYS_CLOSE</span></span> 
 <a id='x1-40284r121'></a><span class='ecrm-0500'>121</span><span class='ectt-0800'>    </span><span id='textcolor1462'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor1463'><span class='ectt-0800'>long</span></span><span class='ectt-0800'> </span><span id='textcolor1464'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> offset = PAGE_OFFSET;</span> 
 <a id='x1-40286r122'></a><span class='ecrm-0500'>122</span> 
 <a id='x1-40288r123'></a><span class='ecrm-0500'>123</span><span class='ectt-0800'>    </span><span id='textcolor1465'><span class='ectt-0800'>while</span></span><span class='ectt-0800'> (offset &lt; ULLONG_MAX) {</span> 
@@ -3227,7 +3227,7 @@ hand apply the patch.
 <a id='x1-40344r151'></a><span class='ecrm-0500'>151</span><span class='ectt-0800'>    </span><span id='textcolor1492'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> NULL;</span> 
 <a id='x1-40346r152'></a><span class='ecrm-0500'>152</span><span id='textcolor1493'><span class='ectt-0800'>#endif</span></span> 
 <a id='x1-40348r153'></a><span class='ecrm-0500'>153</span> 
-<a id='x1-40350r154'></a><span class='ecrm-0500'>154</span><span id='textcolor1494'><span class='ectt-0800'>#ifdef KPROBES_LOOKUP</span></span> 
+<a id='x1-40350r154'></a><span class='ecrm-0500'>154</span><span id='textcolor1494'><span class='ectt-0800'>#ifdef HAVE_KPROBES</span></span> 
 <a id='x1-40352r155'></a><span class='ecrm-0500'>155</span><span class='ectt-0800'>    </span><span id='textcolor1495'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor1496'><span class='ectt-0800'>long</span></span><span class='ectt-0800'> (*kallsyms_lookup_name)(</span><span id='textcolor1497'><span class='ectt-0800'>const</span></span><span class='ectt-0800'> </span><span id='textcolor1498'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> *name);</span> 
 <a id='x1-40354r156'></a><span class='ecrm-0500'>156</span><span class='ectt-0800'>    </span><span id='textcolor1499'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (register_kprobe(&amp;kp) &lt; 0)</span> 
 <a id='x1-40356r157'></a><span class='ecrm-0500'>157</span><span class='ectt-0800'>        </span><span id='textcolor1500'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> NULL;</span> 
