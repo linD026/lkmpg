@@ -6,10 +6,8 @@
 <meta content='width=device-width,initial-scale=1' name='viewport' /> 
 <link href='lkmpg-for-ht.css' rel='stylesheet' type='text/css' /> 
 <meta content='lkmpg-for-ht.tex' name='src' /> 
+ <script src='https://buttons.github.io/buttons.js'></script> <div class='right'> <a aria-label='View on GitHub' class='github-button' data-size='large' href='https://github.com/sysprog21/lkmpg'>View on GitHub</a> <a aria-label='Download PDF document' class='github-button' data-icon='octicon-download' data-size='large' href='https://github.com/sysprog21/lkmpg/releases/download/latest/lkmpg.pdf'>Download PDF document</a> <br /><br /> </div>  
 </head><body>
-                                                                  <div class='flushright'>
-<!-- l. 57 --><p class='noindent'>
- <a href='https://github.com/sysprog21/lkmpg/releases/download/latest/lkmpg.pdf'>Download PDF document</a></p></div>
    <div class='maketitle'>
                                                                   
 
@@ -2951,7 +2949,7 @@ COLLECT_GCC_OPTIONS='-v' '-Q' '-O2' '--help=target' '-mtune=generic' '-marc
 ...
 </pre>
 <!-- l. 1235 --><p class='nopar'>But CET should not be enabled in the kernel, it may break the Kprobes and bpf.
-Consequently, CET is disabled since v.11. To guarantee the manual symbol lookup
+Consequently, CET is disabled since v5.11. To guarantee the manual symbol lookup
 worked, we only use up to v5.4.
 </p><!-- l. 1240 --><p class='indent'>   Unfortunately, since Linux v5.7 <code>  <span class='ectt-1000'>kallsyms_lookup_name</span>
 </code> is also unexported, it needs certain trick to get the address of
