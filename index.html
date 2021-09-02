@@ -2532,7 +2532,7 @@ source tree at <a href='https://git.kernel.org/pub/scm/linux/kernel/git/stable/l
 <a id='x1-39359r176'></a><span class='ecrm-0500'>176</span><span id='textcolor1121'><span class='ectt-0800'> * is kept in the devices table, it can</span><span class='tctt-0800'>'</span><span class='ectt-0800'>t be local to init_module. NULL is</span></span> 
 <a id='x1-39361r177'></a><span class='ecrm-0500'>177</span><span id='textcolor1122'><span class='ectt-0800'> * for unimplemented functions.</span></span> 
 <a id='x1-39363r178'></a><span class='ecrm-0500'>178</span><span id='textcolor1123'><span class='ectt-0800'> */</span></span> 
-<a id='x1-39365r179'></a><span class='ecrm-0500'>179</span><span id='textcolor1124'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> file_operations Fops = {</span> 
+<a id='x1-39365r179'></a><span class='ecrm-0500'>179</span><span id='textcolor1124'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> file_operations fops = {</span> 
 <a id='x1-39367r180'></a><span class='ecrm-0500'>180</span><span class='ectt-0800'>    .read = device_read,</span> 
 <a id='x1-39369r181'></a><span class='ecrm-0500'>181</span><span class='ectt-0800'>    .write = device_write,</span> 
 <a id='x1-39371r182'></a><span class='ecrm-0500'>182</span><span class='ectt-0800'>    .unlocked_ioctl = device_ioctl,</span> 
@@ -2544,7 +2544,7 @@ source tree at <a href='https://git.kernel.org/pub/scm/linux/kernel/git/stable/l
 <a id='x1-39383r188'></a><span class='ecrm-0500'>188</span><span id='textcolor1127'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1128'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> __init chardev2_init(</span><span id='textcolor1129'><span class='ectt-0800'>void</span></span><span class='ectt-0800'>)</span> 
 <a id='x1-39385r189'></a><span class='ecrm-0500'>189</span><span class='ectt-0800'>{</span> 
 <a id='x1-39387r190'></a><span class='ecrm-0500'>190</span><span class='ectt-0800'>    </span><span id='textcolor1130'><span class='ectt-0800'>/* Register the character device (atleast try) */</span></span> 
-<a id='x1-39389r191'></a><span class='ecrm-0500'>191</span><span class='ectt-0800'>    </span><span id='textcolor1131'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> ret_val = register_chrdev(MAJOR_NUM, DEVICE_NAME, &amp;Fops);</span> 
+<a id='x1-39389r191'></a><span class='ecrm-0500'>191</span><span class='ectt-0800'>    </span><span id='textcolor1131'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> ret_val = register_chrdev(MAJOR_NUM, DEVICE_NAME, &amp;fops);</span> 
 <a id='x1-39391r192'></a><span class='ecrm-0500'>192</span> 
 <a id='x1-39393r193'></a><span class='ecrm-0500'>193</span><span class='ectt-0800'>    </span><span id='textcolor1132'><span class='ectt-0800'>/* Negative values signify an error */</span></span> 
 <a id='x1-39395r194'></a><span class='ecrm-0500'>194</span><span class='ectt-0800'>    </span><span id='textcolor1133'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (ret_val &lt; 0) {</span> 
