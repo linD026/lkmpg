@@ -2376,7 +2376,7 @@ source tree at <a href='https://git.kernel.org/pub/scm/linux/kernel/git/stable/l
 <a id='x1-39047r20'></a><span class='ecrm-0500'>20</span><span id='textcolor987'><span class='ectt-0800'>/* Is the device open right now? Used to prevent concurrent access into</span></span> 
 <a id='x1-39049r21'></a><span class='ecrm-0500'>21</span><span id='textcolor988'><span class='ectt-0800'> * the same device</span></span> 
 <a id='x1-39051r22'></a><span class='ecrm-0500'>22</span><span id='textcolor989'><span class='ectt-0800'> */</span></span> 
-<a id='x1-39053r23'></a><span class='ecrm-0500'>23</span><span id='textcolor990'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor991'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> device_open_cnt = 0;</span> 
+<a id='x1-39053r23'></a><span class='ecrm-0500'>23</span><span id='textcolor990'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor991'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> open_device_cnt = 0;</span> 
 <a id='x1-39055r24'></a><span class='ecrm-0500'>24</span> 
 <a id='x1-39057r25'></a><span class='ecrm-0500'>25</span><span id='textcolor992'><span class='ectt-0800'>/* The message the device will give when asked */</span></span> 
 <a id='x1-39059r26'></a><span class='ecrm-0500'>26</span><span id='textcolor993'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor994'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> message[BUF_LEN];</span> 
@@ -2394,10 +2394,10 @@ source tree at <a href='https://git.kernel.org/pub/scm/linux/kernel/git/stable/l
 <a id='x1-39083r38'></a><span class='ecrm-0500'>38</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor1007'><span class='ectt-0800'>"device_open(%p)</span></span><span id='textcolor1008'><span class='ectt-0800'>\n</span></span><span id='textcolor1009'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, file);</span> 
 <a id='x1-39085r39'></a><span class='ecrm-0500'>39</span> 
 <a id='x1-39087r40'></a><span class='ecrm-0500'>40</span><span class='ectt-0800'>    </span><span id='textcolor1010'><span class='ectt-0800'>/* We don</span><span class='tctt-0800'>'</span><span class='ectt-0800'>t want to talk to two processes at the same time. */</span></span> 
-<a id='x1-39089r41'></a><span class='ecrm-0500'>41</span><span class='ectt-0800'>    </span><span id='textcolor1011'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (device_open_cnt)</span> 
+<a id='x1-39089r41'></a><span class='ecrm-0500'>41</span><span class='ectt-0800'>    </span><span id='textcolor1011'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (open_device_cnt)</span> 
 <a id='x1-39091r42'></a><span class='ecrm-0500'>42</span><span class='ectt-0800'>        </span><span id='textcolor1012'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> -EBUSY;</span> 
 <a id='x1-39093r43'></a><span class='ecrm-0500'>43</span> 
-<a id='x1-39095r44'></a><span class='ecrm-0500'>44</span><span class='ectt-0800'>    device_open_cnt++;</span> 
+<a id='x1-39095r44'></a><span class='ecrm-0500'>44</span><span class='ectt-0800'>    open_device_cnt++;</span> 
 <a id='x1-39097r45'></a><span class='ecrm-0500'>45</span><span class='ectt-0800'>    </span><span id='textcolor1013'><span class='ectt-0800'>/* Initialize the message */</span></span> 
 <a id='x1-39099r46'></a><span class='ecrm-0500'>46</span><span class='ectt-0800'>    message_ptr = message;</span> 
 <a id='x1-39101r47'></a><span class='ecrm-0500'>47</span><span class='ectt-0800'>    try_module_get(THIS_MODULE);</span> 
@@ -2409,7 +2409,7 @@ source tree at <a href='https://git.kernel.org/pub/scm/linux/kernel/git/stable/l
 <a id='x1-39113r53'></a><span class='ecrm-0500'>53</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor1019'><span class='ectt-0800'>"device_release(%p,%p)</span></span><span id='textcolor1020'><span class='ectt-0800'>\n</span></span><span id='textcolor1021'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, inode, file);</span> 
 <a id='x1-39115r54'></a><span class='ecrm-0500'>54</span> 
 <a id='x1-39117r55'></a><span class='ecrm-0500'>55</span><span class='ectt-0800'>    </span><span id='textcolor1022'><span class='ectt-0800'>/* We</span><span class='tctt-0800'>'</span><span class='ectt-0800'>re now ready for our next caller */</span></span> 
-<a id='x1-39119r56'></a><span class='ecrm-0500'>56</span><span class='ectt-0800'>    device_open_cnt--;</span> 
+<a id='x1-39119r56'></a><span class='ecrm-0500'>56</span><span class='ectt-0800'>    open_device_cnt--;</span> 
 <a id='x1-39121r57'></a><span class='ecrm-0500'>57</span> 
 <a id='x1-39123r58'></a><span class='ecrm-0500'>58</span><span class='ectt-0800'>    module_put(THIS_MODULE);</span> 
 <a id='x1-39125r59'></a><span class='ecrm-0500'>59</span><span class='ectt-0800'>    </span><span id='textcolor1023'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> SUCCESS;</span> 
