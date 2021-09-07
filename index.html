@@ -1410,13 +1410,14 @@ Don’t worry if you don’t see what we do with the data we read into the buffe
 don’t do much with it. We simply read in the data and print a message
 acknowledging that we received it.
 </p><!-- l. 928 --><p class='indent'>   In the multiple-threaded environment, without any protection, concurrent access
-to the same memory may lead to the race condition, and will not preserve the
-performance. In the kernel module, this problem may happen due to multiple
-instances accessing the shared resources. Therefore, a solution is to enforce the
-exclusive access. We use atomic Compare-And-Swap (CAS), the single atomic
-operation, to checks out whether the file is currently open by someone. CAS
-compares the content of the target with the expected value and, if they are the same,
-modifies the content to the desired value. See more concurrency details in the <a href='#avoiding-collisions-and-deadlocks'>12<!-- tex4ht:ref: sec:synchronization  --></a>
+to the same memory may lead to the race condition, and will not preserve
+the performance. In the kernel module, this problem may happen due to
+multiple instances accessing the shared resources. Therefore, a solution is to
+enforce the exclusive access. We use atomic Compare-And-Swap (CAS),
+the single atomic operation, to determine whether the file is currently open
+by someone. CAS compares the contents of a memory loaction with the
+expected value and, only if they are the same, modifies the contents of that
+memory location to the desired value. See more concurrency details in the <a href='#avoiding-collisions-and-deadlocks'>12<!-- tex4ht:ref: sec:synchronization  --></a>
 section.
 </p><!-- l. 1 --><p class='indent'>
 </p>
@@ -2363,7 +2364,7 @@ get yours, you’ll know something is wrong. For more information, consult the k
 source tree at <a href='https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/Documentation/userspace-api/ioctl/ioctl-number.rst'>Documentation/userspace-api/ioctl/ioctl-number.rst</a>.
 </p><!-- l. 1168 --><p class='indent'>   Also, we need to be careful that concurrent access to the shared resources will
 lead to the race condition. The solution is using atomic Compare-And-Swap (CAS),
-which we mentioned at <a href='#chardevc'>6.5<!-- tex4ht:ref: sec:org7ce767e  --></a> section, to enforce the exclusive access.
+which we mentioned at <a href='#chardevc'>6.5<!-- tex4ht:ref: sec:chardev_c  --></a> section, to enforce the exclusive access.
 </p><!-- l. 1 --><p class='indent'>
 </p>
    <pre class='fancyvrb' id='fancyvrb49'><a id='x1-39009r1'></a><span class='ecrm-0500'>1</span><span id='textcolor966'><span class='ectt-0800'>/*</span></span> 
