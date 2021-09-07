@@ -1413,10 +1413,10 @@ acknowledging that we received it.
 to the same memory may lead to the race condition, and will not preserve the
 performance. In the kernel module, this problem may happen due to multiple
 instances accessing the shared resources. Therefore, a solution is to enforce the
-exclusive access. We use the Compare-And-Swap (CAS), the single atomic operation,
-to checks out whether the file is currently open by someone. CAS compares the
-content of the target with the expected value and, if they are the same, modifies
-the content to the desired value. See more concurrency details in the <a href='#avoiding-collisions-and-deadlocks'>12<!-- tex4ht:ref: sec:synchronization  --></a>
+exclusive access. We use atomic Compare-And-Swap (CAS), the single atomic
+operation, to checks out whether the file is currently open by someone. CAS
+compares the content of the target with the expected value and, if they are the same,
+modifies the content to the desired value. See more concurrency details in the <a href='#avoiding-collisions-and-deadlocks'>12<!-- tex4ht:ref: sec:synchronization  --></a>
 section.
 </p><!-- l. 1 --><p class='indent'>
 </p>
@@ -2361,10 +2361,9 @@ ioctl.c.
 official ioctl assignment, so if you accidentally get somebody else’s ioctls, or if they
 get yours, you’ll know something is wrong. For more information, consult the kernel
 source tree at <a href='https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/Documentation/userspace-api/ioctl/ioctl-number.rst'>Documentation/userspace-api/ioctl/ioctl-number.rst</a>.
-</p><!-- l. 1168 --><p class='indent'>   Also, we need to be careful with the concurrent access to the shared
-resources that lead to the race condition. The solution is to enforce the exclusive
-access by using atomic Compare-And-Swap (CAS) that we mentioned at <a href='#chardevc'>6.5<!-- tex4ht:ref: sec:org7ce767e  --></a>
-section.
+</p><!-- l. 1168 --><p class='indent'>   Also, we need to be careful that concurrent access to the shared resources will
+lead to the race condition. The solution is using atomic Compare-And-Swap (CAS),
+which we mentioned at <a href='#chardevc'>6.5<!-- tex4ht:ref: sec:org7ce767e  --></a> section, to enforce the exclusive access.
 </p><!-- l. 1 --><p class='indent'>
 </p>
    <pre class='fancyvrb' id='fancyvrb49'><a id='x1-39009r1'></a><span class='ecrm-0500'>1</span><span id='textcolor966'><span class='ectt-0800'>/*</span></span> 
