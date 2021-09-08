@@ -4241,7 +4241,7 @@ The series of improvements ended up at v4.15. The older version had redundant
 arbitrary functions within the kernel. Also, the prototype of the callback, with a
 single <code>  <span id='textcolor2150'><span class='ectt-1000'>unsigned</span></span><span class='ectt-1000'> </span><span id='textcolor2151'><span class='ectt-1000'>long</span></span>
 </code> argument, will let any type checking won’t work and it is an obstacle to the
-control flow integrity. So, the timer callback should pass a pointer to the
+<span class='ecti-1000'>control-flow integrity</span>. So, the timer callback should pass a pointer to the
 <code> <span class='ectt-1000'>timer_list</span>
 </code> structure rather than an <code>  <span id='textcolor2152'><span class='ectt-1000'>unsigned</span></span><span class='ectt-1000'> </span><span id='textcolor2153'><span class='ectt-1000'>long</span></span>
 </code> argument. Then, wrap all the information the callback needs, including the
