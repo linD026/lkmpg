@@ -4234,20 +4234,21 @@ to improve memory safety. A buffer overflow in the area of a
 </code> structure may be able to overwrite the
 <code> <span class='ectt-1000'>function</span>
 </code> and <code>  <span class='ectt-1000'>data</span>
-</code> fields, providing attacker with a way to use return-object programming
-to call arbitrary functions within the kernel. Also, the prototype, with a
+</code> fields, providing the attacker with a way to use return-object programming to call arbitrary
+functions within the kernel. Also, the function prototype of the callback, containing a
 <code> <span id='textcolor2150'><span class='ectt-1000'>unsigned</span></span><span class='ectt-1000'> </span><span id='textcolor2151'><span class='ectt-1000'>long</span></span>
-</code> argument, of the callback will let any type checking not working. Furthermore, the
-<code> <span id='textcolor2152'><span class='ectt-1000'>unsigned</span></span><span class='ectt-1000'> </span><span id='textcolor2153'><span class='ectt-1000'>long</span></span>
-</code> prototype may be an obstacle to the <span class='ecti-1000'>control-flow integrity</span>, it explicitly
-better be a unique prototype to isolate from the other functions that take an
+</code> argument, will prevent work from any type checking. Furthermore, the function prototype
+with <code>  <span id='textcolor2152'><span class='ectt-1000'>unsigned</span></span><span class='ectt-1000'> </span><span id='textcolor2153'><span class='ectt-1000'>long</span></span>
+</code> argument may be an obstacle to the <span class='ecti-1000'>control-flow integrity</span>, it is better
+to use a unique prototype to isolate from the others that take an
 <code> <span id='textcolor2154'><span class='ectt-1000'>unsigned</span></span><span class='ectt-1000'> </span><span id='textcolor2155'><span class='ectt-1000'>long</span></span>
 </code> argument. So, the timer callback should pass a pointer to the
 <code> <span class='ectt-1000'>timer_list</span>
 </code> structure rather than an <code>  <span id='textcolor2156'><span class='ectt-1000'>unsigned</span></span><span class='ectt-1000'> </span><span id='textcolor2157'><span class='ectt-1000'>long</span></span>
 </code> argument. Then, wrap all the information the callback needs, including the
 <code> <span class='ectt-1000'>timer_list</span>
-</code> structure, for simply using the <code>  <span class='ectt-1000'>container_of</span>
+</code> structure, into a larger structure, therefore, can use the
+<code> <span class='ectt-1000'>container_of</span>
 </code> macro instead of the <code>  <span id='textcolor2158'><span class='ectt-1000'>unsigned</span></span><span class='ectt-1000'> </span><span id='textcolor2159'><span class='ectt-1000'>long</span></span>
 </code> value.
 </p><!-- l. 1512 --><p class='indent'>   Before Linux v4.14, <code>  <span class='ectt-1000'>setup_timer</span>
@@ -4271,10 +4272,10 @@ better be a unique prototype to isolate from the other functions that take an
 </code> from <code>  <span class='ectt-1000'>setup_timer</span>
 </code>. One of the reasons why API changed is it need to coexist with the old version interface.
 Moreover, the <code>  <span class='ectt-1000'>timer_setup</span>
-</code> was implemented by <code>  <span class='ectt-1000'>setup_timer</span>
                                                                   
 
                                                                   
+</code> was implemented by <code>  <span class='ectt-1000'>setup_timer</span>
 </code> at first. 
 </p>
    <pre class='fancyvrb' id='fancyvrb63'><a id='x1-51052r1'></a><span class='ecrm-0500'>1</span><span id='textcolor2176'><span class='ectt-0800'>void</span></span><span class='ectt-0800'> timer_setup(</span><span id='textcolor2177'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> timer_list *timer,</span> 
