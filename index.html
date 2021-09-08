@@ -4228,9 +4228,10 @@ immediate way to attract attention or to display a status condition. Keyboard LE
 are present on every hardware, they are always visible, they do not need any setup,
 and their use is rather simple and non-intrusive, compared to writing to a tty or a
 file.
-</p><!-- l. 1505 --><p class='indent'>   Since v4.14, the timer API started to change. The series of improvements
-ended up at v4.15. The older version had redundant data fields in the
-<code> <span class='ectt-1000'>timer_list</span>
+</p><!-- l. 1505 --><p class='indent'>   Since v4.14, the timer API started to change. The series of
+improvements ended up at v4.15. The older version had redundant
+<code> <span class='ectt-1000'>data</span>
+</code> field in the <code>  <span class='ectt-1000'>timer_list</span>
 </code> structure. A buffer overflow in the area of a
 <code> <span class='ectt-1000'>timer_list</span>
 </code> structure may be able to overwrite the
@@ -4252,123 +4253,123 @@ control flow integrity. So, the timer callback should pass a pointer to the
 </code> to initialize the timer and the <code>  <span class='ectt-1000'>timer_list</span>
 </code> structure looked like: 
 </p>
-   <pre class='fancyvrb' id='fancyvrb62'><a id='x1-51023r1'></a><span class='ecrm-0500'>1</span><span id='textcolor2156'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> timer_list {</span> 
-<a id='x1-51025r2'></a><span class='ecrm-0500'>2</span><span class='ectt-0800'>    </span><span id='textcolor2157'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor2158'><span class='ectt-0800'>long</span></span><span class='ectt-0800'> expires;</span> 
-<a id='x1-51027r3'></a><span class='ecrm-0500'>3</span><span class='ectt-0800'>    </span><span id='textcolor2159'><span class='ectt-0800'>void</span></span><span class='ectt-0800'> (*function)(</span><span id='textcolor2160'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor2161'><span class='ectt-0800'>long</span></span><span class='ectt-0800'>);</span> 
-<a id='x1-51029r4'></a><span class='ecrm-0500'>4</span><span class='ectt-0800'>    </span><span id='textcolor2162'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor2163'><span class='ectt-0800'>long</span></span><span class='ectt-0800'> data;</span> 
-<a id='x1-51031r5'></a><span class='ecrm-0500'>5</span><span class='ectt-0800'>    u32 flags;</span> 
-<a id='x1-51033r6'></a><span class='ecrm-0500'>6</span><span class='ectt-0800'>};</span> 
-<a id='x1-51035r7'></a><span class='ecrm-0500'>7</span><span id='textcolor2164'><span class='ectt-0800'>void</span></span><span class='ectt-0800'> setup_timer(</span><span id='textcolor2165'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> timer_list *timer,</span> 
-<a id='x1-51037r8'></a><span class='ecrm-0500'>8</span><span class='ectt-0800'>                </span><span id='textcolor2166'><span class='ectt-0800'>void</span></span><span class='ectt-0800'> (*callback)(</span><span id='textcolor2167'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor2168'><span class='ectt-0800'>long</span></span><span class='ectt-0800'>),</span> 
-<a id='x1-51039r9'></a><span class='ecrm-0500'>9</span><span class='ectt-0800'>                </span><span id='textcolor2169'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor2170'><span class='ectt-0800'>long</span></span><span class='ectt-0800'> data);</span></pre>
+   <pre class='fancyvrb' id='fancyvrb62'><a id='x1-51024r1'></a><span class='ecrm-0500'>1</span><span id='textcolor2156'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> timer_list {</span> 
+<a id='x1-51026r2'></a><span class='ecrm-0500'>2</span><span class='ectt-0800'>    </span><span id='textcolor2157'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor2158'><span class='ectt-0800'>long</span></span><span class='ectt-0800'> expires;</span> 
+<a id='x1-51028r3'></a><span class='ecrm-0500'>3</span><span class='ectt-0800'>    </span><span id='textcolor2159'><span class='ectt-0800'>void</span></span><span class='ectt-0800'> (*function)(</span><span id='textcolor2160'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor2161'><span class='ectt-0800'>long</span></span><span class='ectt-0800'>);</span> 
+<a id='x1-51030r4'></a><span class='ecrm-0500'>4</span><span class='ectt-0800'>    </span><span id='textcolor2162'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor2163'><span class='ectt-0800'>long</span></span><span class='ectt-0800'> data;</span> 
+<a id='x1-51032r5'></a><span class='ecrm-0500'>5</span><span class='ectt-0800'>    u32 flags;</span> 
+<a id='x1-51034r6'></a><span class='ecrm-0500'>6</span><span class='ectt-0800'>};</span> 
+<a id='x1-51036r7'></a><span class='ecrm-0500'>7</span><span id='textcolor2164'><span class='ectt-0800'>void</span></span><span class='ectt-0800'> setup_timer(</span><span id='textcolor2165'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> timer_list *timer,</span> 
+<a id='x1-51038r8'></a><span class='ecrm-0500'>8</span><span class='ectt-0800'>                </span><span id='textcolor2166'><span class='ectt-0800'>void</span></span><span class='ectt-0800'> (*callback)(</span><span id='textcolor2167'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor2168'><span class='ectt-0800'>long</span></span><span class='ectt-0800'>),</span> 
+<a id='x1-51040r9'></a><span class='ecrm-0500'>9</span><span class='ectt-0800'>                </span><span id='textcolor2169'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor2170'><span class='ectt-0800'>long</span></span><span class='ectt-0800'> data);</span></pre>
 <!-- l. 1525 --><p class='indent'>   Since v4.14, we have the new interface
 <code> <span class='ectt-1000'>timer_setup</span>
 </code>. 
 </p>
-   <pre class='fancyvrb' id='fancyvrb63'><a id='x1-51045r1'></a><span class='ecrm-0500'>1</span><span id='textcolor2171'><span class='ectt-0800'>void</span></span><span class='ectt-0800'> timer_setup(</span><span id='textcolor2172'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> timer_list *timer,</span> 
-<a id='x1-51047r2'></a><span class='ecrm-0500'>2</span><span class='ectt-0800'>                </span><span id='textcolor2173'><span class='ectt-0800'>void</span></span><span class='ectt-0800'> (*callback)(</span><span id='textcolor2174'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> timer_list *),</span> 
-<a id='x1-51049r3'></a><span class='ecrm-0500'>3</span><span class='ectt-0800'>                </span><span id='textcolor2175'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor2176'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> flags);</span></pre>
+   <pre class='fancyvrb' id='fancyvrb63'><a id='x1-51046r1'></a><span class='ecrm-0500'>1</span><span id='textcolor2171'><span class='ectt-0800'>void</span></span><span class='ectt-0800'> timer_setup(</span><span id='textcolor2172'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> timer_list *timer,</span> 
+<a id='x1-51048r2'></a><span class='ecrm-0500'>2</span><span class='ectt-0800'>                </span><span id='textcolor2173'><span class='ectt-0800'>void</span></span><span class='ectt-0800'> (*callback)(</span><span id='textcolor2174'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> timer_list *),</span> 
+<a id='x1-51050r3'></a><span class='ecrm-0500'>3</span><span class='ectt-0800'>                </span><span id='textcolor2175'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor2176'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> flags);</span></pre>
 <!-- l. 1532 --><p class='indent'>   The <code>  <span class='ectt-1000'>setup_timer</span>
 </code> was removed at v4.15. Also, the <code>  <span class='ectt-1000'>timer_list</span>
-</code> structure became: 
                                                                   
 
                                                                   
+</code> structure became: 
 </p>
-   <pre class='fancyvrb' id='fancyvrb64'><a id='x1-51058r1'></a><span class='ecrm-0500'>1</span><span id='textcolor2177'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> timer_list {</span> 
-<a id='x1-51060r2'></a><span class='ecrm-0500'>2</span><span class='ectt-0800'>    </span><span id='textcolor2178'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor2179'><span class='ectt-0800'>long</span></span><span class='ectt-0800'> expires;</span> 
-<a id='x1-51062r3'></a><span class='ecrm-0500'>3</span><span class='ectt-0800'>    </span><span id='textcolor2180'><span class='ectt-0800'>void</span></span><span class='ectt-0800'> (*function)(</span><span id='textcolor2181'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> timer_list *);</span> 
-<a id='x1-51064r4'></a><span class='ecrm-0500'>4</span><span class='ectt-0800'>    u32 flags;</span> 
-<a id='x1-51066r5'></a><span class='ecrm-0500'>5</span><span class='ectt-0800'>};</span></pre>
+   <pre class='fancyvrb' id='fancyvrb64'><a id='x1-51059r1'></a><span class='ecrm-0500'>1</span><span id='textcolor2177'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> timer_list {</span> 
+<a id='x1-51061r2'></a><span class='ecrm-0500'>2</span><span class='ectt-0800'>    </span><span id='textcolor2178'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor2179'><span class='ectt-0800'>long</span></span><span class='ectt-0800'> expires;</span> 
+<a id='x1-51063r3'></a><span class='ecrm-0500'>3</span><span class='ectt-0800'>    </span><span id='textcolor2180'><span class='ectt-0800'>void</span></span><span class='ectt-0800'> (*function)(</span><span id='textcolor2181'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> timer_list *);</span> 
+<a id='x1-51065r4'></a><span class='ecrm-0500'>4</span><span class='ectt-0800'>    u32 flags;</span> 
+<a id='x1-51067r5'></a><span class='ecrm-0500'>5</span><span class='ectt-0800'>};</span></pre>
 <!-- l. 1542 --><p class='indent'>   The following source code illustrates a minimal kernel module which, when
 loaded, starts blinking the keyboard LEDs until it is unloaded.
 </p><!-- l. 1 --><p class='indent'>
 </p>
-   <pre class='fancyvrb' id='fancyvrb65'><a id='x1-51068r1'></a><span class='ecrm-0500'>1</span><span id='textcolor2182'><span class='ectt-0800'>/*</span></span> 
-<a id='x1-51070r2'></a><span class='ecrm-0500'>2</span><span id='textcolor2183'><span class='ectt-0800'> * kbleds.c - Blink keyboard leds until the module is unloaded.</span></span> 
-<a id='x1-51072r3'></a><span class='ecrm-0500'>3</span><span id='textcolor2184'><span class='ectt-0800'> */</span></span> 
-<a id='x1-51074r4'></a><span class='ecrm-0500'>4</span> 
-<a id='x1-51076r5'></a><span class='ecrm-0500'>5</span><span id='textcolor2185'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor2186'><span class='ectt-0800'>&lt;linux/init.h&gt;</span></span> 
-<a id='x1-51078r6'></a><span class='ecrm-0500'>6</span><span id='textcolor2187'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor2188'><span class='ectt-0800'>&lt;linux/kd.h&gt; /* For KDSETLED */</span></span> 
-<a id='x1-51080r7'></a><span class='ecrm-0500'>7</span><span id='textcolor2189'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor2190'><span class='ectt-0800'>&lt;linux/module.h&gt;</span></span> 
-<a id='x1-51082r8'></a><span class='ecrm-0500'>8</span><span id='textcolor2191'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor2192'><span class='ectt-0800'>&lt;linux/tty.h&gt; /* For tty_struct */</span></span> 
-<a id='x1-51084r9'></a><span class='ecrm-0500'>9</span><span id='textcolor2193'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor2194'><span class='ectt-0800'>&lt;linux/vt.h&gt; /* For MAX_NR_CONSOLES */</span></span> 
-<a id='x1-51086r10'></a><span class='ecrm-0500'>10</span><span id='textcolor2195'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor2196'><span class='ectt-0800'>&lt;linux/vt_kern.h&gt; /* for fg_console */</span></span> 
-<a id='x1-51088r11'></a><span class='ecrm-0500'>11</span><span id='textcolor2197'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor2198'><span class='ectt-0800'>&lt;linux/console_struct.h&gt; /* For vc_cons */</span></span> 
-<a id='x1-51090r12'></a><span class='ecrm-0500'>12</span> 
-<a id='x1-51092r13'></a><span class='ecrm-0500'>13</span><span class='ectt-0800'>MODULE_DESCRIPTION(</span><span id='textcolor2199'><span class='ectt-0800'>"Example module illustrating the use of Keyboard LEDs."</span></span><span class='ectt-0800'>);</span> 
-<a id='x1-51094r14'></a><span class='ecrm-0500'>14</span> 
-<a id='x1-51096r15'></a><span class='ecrm-0500'>15</span><span id='textcolor2200'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2201'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> timer_list my_timer;</span> 
-<a id='x1-51098r16'></a><span class='ecrm-0500'>16</span><span id='textcolor2202'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2203'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> tty_driver *my_driver;</span> 
-<a id='x1-51100r17'></a><span class='ecrm-0500'>17</span><span id='textcolor2204'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2205'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> kbledstatus = 0;</span> 
-<a id='x1-51102r18'></a><span class='ecrm-0500'>18</span> 
-<a id='x1-51104r19'></a><span class='ecrm-0500'>19</span><span id='textcolor2206'><span class='ectt-0800'>#define BLINK_DELAY HZ / 5</span></span> 
-<a id='x1-51106r20'></a><span class='ecrm-0500'>20</span><span id='textcolor2207'><span class='ectt-0800'>#define ALL_LEDS_ON 0x07</span></span> 
-<a id='x1-51108r21'></a><span class='ecrm-0500'>21</span><span id='textcolor2208'><span class='ectt-0800'>#define RESTORE_LEDS 0xFF</span></span> 
-<a id='x1-51110r22'></a><span class='ecrm-0500'>22</span> 
-<a id='x1-51112r23'></a><span class='ecrm-0500'>23</span><span id='textcolor2209'><span class='ectt-0800'>/* Function my_timer_func blinks the keyboard LEDs periodically by invoking</span></span> 
-<a id='x1-51114r24'></a><span class='ecrm-0500'>24</span><span id='textcolor2210'><span class='ectt-0800'> * command KDSETLED of ioctl() on the keyboard driver. To learn more on virtual</span></span> 
-<a id='x1-51116r25'></a><span class='ecrm-0500'>25</span><span id='textcolor2211'><span class='ectt-0800'> * terminal ioctl operations, please see file:</span></span> 
-<a id='x1-51118r26'></a><span class='ecrm-0500'>26</span><span id='textcolor2212'><span class='ectt-0800'> *   drivers/tty/vt/vt_ioctl.c, function vt_ioctl().</span></span> 
-<a id='x1-51120r27'></a><span class='ecrm-0500'>27</span><span id='textcolor2213'><span class='ectt-0800'> *</span></span> 
-<a id='x1-51122r28'></a><span class='ecrm-0500'>28</span><span id='textcolor2214'><span class='ectt-0800'> * The argument to KDSETLED is alternatively set to 7 (thus causing the led</span></span> 
-<a id='x1-51124r29'></a><span class='ecrm-0500'>29</span><span id='textcolor2215'><span class='ectt-0800'> * mode to be set to LED_SHOW_IOCTL, and all the leds are lit) and to 0xFF</span></span> 
-<a id='x1-51126r30'></a><span class='ecrm-0500'>30</span><span id='textcolor2216'><span class='ectt-0800'> * (any value above 7 switches back the led mode to LED_SHOW_FLAGS, thus</span></span> 
-<a id='x1-51128r31'></a><span class='ecrm-0500'>31</span><span id='textcolor2217'><span class='ectt-0800'> * the LEDs reflect the actual keyboard status).  To learn more on this,</span></span> 
-<a id='x1-51130r32'></a><span class='ecrm-0500'>32</span><span id='textcolor2218'><span class='ectt-0800'> * please see file: drivers/tty/vt/keyboard.c, function setledstate().</span></span> 
-<a id='x1-51132r33'></a><span class='ecrm-0500'>33</span><span id='textcolor2219'><span class='ectt-0800'> */</span></span> 
-<a id='x1-51134r34'></a><span class='ecrm-0500'>34</span><span id='textcolor2220'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2221'><span class='ectt-0800'>void</span></span><span class='ectt-0800'> my_timer_func(</span><span id='textcolor2222'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> timer_list *unused)</span> 
-<a id='x1-51136r35'></a><span class='ecrm-0500'>35</span><span class='ectt-0800'>{</span> 
-<a id='x1-51138r36'></a><span class='ecrm-0500'>36</span><span class='ectt-0800'>    </span><span id='textcolor2223'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> tty_struct *t = vc_cons[fg_console].d-&gt;port.tty;</span> 
-<a id='x1-51140r37'></a><span class='ecrm-0500'>37</span> 
-<a id='x1-51142r38'></a><span class='ecrm-0500'>38</span><span class='ectt-0800'>    </span><span id='textcolor2224'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (kbledstatus == ALL_LEDS_ON)</span> 
-<a id='x1-51144r39'></a><span class='ecrm-0500'>39</span><span class='ectt-0800'>        kbledstatus = RESTORE_LEDS;</span> 
-<a id='x1-51146r40'></a><span class='ecrm-0500'>40</span><span class='ectt-0800'>    </span><span id='textcolor2225'><span class='ectt-0800'>else</span></span> 
-<a id='x1-51148r41'></a><span class='ecrm-0500'>41</span><span class='ectt-0800'>        kbledstatus = ALL_LEDS_ON;</span> 
-<a id='x1-51150r42'></a><span class='ecrm-0500'>42</span> 
-<a id='x1-51152r43'></a><span class='ecrm-0500'>43</span><span class='ectt-0800'>    (my_driver-&gt;ops-&gt;ioctl)(t, KDSETLED, (</span><span id='textcolor2226'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor2227'><span class='ectt-0800'>long</span></span><span class='ectt-0800'>)kbledstatus);</span> 
-<a id='x1-51154r44'></a><span class='ecrm-0500'>44</span> 
-<a id='x1-51156r45'></a><span class='ecrm-0500'>45</span><span class='ectt-0800'>    my_timer.expires = jiffies + BLINK_DELAY;</span> 
-<a id='x1-51158r46'></a><span class='ecrm-0500'>46</span><span class='ectt-0800'>    add_timer(&amp;my_timer);</span> 
-<a id='x1-51160r47'></a><span class='ecrm-0500'>47</span><span class='ectt-0800'>}</span> 
-<a id='x1-51162r48'></a><span class='ecrm-0500'>48</span> 
-<a id='x1-51164r49'></a><span class='ecrm-0500'>49</span><span id='textcolor2228'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2229'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> __init kbleds_init(</span><span id='textcolor2230'><span class='ectt-0800'>void</span></span><span class='ectt-0800'>)</span> 
-<a id='x1-51166r50'></a><span class='ecrm-0500'>50</span><span class='ectt-0800'>{</span> 
-<a id='x1-51168r51'></a><span class='ecrm-0500'>51</span><span class='ectt-0800'>    </span><span id='textcolor2231'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> i;</span> 
-<a id='x1-51170r52'></a><span class='ecrm-0500'>52</span> 
-<a id='x1-51172r53'></a><span class='ecrm-0500'>53</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor2232'><span class='ectt-0800'>"kbleds: loading</span></span><span id='textcolor2233'><span class='ectt-0800'>\n</span></span><span id='textcolor2234'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>);</span> 
-<a id='x1-51174r54'></a><span class='ecrm-0500'>54</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor2235'><span class='ectt-0800'>"kbleds: fgconsole is %x</span></span><span id='textcolor2236'><span class='ectt-0800'>\n</span></span><span id='textcolor2237'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, fg_console);</span> 
-<a id='x1-51176r55'></a><span class='ecrm-0500'>55</span><span class='ectt-0800'>    </span><span id='textcolor2238'><span class='ectt-0800'>for</span></span><span class='ectt-0800'> (i = 0; i &lt; MAX_NR_CONSOLES; i++) {</span> 
-<a id='x1-51178r56'></a><span class='ecrm-0500'>56</span><span class='ectt-0800'>        </span><span id='textcolor2239'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (!vc_cons[i].d)</span> 
-<a id='x1-51180r57'></a><span class='ecrm-0500'>57</span><span class='ectt-0800'>            </span><span id='textcolor2240'><span class='ectt-0800'>break</span></span><span class='ectt-0800'>;</span> 
-<a id='x1-51182r58'></a><span class='ecrm-0500'>58</span><span class='ectt-0800'>        pr_info(</span><span id='textcolor2241'><span class='ectt-0800'>"poet_atkm: console[%i/%i] #%i, tty %lx</span></span><span id='textcolor2242'><span class='ectt-0800'>\n</span></span><span id='textcolor2243'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, i, MAX_NR_CONSOLES,</span> 
-<a id='x1-51184r59'></a><span class='ecrm-0500'>59</span><span class='ectt-0800'>                vc_cons[i].d-&gt;vc_num, (</span><span id='textcolor2244'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor2245'><span class='ectt-0800'>long</span></span><span class='ectt-0800'>)vc_cons[i].d-&gt;port.tty);</span> 
-<a id='x1-51186r60'></a><span class='ecrm-0500'>60</span><span class='ectt-0800'>    }</span> 
-<a id='x1-51188r61'></a><span class='ecrm-0500'>61</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor2246'><span class='ectt-0800'>"kbleds: finished scanning consoles</span></span><span id='textcolor2247'><span class='ectt-0800'>\n</span></span><span id='textcolor2248'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>);</span> 
-<a id='x1-51190r62'></a><span class='ecrm-0500'>62</span> 
-<a id='x1-51192r63'></a><span class='ecrm-0500'>63</span><span class='ectt-0800'>    my_driver = vc_cons[fg_console].d-&gt;port.tty-&gt;driver;</span> 
-<a id='x1-51194r64'></a><span class='ecrm-0500'>64</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor2249'><span class='ectt-0800'>"kbleds: tty driver magic %x</span></span><span id='textcolor2250'><span class='ectt-0800'>\n</span></span><span id='textcolor2251'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, my_driver-&gt;magic);</span> 
-<a id='x1-51196r65'></a><span class='ecrm-0500'>65</span> 
-<a id='x1-51198r66'></a><span class='ecrm-0500'>66</span><span class='ectt-0800'>    </span><span id='textcolor2252'><span class='ectt-0800'>/* Set up the LED blink timer the first time. */</span></span> 
-<a id='x1-51200r67'></a><span class='ecrm-0500'>67</span><span class='ectt-0800'>    timer_setup(&amp;my_timer, my_timer_func, 0);</span> 
-<a id='x1-51202r68'></a><span class='ecrm-0500'>68</span><span class='ectt-0800'>    my_timer.expires = jiffies + BLINK_DELAY;</span> 
-<a id='x1-51204r69'></a><span class='ecrm-0500'>69</span><span class='ectt-0800'>    add_timer(&amp;my_timer);</span> 
-<a id='x1-51206r70'></a><span class='ecrm-0500'>70</span> 
-<a id='x1-51208r71'></a><span class='ecrm-0500'>71</span><span class='ectt-0800'>    </span><span id='textcolor2253'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> 0;</span> 
-<a id='x1-51210r72'></a><span class='ecrm-0500'>72</span><span class='ectt-0800'>}</span> 
-<a id='x1-51212r73'></a><span class='ecrm-0500'>73</span> 
-<a id='x1-51214r74'></a><span class='ecrm-0500'>74</span><span id='textcolor2254'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2255'><span class='ectt-0800'>void</span></span><span class='ectt-0800'> __exit kbleds_cleanup(</span><span id='textcolor2256'><span class='ectt-0800'>void</span></span><span class='ectt-0800'>)</span> 
-<a id='x1-51216r75'></a><span class='ecrm-0500'>75</span><span class='ectt-0800'>{</span> 
-<a id='x1-51218r76'></a><span class='ecrm-0500'>76</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor2257'><span class='ectt-0800'>"kbleds: unloading...</span></span><span id='textcolor2258'><span class='ectt-0800'>\n</span></span><span id='textcolor2259'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>);</span> 
-<a id='x1-51220r77'></a><span class='ecrm-0500'>77</span><span class='ectt-0800'>    del_timer(&amp;my_timer);</span> 
-<a id='x1-51222r78'></a><span class='ecrm-0500'>78</span><span class='ectt-0800'>    (my_driver-&gt;ops-&gt;ioctl)(vc_cons[fg_console].d-&gt;port.tty, KDSETLED,</span> 
-<a id='x1-51224r79'></a><span class='ecrm-0500'>79</span><span class='ectt-0800'>                            RESTORE_LEDS);</span> 
-<a id='x1-51226r80'></a><span class='ecrm-0500'>80</span><span class='ectt-0800'>}</span> 
-<a id='x1-51228r81'></a><span class='ecrm-0500'>81</span> 
-<a id='x1-51230r82'></a><span class='ecrm-0500'>82</span><span class='ectt-0800'>module_init(kbleds_init);</span> 
-<a id='x1-51232r83'></a><span class='ecrm-0500'>83</span><span class='ectt-0800'>module_exit(kbleds_cleanup);</span> 
-<a id='x1-51234r84'></a><span class='ecrm-0500'>84</span> 
-<a id='x1-51236r85'></a><span class='ecrm-0500'>85</span><span class='ectt-0800'>MODULE_LICENSE(</span><span id='textcolor2260'><span class='ectt-0800'>"GPL"</span></span><span class='ectt-0800'>);</span></pre>
+   <pre class='fancyvrb' id='fancyvrb65'><a id='x1-51069r1'></a><span class='ecrm-0500'>1</span><span id='textcolor2182'><span class='ectt-0800'>/*</span></span> 
+<a id='x1-51071r2'></a><span class='ecrm-0500'>2</span><span id='textcolor2183'><span class='ectt-0800'> * kbleds.c - Blink keyboard leds until the module is unloaded.</span></span> 
+<a id='x1-51073r3'></a><span class='ecrm-0500'>3</span><span id='textcolor2184'><span class='ectt-0800'> */</span></span> 
+<a id='x1-51075r4'></a><span class='ecrm-0500'>4</span> 
+<a id='x1-51077r5'></a><span class='ecrm-0500'>5</span><span id='textcolor2185'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor2186'><span class='ectt-0800'>&lt;linux/init.h&gt;</span></span> 
+<a id='x1-51079r6'></a><span class='ecrm-0500'>6</span><span id='textcolor2187'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor2188'><span class='ectt-0800'>&lt;linux/kd.h&gt; /* For KDSETLED */</span></span> 
+<a id='x1-51081r7'></a><span class='ecrm-0500'>7</span><span id='textcolor2189'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor2190'><span class='ectt-0800'>&lt;linux/module.h&gt;</span></span> 
+<a id='x1-51083r8'></a><span class='ecrm-0500'>8</span><span id='textcolor2191'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor2192'><span class='ectt-0800'>&lt;linux/tty.h&gt; /* For tty_struct */</span></span> 
+<a id='x1-51085r9'></a><span class='ecrm-0500'>9</span><span id='textcolor2193'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor2194'><span class='ectt-0800'>&lt;linux/vt.h&gt; /* For MAX_NR_CONSOLES */</span></span> 
+<a id='x1-51087r10'></a><span class='ecrm-0500'>10</span><span id='textcolor2195'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor2196'><span class='ectt-0800'>&lt;linux/vt_kern.h&gt; /* for fg_console */</span></span> 
+<a id='x1-51089r11'></a><span class='ecrm-0500'>11</span><span id='textcolor2197'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor2198'><span class='ectt-0800'>&lt;linux/console_struct.h&gt; /* For vc_cons */</span></span> 
+<a id='x1-51091r12'></a><span class='ecrm-0500'>12</span> 
+<a id='x1-51093r13'></a><span class='ecrm-0500'>13</span><span class='ectt-0800'>MODULE_DESCRIPTION(</span><span id='textcolor2199'><span class='ectt-0800'>"Example module illustrating the use of Keyboard LEDs."</span></span><span class='ectt-0800'>);</span> 
+<a id='x1-51095r14'></a><span class='ecrm-0500'>14</span> 
+<a id='x1-51097r15'></a><span class='ecrm-0500'>15</span><span id='textcolor2200'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2201'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> timer_list my_timer;</span> 
+<a id='x1-51099r16'></a><span class='ecrm-0500'>16</span><span id='textcolor2202'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2203'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> tty_driver *my_driver;</span> 
+<a id='x1-51101r17'></a><span class='ecrm-0500'>17</span><span id='textcolor2204'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2205'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> kbledstatus = 0;</span> 
+<a id='x1-51103r18'></a><span class='ecrm-0500'>18</span> 
+<a id='x1-51105r19'></a><span class='ecrm-0500'>19</span><span id='textcolor2206'><span class='ectt-0800'>#define BLINK_DELAY HZ / 5</span></span> 
+<a id='x1-51107r20'></a><span class='ecrm-0500'>20</span><span id='textcolor2207'><span class='ectt-0800'>#define ALL_LEDS_ON 0x07</span></span> 
+<a id='x1-51109r21'></a><span class='ecrm-0500'>21</span><span id='textcolor2208'><span class='ectt-0800'>#define RESTORE_LEDS 0xFF</span></span> 
+<a id='x1-51111r22'></a><span class='ecrm-0500'>22</span> 
+<a id='x1-51113r23'></a><span class='ecrm-0500'>23</span><span id='textcolor2209'><span class='ectt-0800'>/* Function my_timer_func blinks the keyboard LEDs periodically by invoking</span></span> 
+<a id='x1-51115r24'></a><span class='ecrm-0500'>24</span><span id='textcolor2210'><span class='ectt-0800'> * command KDSETLED of ioctl() on the keyboard driver. To learn more on virtual</span></span> 
+<a id='x1-51117r25'></a><span class='ecrm-0500'>25</span><span id='textcolor2211'><span class='ectt-0800'> * terminal ioctl operations, please see file:</span></span> 
+<a id='x1-51119r26'></a><span class='ecrm-0500'>26</span><span id='textcolor2212'><span class='ectt-0800'> *   drivers/tty/vt/vt_ioctl.c, function vt_ioctl().</span></span> 
+<a id='x1-51121r27'></a><span class='ecrm-0500'>27</span><span id='textcolor2213'><span class='ectt-0800'> *</span></span> 
+<a id='x1-51123r28'></a><span class='ecrm-0500'>28</span><span id='textcolor2214'><span class='ectt-0800'> * The argument to KDSETLED is alternatively set to 7 (thus causing the led</span></span> 
+<a id='x1-51125r29'></a><span class='ecrm-0500'>29</span><span id='textcolor2215'><span class='ectt-0800'> * mode to be set to LED_SHOW_IOCTL, and all the leds are lit) and to 0xFF</span></span> 
+<a id='x1-51127r30'></a><span class='ecrm-0500'>30</span><span id='textcolor2216'><span class='ectt-0800'> * (any value above 7 switches back the led mode to LED_SHOW_FLAGS, thus</span></span> 
+<a id='x1-51129r31'></a><span class='ecrm-0500'>31</span><span id='textcolor2217'><span class='ectt-0800'> * the LEDs reflect the actual keyboard status).  To learn more on this,</span></span> 
+<a id='x1-51131r32'></a><span class='ecrm-0500'>32</span><span id='textcolor2218'><span class='ectt-0800'> * please see file: drivers/tty/vt/keyboard.c, function setledstate().</span></span> 
+<a id='x1-51133r33'></a><span class='ecrm-0500'>33</span><span id='textcolor2219'><span class='ectt-0800'> */</span></span> 
+<a id='x1-51135r34'></a><span class='ecrm-0500'>34</span><span id='textcolor2220'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2221'><span class='ectt-0800'>void</span></span><span class='ectt-0800'> my_timer_func(</span><span id='textcolor2222'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> timer_list *unused)</span> 
+<a id='x1-51137r35'></a><span class='ecrm-0500'>35</span><span class='ectt-0800'>{</span> 
+<a id='x1-51139r36'></a><span class='ecrm-0500'>36</span><span class='ectt-0800'>    </span><span id='textcolor2223'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> tty_struct *t = vc_cons[fg_console].d-&gt;port.tty;</span> 
+<a id='x1-51141r37'></a><span class='ecrm-0500'>37</span> 
+<a id='x1-51143r38'></a><span class='ecrm-0500'>38</span><span class='ectt-0800'>    </span><span id='textcolor2224'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (kbledstatus == ALL_LEDS_ON)</span> 
+<a id='x1-51145r39'></a><span class='ecrm-0500'>39</span><span class='ectt-0800'>        kbledstatus = RESTORE_LEDS;</span> 
+<a id='x1-51147r40'></a><span class='ecrm-0500'>40</span><span class='ectt-0800'>    </span><span id='textcolor2225'><span class='ectt-0800'>else</span></span> 
+<a id='x1-51149r41'></a><span class='ecrm-0500'>41</span><span class='ectt-0800'>        kbledstatus = ALL_LEDS_ON;</span> 
+<a id='x1-51151r42'></a><span class='ecrm-0500'>42</span> 
+<a id='x1-51153r43'></a><span class='ecrm-0500'>43</span><span class='ectt-0800'>    (my_driver-&gt;ops-&gt;ioctl)(t, KDSETLED, (</span><span id='textcolor2226'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor2227'><span class='ectt-0800'>long</span></span><span class='ectt-0800'>)kbledstatus);</span> 
+<a id='x1-51155r44'></a><span class='ecrm-0500'>44</span> 
+<a id='x1-51157r45'></a><span class='ecrm-0500'>45</span><span class='ectt-0800'>    my_timer.expires = jiffies + BLINK_DELAY;</span> 
+<a id='x1-51159r46'></a><span class='ecrm-0500'>46</span><span class='ectt-0800'>    add_timer(&amp;my_timer);</span> 
+<a id='x1-51161r47'></a><span class='ecrm-0500'>47</span><span class='ectt-0800'>}</span> 
+<a id='x1-51163r48'></a><span class='ecrm-0500'>48</span> 
+<a id='x1-51165r49'></a><span class='ecrm-0500'>49</span><span id='textcolor2228'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2229'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> __init kbleds_init(</span><span id='textcolor2230'><span class='ectt-0800'>void</span></span><span class='ectt-0800'>)</span> 
+<a id='x1-51167r50'></a><span class='ecrm-0500'>50</span><span class='ectt-0800'>{</span> 
+<a id='x1-51169r51'></a><span class='ecrm-0500'>51</span><span class='ectt-0800'>    </span><span id='textcolor2231'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> i;</span> 
+<a id='x1-51171r52'></a><span class='ecrm-0500'>52</span> 
+<a id='x1-51173r53'></a><span class='ecrm-0500'>53</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor2232'><span class='ectt-0800'>"kbleds: loading</span></span><span id='textcolor2233'><span class='ectt-0800'>\n</span></span><span id='textcolor2234'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>);</span> 
+<a id='x1-51175r54'></a><span class='ecrm-0500'>54</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor2235'><span class='ectt-0800'>"kbleds: fgconsole is %x</span></span><span id='textcolor2236'><span class='ectt-0800'>\n</span></span><span id='textcolor2237'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, fg_console);</span> 
+<a id='x1-51177r55'></a><span class='ecrm-0500'>55</span><span class='ectt-0800'>    </span><span id='textcolor2238'><span class='ectt-0800'>for</span></span><span class='ectt-0800'> (i = 0; i &lt; MAX_NR_CONSOLES; i++) {</span> 
+<a id='x1-51179r56'></a><span class='ecrm-0500'>56</span><span class='ectt-0800'>        </span><span id='textcolor2239'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (!vc_cons[i].d)</span> 
+<a id='x1-51181r57'></a><span class='ecrm-0500'>57</span><span class='ectt-0800'>            </span><span id='textcolor2240'><span class='ectt-0800'>break</span></span><span class='ectt-0800'>;</span> 
+<a id='x1-51183r58'></a><span class='ecrm-0500'>58</span><span class='ectt-0800'>        pr_info(</span><span id='textcolor2241'><span class='ectt-0800'>"poet_atkm: console[%i/%i] #%i, tty %lx</span></span><span id='textcolor2242'><span class='ectt-0800'>\n</span></span><span id='textcolor2243'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, i, MAX_NR_CONSOLES,</span> 
+<a id='x1-51185r59'></a><span class='ecrm-0500'>59</span><span class='ectt-0800'>                vc_cons[i].d-&gt;vc_num, (</span><span id='textcolor2244'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor2245'><span class='ectt-0800'>long</span></span><span class='ectt-0800'>)vc_cons[i].d-&gt;port.tty);</span> 
+<a id='x1-51187r60'></a><span class='ecrm-0500'>60</span><span class='ectt-0800'>    }</span> 
+<a id='x1-51189r61'></a><span class='ecrm-0500'>61</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor2246'><span class='ectt-0800'>"kbleds: finished scanning consoles</span></span><span id='textcolor2247'><span class='ectt-0800'>\n</span></span><span id='textcolor2248'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>);</span> 
+<a id='x1-51191r62'></a><span class='ecrm-0500'>62</span> 
+<a id='x1-51193r63'></a><span class='ecrm-0500'>63</span><span class='ectt-0800'>    my_driver = vc_cons[fg_console].d-&gt;port.tty-&gt;driver;</span> 
+<a id='x1-51195r64'></a><span class='ecrm-0500'>64</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor2249'><span class='ectt-0800'>"kbleds: tty driver magic %x</span></span><span id='textcolor2250'><span class='ectt-0800'>\n</span></span><span id='textcolor2251'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, my_driver-&gt;magic);</span> 
+<a id='x1-51197r65'></a><span class='ecrm-0500'>65</span> 
+<a id='x1-51199r66'></a><span class='ecrm-0500'>66</span><span class='ectt-0800'>    </span><span id='textcolor2252'><span class='ectt-0800'>/* Set up the LED blink timer the first time. */</span></span> 
+<a id='x1-51201r67'></a><span class='ecrm-0500'>67</span><span class='ectt-0800'>    timer_setup(&amp;my_timer, my_timer_func, 0);</span> 
+<a id='x1-51203r68'></a><span class='ecrm-0500'>68</span><span class='ectt-0800'>    my_timer.expires = jiffies + BLINK_DELAY;</span> 
+<a id='x1-51205r69'></a><span class='ecrm-0500'>69</span><span class='ectt-0800'>    add_timer(&amp;my_timer);</span> 
+<a id='x1-51207r70'></a><span class='ecrm-0500'>70</span> 
+<a id='x1-51209r71'></a><span class='ecrm-0500'>71</span><span class='ectt-0800'>    </span><span id='textcolor2253'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> 0;</span> 
+<a id='x1-51211r72'></a><span class='ecrm-0500'>72</span><span class='ectt-0800'>}</span> 
+<a id='x1-51213r73'></a><span class='ecrm-0500'>73</span> 
+<a id='x1-51215r74'></a><span class='ecrm-0500'>74</span><span id='textcolor2254'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2255'><span class='ectt-0800'>void</span></span><span class='ectt-0800'> __exit kbleds_cleanup(</span><span id='textcolor2256'><span class='ectt-0800'>void</span></span><span class='ectt-0800'>)</span> 
+<a id='x1-51217r75'></a><span class='ecrm-0500'>75</span><span class='ectt-0800'>{</span> 
+<a id='x1-51219r76'></a><span class='ecrm-0500'>76</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor2257'><span class='ectt-0800'>"kbleds: unloading...</span></span><span id='textcolor2258'><span class='ectt-0800'>\n</span></span><span id='textcolor2259'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>);</span> 
+<a id='x1-51221r77'></a><span class='ecrm-0500'>77</span><span class='ectt-0800'>    del_timer(&amp;my_timer);</span> 
+<a id='x1-51223r78'></a><span class='ecrm-0500'>78</span><span class='ectt-0800'>    (my_driver-&gt;ops-&gt;ioctl)(vc_cons[fg_console].d-&gt;port.tty, KDSETLED,</span> 
+<a id='x1-51225r79'></a><span class='ecrm-0500'>79</span><span class='ectt-0800'>                            RESTORE_LEDS);</span> 
+<a id='x1-51227r80'></a><span class='ecrm-0500'>80</span><span class='ectt-0800'>}</span> 
+<a id='x1-51229r81'></a><span class='ecrm-0500'>81</span> 
+<a id='x1-51231r82'></a><span class='ecrm-0500'>82</span><span class='ectt-0800'>module_init(kbleds_init);</span> 
+<a id='x1-51233r83'></a><span class='ecrm-0500'>83</span><span class='ectt-0800'>module_exit(kbleds_cleanup);</span> 
+<a id='x1-51235r84'></a><span class='ecrm-0500'>84</span> 
+<a id='x1-51237r85'></a><span class='ecrm-0500'>85</span><span class='ectt-0800'>MODULE_LICENSE(</span><span id='textcolor2260'><span class='ectt-0800'>"GPL"</span></span><span class='ectt-0800'>);</span></pre>
 <!-- l. 1546 --><p class='indent'>   If none of the examples in this chapter fit your debugging needs,
 there might yet be some other tricks to try. Ever wondered what
 <code> <span class='ectt-1000'>CONFIG_LL_DEBUG</span>
@@ -4400,10 +4401,10 @@ better suited to running multiple things in a sequence.
 </code> function runs for a few seconds and in the mean time execution of the
 <code> <span class='ectt-1000'>example_tasklet_init</span>
 </code> function continues to the exit point.
-</p><!-- l. 1 --><p class='indent'>
                                                                   
 
                                                                   
+</p><!-- l. 1 --><p class='indent'>
 </p>
    <pre class='fancyvrb' id='fancyvrb66'><a id='x1-53004r1'></a><span class='ecrm-0500'>1</span><span id='textcolor2261'><span class='ectt-0800'>/*</span></span> 
 <a id='x1-53006r2'></a><span class='ecrm-0500'>2</span><span id='textcolor2262'><span class='ectt-0800'> * example_tasklet.c</span></span> 
