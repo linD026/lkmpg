@@ -18,7 +18,7 @@
 
 <h2 class='titleHead'>The Linux Kernel Module Programming Guide</h2>
 <div class='author'><span class='ecrm-1200'>Peter Jay Salzman, Michael Burian, Ori Pomerantz, Bob Mottram, Jim Huang</span></div><br />
-<div class='date'><span class='ecrm-1200'>September 8, 2021</span></div>
+<div class='date'><span class='ecrm-1200'>September 9, 2021</span></div>
                                                                   
 
                                                                   
@@ -4234,15 +4234,15 @@ to improve memory safety. A buffer overflow in the area of a
 </code> structure may be able to overwrite the
 <code> <span class='ectt-1000'>function</span>
 </code> and <code>  <span class='ectt-1000'>data</span>
-</code> fields, providing the attacker with a way to use return-object programming to call arbitrary
-functions within the kernel. Also, the function prototype of the callback, containing a
-<code> <span id='textcolor2150'><span class='ectt-1000'>unsigned</span></span><span class='ectt-1000'> </span><span id='textcolor2151'><span class='ectt-1000'>long</span></span>
+</code> fields, providing the attacker with a way to use return-object programming(ROP) to
+call arbitrary functions within the kernel. Also, the function prototype of the callback,
+containing a <code>  <span id='textcolor2150'><span class='ectt-1000'>unsigned</span></span><span class='ectt-1000'> </span><span id='textcolor2151'><span class='ectt-1000'>long</span></span>
 </code> argument, will prevent work from any type checking. Furthermore, the function prototype
 with <code>  <span id='textcolor2152'><span class='ectt-1000'>unsigned</span></span><span class='ectt-1000'> </span><span id='textcolor2153'><span class='ectt-1000'>long</span></span>
-</code> argument may be an obstacle to the <span class='ecti-1000'>control-flow integrity</span>, it is better
-to use a unique prototype to isolate from the others that take an
+</code> argument may be an obstacle to the <span class='ecti-1000'>control-flow integrity</span>, thus, it is
+better to use a unique prototype to isolate from the others that take an
 <code> <span id='textcolor2154'><span class='ectt-1000'>unsigned</span></span><span class='ectt-1000'> </span><span id='textcolor2155'><span class='ectt-1000'>long</span></span>
-</code> argument. So, the timer callback should pass a pointer to the
+</code> argument. So, the timer callback should be passed a pointer to the
 <code> <span class='ectt-1000'>timer_list</span>
 </code> structure rather than an <code>  <span id='textcolor2156'><span class='ectt-1000'>unsigned</span></span><span class='ectt-1000'> </span><span id='textcolor2157'><span class='ectt-1000'>long</span></span>
 </code> argument. Then, wrap all the information the callback needs, including the
@@ -4281,9 +4281,9 @@ Moreover, the <code>  <span class='ectt-1000'>timer_setup</span>
    <pre class='fancyvrb' id='fancyvrb63'><a id='x1-51052r1'></a><span class='ecrm-0500'>1</span><span id='textcolor2176'><span class='ectt-0800'>void</span></span><span class='ectt-0800'> timer_setup(</span><span id='textcolor2177'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> timer_list *timer,</span> 
 <a id='x1-51054r2'></a><span class='ecrm-0500'>2</span><span class='ectt-0800'>                 </span><span id='textcolor2178'><span class='ectt-0800'>void</span></span><span class='ectt-0800'> (*callback)(</span><span id='textcolor2179'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> timer_list *), </span><span id='textcolor2180'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor2181'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> flags);</span></pre>
 <!-- l. 1534 --><p class='indent'>   The <code>  <span class='ectt-1000'>setup_timer</span>
-</code> was then removed since v4.15. Also, the
+</code> was then removed since v4.15. As a result, the
 <code> <span class='ectt-1000'>timer_list</span>
-</code> structure became: 
+</code> structure had changed to the following. 
 </p>
    <pre class='fancyvrb' id='fancyvrb64'><a id='x1-51064r1'></a><span class='ecrm-0500'>1</span><span id='textcolor2182'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> timer_list {</span> 
 <a id='x1-51066r2'></a><span class='ecrm-0500'>2</span><span class='ectt-0800'>    </span><span id='textcolor2183'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor2184'><span class='ectt-0800'>long</span></span><span class='ectt-0800'> expires;</span> 
