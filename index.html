@@ -18,7 +18,7 @@
 
 <h2 class='titleHead'>The Linux Kernel Module Programming Guide</h2>
 <div class='author'><span class='ecrm-1200'>Peter Jay Salzman, Michael Burian, Ori Pomerantz, Bob Mottram, Jim Huang</span></div><br />
-<div class='date'><span class='ecrm-1200'>September 9, 2021</span></div>
+<div class='date'><span class='ecrm-1200'>September 10, 2021</span></div>
                                                                   
 
                                                                   
@@ -4245,7 +4245,7 @@ to use a unique prototype to separate from the cluster that takes an
 </code> argument. So, the timer callback should be passed a pointer to the
 <code> <span class='ectt-1000'>timer_list</span>
 </code> structure rather than an <code>  <span id='textcolor2156'><span class='ectt-1000'>unsigned</span></span><span class='ectt-1000'> </span><span id='textcolor2157'><span class='ectt-1000'>long</span></span>
-</code> argument. Then, wrap all the information the callback needs, including the
+</code> argument. Then, we wrap all the information the callback needs, including the
 <code> <span class='ectt-1000'>timer_list</span>
 </code> structure, into a larger structure, therefore, can use the
 <code> <span class='ectt-1000'>container_of</span>
