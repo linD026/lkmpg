@@ -4245,9 +4245,9 @@ to use a unique prototype to separate from the cluster that takes an
 </code> argument. The timer callback should be passed a pointer to the
 <code> <span class='ectt-1000'>timer_list</span>
 </code> structure rather than an <code>  <span id='textcolor2156'><span class='ectt-1000'>unsigned</span></span><span class='ectt-1000'> </span><span id='textcolor2157'><span class='ectt-1000'>long</span></span>
-</code> argument. Then, we wrap all the information the callback needs, including the
+</code> argument. Then, it wraps all the information the callback needs, including the
 <code> <span class='ectt-1000'>timer_list</span>
-</code> structure, into a larger structure, and we can use the
+</code> structure, into a larger structure, and it can use the
 <code> <span class='ectt-1000'>container_of</span>
 </code> macro instead of the <code>  <span id='textcolor2158'><span class='ectt-1000'>unsigned</span></span><span class='ectt-1000'> </span><span id='textcolor2159'><span class='ectt-1000'>long</span></span>
 </code> value.
