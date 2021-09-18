@@ -1537,36 +1537,38 @@ section.
 <a id='x1-31234r115'></a><span class='ecrm-0500'>115</span><span class='ectt-0800'>    </span><span id='textcolor520'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (strlen(msg) == *offset)</span> 
 <a id='x1-31236r116'></a><span class='ecrm-0500'>116</span><span class='ectt-0800'>        </span><span id='textcolor521'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> 0;</span> 
 <a id='x1-31238r117'></a><span class='ecrm-0500'>117</span> 
-<a id='x1-31240r118'></a><span class='ecrm-0500'>118</span><span class='ectt-0800'>    </span><span id='textcolor522'><span class='ectt-0800'>/* Actually put the data into the buffer */</span></span> 
-<a id='x1-31242r119'></a><span class='ecrm-0500'>119</span><span class='ectt-0800'>    </span><span id='textcolor523'><span class='ectt-0800'>while</span></span><span class='ectt-0800'> (length &amp;&amp; *msg_ptr) {</span> 
-<a id='x1-31244r120'></a><span class='ecrm-0500'>120</span><span class='ectt-0800'>        </span><span id='textcolor524'><span class='ectt-0800'>/* The buffer is in the user data segment, not the kernel</span></span> 
-<a id='x1-31246r121'></a><span class='ecrm-0500'>121</span><span id='textcolor525'><span class='ectt-0800'>         * segment so "*" assignment won</span><span class='tctt-0800'>'</span><span class='ectt-0800'>t work.  We have to use</span></span> 
-<a id='x1-31248r122'></a><span class='ecrm-0500'>122</span><span id='textcolor526'><span class='ectt-0800'>         * put_user which copies data from the kernel data segment to</span></span> 
-<a id='x1-31250r123'></a><span class='ecrm-0500'>123</span><span id='textcolor527'><span class='ectt-0800'>         * the user data segment.</span></span> 
-<a id='x1-31252r124'></a><span class='ecrm-0500'>124</span><span id='textcolor528'><span class='ectt-0800'>         */</span></span> 
-<a id='x1-31254r125'></a><span class='ecrm-0500'>125</span><span class='ectt-0800'>        put_user(*(msg_ptr++), buffer++);</span> 
-<a id='x1-31256r126'></a><span class='ecrm-0500'>126</span> 
-<a id='x1-31258r127'></a><span class='ecrm-0500'>127</span><span class='ectt-0800'>        length--;</span> 
-<a id='x1-31260r128'></a><span class='ecrm-0500'>128</span><span class='ectt-0800'>        bytes_read++;</span> 
-<a id='x1-31262r129'></a><span class='ecrm-0500'>129</span><span class='ectt-0800'>    }</span> 
-<a id='x1-31264r130'></a><span class='ecrm-0500'>130</span><span class='ectt-0800'>    *offset += bytes_read;</span> 
-<a id='x1-31266r131'></a><span class='ecrm-0500'>131</span> 
-<a id='x1-31268r132'></a><span class='ecrm-0500'>132</span><span class='ectt-0800'>    </span><span id='textcolor529'><span class='ectt-0800'>/* Most read functions return the number of bytes put into the buffer. */</span></span> 
-<a id='x1-31270r133'></a><span class='ecrm-0500'>133</span><span class='ectt-0800'>    </span><span id='textcolor530'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> bytes_read;</span> 
-<a id='x1-31272r134'></a><span class='ecrm-0500'>134</span><span class='ectt-0800'>}</span> 
-<a id='x1-31274r135'></a><span class='ecrm-0500'>135</span> 
-<a id='x1-31276r136'></a><span class='ecrm-0500'>136</span><span id='textcolor531'><span class='ectt-0800'>/* Called when a process writes to dev file: echo "hi" &gt; /dev/hello */</span></span> 
-<a id='x1-31278r137'></a><span class='ecrm-0500'>137</span><span id='textcolor532'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor533'><span class='ectt-0800'>ssize_t</span></span><span class='ectt-0800'> device_write(</span><span id='textcolor534'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> file *filp, </span><span id='textcolor535'><span class='ectt-0800'>const</span></span><span class='ectt-0800'> </span><span id='textcolor536'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> __user *buff,</span> 
-<a id='x1-31280r138'></a><span class='ecrm-0500'>138</span><span class='ectt-0800'>                            </span><span id='textcolor537'><span class='ectt-0800'>size_t</span></span><span class='ectt-0800'> len, loff_t *off)</span> 
-<a id='x1-31282r139'></a><span class='ecrm-0500'>139</span><span class='ectt-0800'>{</span> 
-<a id='x1-31284r140'></a><span class='ecrm-0500'>140</span><span class='ectt-0800'>    pr_alert(</span><span id='textcolor538'><span class='ectt-0800'>"Sorry, this operation is not supported.</span></span><span id='textcolor539'><span class='ectt-0800'>\n</span></span><span id='textcolor540'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>);</span> 
-<a id='x1-31286r141'></a><span class='ecrm-0500'>141</span><span class='ectt-0800'>    </span><span id='textcolor541'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> -EINVAL;</span> 
-<a id='x1-31288r142'></a><span class='ecrm-0500'>142</span><span class='ectt-0800'>}</span> 
-<a id='x1-31290r143'></a><span class='ecrm-0500'>143</span> 
-<a id='x1-31292r144'></a><span class='ecrm-0500'>144</span><span class='ectt-0800'>module_init(chardev_init);</span> 
-<a id='x1-31294r145'></a><span class='ecrm-0500'>145</span><span class='ectt-0800'>module_exit(chardev_exit);</span> 
-<a id='x1-31296r146'></a><span class='ecrm-0500'>146</span> 
-<a id='x1-31298r147'></a><span class='ecrm-0500'>147</span><span class='ectt-0800'>MODULE_LICENSE(</span><span id='textcolor542'><span class='ectt-0800'>"GPL"</span></span><span class='ectt-0800'>);</span></pre>
+<a id='x1-31240r118'></a><span class='ecrm-0500'>118</span><span class='ectt-0800'>    msg_ptr += *offset;</span> 
+<a id='x1-31242r119'></a><span class='ecrm-0500'>119</span> 
+<a id='x1-31244r120'></a><span class='ecrm-0500'>120</span><span class='ectt-0800'>    </span><span id='textcolor522'><span class='ectt-0800'>/* Actually put the data into the buffer */</span></span> 
+<a id='x1-31246r121'></a><span class='ecrm-0500'>121</span><span class='ectt-0800'>    </span><span id='textcolor523'><span class='ectt-0800'>while</span></span><span class='ectt-0800'> (length &amp;&amp; *msg_ptr) {</span> 
+<a id='x1-31248r122'></a><span class='ecrm-0500'>122</span><span class='ectt-0800'>        </span><span id='textcolor524'><span class='ectt-0800'>/* The buffer is in the user data segment, not the kernel</span></span> 
+<a id='x1-31250r123'></a><span class='ecrm-0500'>123</span><span id='textcolor525'><span class='ectt-0800'>         * segment so "*" assignment won</span><span class='tctt-0800'>'</span><span class='ectt-0800'>t work.  We have to use</span></span> 
+<a id='x1-31252r124'></a><span class='ecrm-0500'>124</span><span id='textcolor526'><span class='ectt-0800'>         * put_user which copies data from the kernel data segment to</span></span> 
+<a id='x1-31254r125'></a><span class='ecrm-0500'>125</span><span id='textcolor527'><span class='ectt-0800'>         * the user data segment.</span></span> 
+<a id='x1-31256r126'></a><span class='ecrm-0500'>126</span><span id='textcolor528'><span class='ectt-0800'>         */</span></span> 
+<a id='x1-31258r127'></a><span class='ecrm-0500'>127</span><span class='ectt-0800'>        put_user(*(msg_ptr++), buffer++);</span> 
+<a id='x1-31260r128'></a><span class='ecrm-0500'>128</span> 
+<a id='x1-31262r129'></a><span class='ecrm-0500'>129</span><span class='ectt-0800'>        length--;</span> 
+<a id='x1-31264r130'></a><span class='ecrm-0500'>130</span><span class='ectt-0800'>        bytes_read++;</span> 
+<a id='x1-31266r131'></a><span class='ecrm-0500'>131</span><span class='ectt-0800'>    }</span> 
+<a id='x1-31268r132'></a><span class='ecrm-0500'>132</span><span class='ectt-0800'>    *offset += bytes_read;</span> 
+<a id='x1-31270r133'></a><span class='ecrm-0500'>133</span> 
+<a id='x1-31272r134'></a><span class='ecrm-0500'>134</span><span class='ectt-0800'>    </span><span id='textcolor529'><span class='ectt-0800'>/* Most read functions return the number of bytes put into the buffer. */</span></span> 
+<a id='x1-31274r135'></a><span class='ecrm-0500'>135</span><span class='ectt-0800'>    </span><span id='textcolor530'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> bytes_read;</span> 
+<a id='x1-31276r136'></a><span class='ecrm-0500'>136</span><span class='ectt-0800'>}</span> 
+<a id='x1-31278r137'></a><span class='ecrm-0500'>137</span> 
+<a id='x1-31280r138'></a><span class='ecrm-0500'>138</span><span id='textcolor531'><span class='ectt-0800'>/* Called when a process writes to dev file: echo "hi" &gt; /dev/hello */</span></span> 
+<a id='x1-31282r139'></a><span class='ecrm-0500'>139</span><span id='textcolor532'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor533'><span class='ectt-0800'>ssize_t</span></span><span class='ectt-0800'> device_write(</span><span id='textcolor534'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> file *filp, </span><span id='textcolor535'><span class='ectt-0800'>const</span></span><span class='ectt-0800'> </span><span id='textcolor536'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> __user *buff,</span> 
+<a id='x1-31284r140'></a><span class='ecrm-0500'>140</span><span class='ectt-0800'>                            </span><span id='textcolor537'><span class='ectt-0800'>size_t</span></span><span class='ectt-0800'> len, loff_t *off)</span> 
+<a id='x1-31286r141'></a><span class='ecrm-0500'>141</span><span class='ectt-0800'>{</span> 
+<a id='x1-31288r142'></a><span class='ecrm-0500'>142</span><span class='ectt-0800'>    pr_alert(</span><span id='textcolor538'><span class='ectt-0800'>"Sorry, this operation is not supported.</span></span><span id='textcolor539'><span class='ectt-0800'>\n</span></span><span id='textcolor540'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>);</span> 
+<a id='x1-31290r143'></a><span class='ecrm-0500'>143</span><span class='ectt-0800'>    </span><span id='textcolor541'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> -EINVAL;</span> 
+<a id='x1-31292r144'></a><span class='ecrm-0500'>144</span><span class='ectt-0800'>}</span> 
+<a id='x1-31294r145'></a><span class='ecrm-0500'>145</span> 
+<a id='x1-31296r146'></a><span class='ecrm-0500'>146</span><span class='ectt-0800'>module_init(chardev_init);</span> 
+<a id='x1-31298r147'></a><span class='ecrm-0500'>147</span><span class='ectt-0800'>module_exit(chardev_exit);</span> 
+<a id='x1-31300r148'></a><span class='ecrm-0500'>148</span> 
+<a id='x1-31302r149'></a><span class='ecrm-0500'>149</span><span class='ectt-0800'>MODULE_LICENSE(</span><span id='textcolor542'><span class='ectt-0800'>"GPL"</span></span><span class='ectt-0800'>);</span></pre>
                                                                   
 
                                                                   
@@ -2443,403 +2445,405 @@ which we mentioned at <a href='#chardevc'>6.5<!-- tex4ht:ref: sec:chardev_c  -->
 <a id='x1-39157r75'></a><span class='ecrm-0500'>75</span><span class='ectt-0800'>    </span><span id='textcolor1044'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (strlen(message) == *offset)</span> 
 <a id='x1-39159r76'></a><span class='ecrm-0500'>76</span><span class='ectt-0800'>        </span><span id='textcolor1045'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> 0;</span> 
 <a id='x1-39161r77'></a><span class='ecrm-0500'>77</span> 
-<a id='x1-39163r78'></a><span class='ecrm-0500'>78</span><span class='ectt-0800'>    </span><span id='textcolor1046'><span class='ectt-0800'>/* Actually put the data into the buffer */</span></span> 
-<a id='x1-39165r79'></a><span class='ecrm-0500'>79</span><span class='ectt-0800'>    </span><span id='textcolor1047'><span class='ectt-0800'>while</span></span><span class='ectt-0800'> (length &amp;&amp; *message_ptr) {</span> 
-<a id='x1-39167r80'></a><span class='ecrm-0500'>80</span><span class='ectt-0800'>        </span><span id='textcolor1048'><span class='ectt-0800'>/* Because the buffer is in the user data segment, not the kernel</span></span> 
-<a id='x1-39169r81'></a><span class='ecrm-0500'>81</span><span id='textcolor1049'><span class='ectt-0800'>         * data segment, assignment would not work. Instead, we have to</span></span> 
-<a id='x1-39171r82'></a><span class='ecrm-0500'>82</span><span id='textcolor1050'><span class='ectt-0800'>         * use put_user which copies data from the kernel data segment to</span></span> 
-<a id='x1-39173r83'></a><span class='ecrm-0500'>83</span><span id='textcolor1051'><span class='ectt-0800'>         * the user data segment.</span></span> 
-<a id='x1-39175r84'></a><span class='ecrm-0500'>84</span><span id='textcolor1052'><span class='ectt-0800'>         */</span></span> 
-<a id='x1-39177r85'></a><span class='ecrm-0500'>85</span><span class='ectt-0800'>        put_user(*(message_ptr++), buffer++);</span> 
-<a id='x1-39179r86'></a><span class='ecrm-0500'>86</span><span class='ectt-0800'>        length--;</span> 
-<a id='x1-39181r87'></a><span class='ecrm-0500'>87</span><span class='ectt-0800'>        bytes_read++;</span> 
-<a id='x1-39183r88'></a><span class='ecrm-0500'>88</span><span class='ectt-0800'>    }</span> 
-<a id='x1-39185r89'></a><span class='ecrm-0500'>89</span> 
-<a id='x1-39187r90'></a><span class='ecrm-0500'>90</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor1053'><span class='ectt-0800'>"Read %d bytes, %ld left</span></span><span id='textcolor1054'><span class='ectt-0800'>\n</span></span><span id='textcolor1055'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, bytes_read, length);</span> 
+<a id='x1-39163r78'></a><span class='ecrm-0500'>78</span><span class='ectt-0800'>    message_ptr += *offset;</span> 
+<a id='x1-39165r79'></a><span class='ecrm-0500'>79</span> 
+<a id='x1-39167r80'></a><span class='ecrm-0500'>80</span><span class='ectt-0800'>    </span><span id='textcolor1046'><span class='ectt-0800'>/* Actually put the data into the buffer */</span></span> 
+<a id='x1-39169r81'></a><span class='ecrm-0500'>81</span><span class='ectt-0800'>    </span><span id='textcolor1047'><span class='ectt-0800'>while</span></span><span class='ectt-0800'> (length &amp;&amp; *message_ptr) {</span> 
+<a id='x1-39171r82'></a><span class='ecrm-0500'>82</span><span class='ectt-0800'>        </span><span id='textcolor1048'><span class='ectt-0800'>/* Because the buffer is in the user data segment, not the kernel</span></span> 
+<a id='x1-39173r83'></a><span class='ecrm-0500'>83</span><span id='textcolor1049'><span class='ectt-0800'>         * data segment, assignment would not work. Instead, we have to</span></span> 
+<a id='x1-39175r84'></a><span class='ecrm-0500'>84</span><span id='textcolor1050'><span class='ectt-0800'>         * use put_user which copies data from the kernel data segment to</span></span> 
+<a id='x1-39177r85'></a><span class='ecrm-0500'>85</span><span id='textcolor1051'><span class='ectt-0800'>         * the user data segment.</span></span> 
+<a id='x1-39179r86'></a><span class='ecrm-0500'>86</span><span id='textcolor1052'><span class='ectt-0800'>         */</span></span> 
+<a id='x1-39181r87'></a><span class='ecrm-0500'>87</span><span class='ectt-0800'>        put_user(*(message_ptr++), buffer++);</span> 
+<a id='x1-39183r88'></a><span class='ecrm-0500'>88</span><span class='ectt-0800'>        length--;</span> 
+<a id='x1-39185r89'></a><span class='ecrm-0500'>89</span><span class='ectt-0800'>        bytes_read++;</span> 
+<a id='x1-39187r90'></a><span class='ecrm-0500'>90</span><span class='ectt-0800'>    }</span> 
 <a id='x1-39189r91'></a><span class='ecrm-0500'>91</span> 
-<a id='x1-39191r92'></a><span class='ecrm-0500'>92</span><span class='ectt-0800'>    *offset += bytes_read;</span> 
+<a id='x1-39191r92'></a><span class='ecrm-0500'>92</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor1053'><span class='ectt-0800'>"Read %d bytes, %ld left</span></span><span id='textcolor1054'><span class='ectt-0800'>\n</span></span><span id='textcolor1055'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, bytes_read, length);</span> 
 <a id='x1-39193r93'></a><span class='ecrm-0500'>93</span> 
-<a id='x1-39195r94'></a><span class='ecrm-0500'>94</span><span class='ectt-0800'>    atomic_set(&amp;already_open, 1);</span> 
+<a id='x1-39195r94'></a><span class='ecrm-0500'>94</span><span class='ectt-0800'>    *offset += bytes_read;</span> 
 <a id='x1-39197r95'></a><span class='ecrm-0500'>95</span> 
-<a id='x1-39199r96'></a><span class='ecrm-0500'>96</span><span class='ectt-0800'>    </span><span id='textcolor1056'><span class='ectt-0800'>/* Read functions are supposed to return the number of bytes actually</span></span> 
-<a id='x1-39201r97'></a><span class='ecrm-0500'>97</span><span id='textcolor1057'><span class='ectt-0800'>     * inserted into the buffer.</span></span> 
-<a id='x1-39203r98'></a><span class='ecrm-0500'>98</span><span id='textcolor1058'><span class='ectt-0800'>     */</span></span> 
-<a id='x1-39205r99'></a><span class='ecrm-0500'>99</span><span class='ectt-0800'>    </span><span id='textcolor1059'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> bytes_read;</span> 
-<a id='x1-39207r100'></a><span class='ecrm-0500'>100</span><span class='ectt-0800'>}</span> 
-<a id='x1-39209r101'></a><span class='ecrm-0500'>101</span> 
-<a id='x1-39211r102'></a><span class='ecrm-0500'>102</span><span id='textcolor1060'><span class='ectt-0800'>/* called when somebody tries to write into our device file. */</span></span> 
-<a id='x1-39213r103'></a><span class='ecrm-0500'>103</span><span id='textcolor1061'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1062'><span class='ectt-0800'>ssize_t</span></span><span class='ectt-0800'> device_write(</span><span id='textcolor1063'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> file *file, </span><span id='textcolor1064'><span class='ectt-0800'>const</span></span><span class='ectt-0800'> </span><span id='textcolor1065'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> __user *buffer,</span> 
-<a id='x1-39215r104'></a><span class='ecrm-0500'>104</span><span class='ectt-0800'>                            </span><span id='textcolor1066'><span class='ectt-0800'>size_t</span></span><span class='ectt-0800'> length, loff_t *offset)</span> 
-<a id='x1-39217r105'></a><span class='ecrm-0500'>105</span><span class='ectt-0800'>{</span> 
-<a id='x1-39219r106'></a><span class='ecrm-0500'>106</span><span class='ectt-0800'>    </span><span id='textcolor1067'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> i;</span> 
-<a id='x1-39221r107'></a><span class='ecrm-0500'>107</span> 
-<a id='x1-39223r108'></a><span class='ecrm-0500'>108</span><span class='ectt-0800'>    </span><span id='textcolor1068'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (atomic_cmpxchg(&amp;already_open, 1, 2) == 2)</span> 
-<a id='x1-39225r109'></a><span class='ecrm-0500'>109</span><span class='ectt-0800'>        </span><span id='textcolor1069'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> -EBUSY;</span> 
-<a id='x1-39227r110'></a><span class='ecrm-0500'>110</span> 
-<a id='x1-39229r111'></a><span class='ecrm-0500'>111</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor1070'><span class='ectt-0800'>"device_write(%p,%s,%ld)"</span></span><span class='ectt-0800'>, file, buffer, length);</span> 
+<a id='x1-39199r96'></a><span class='ecrm-0500'>96</span><span class='ectt-0800'>    atomic_set(&amp;already_open, 1);</span> 
+<a id='x1-39201r97'></a><span class='ecrm-0500'>97</span> 
+<a id='x1-39203r98'></a><span class='ecrm-0500'>98</span><span class='ectt-0800'>    </span><span id='textcolor1056'><span class='ectt-0800'>/* Read functions are supposed to return the number of bytes actually</span></span> 
+<a id='x1-39205r99'></a><span class='ecrm-0500'>99</span><span id='textcolor1057'><span class='ectt-0800'>     * inserted into the buffer.</span></span> 
+<a id='x1-39207r100'></a><span class='ecrm-0500'>100</span><span id='textcolor1058'><span class='ectt-0800'>     */</span></span> 
+<a id='x1-39209r101'></a><span class='ecrm-0500'>101</span><span class='ectt-0800'>    </span><span id='textcolor1059'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> bytes_read;</span> 
+<a id='x1-39211r102'></a><span class='ecrm-0500'>102</span><span class='ectt-0800'>}</span> 
+<a id='x1-39213r103'></a><span class='ecrm-0500'>103</span> 
+<a id='x1-39215r104'></a><span class='ecrm-0500'>104</span><span id='textcolor1060'><span class='ectt-0800'>/* called when somebody tries to write into our device file. */</span></span> 
+<a id='x1-39217r105'></a><span class='ecrm-0500'>105</span><span id='textcolor1061'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1062'><span class='ectt-0800'>ssize_t</span></span><span class='ectt-0800'> device_write(</span><span id='textcolor1063'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> file *file, </span><span id='textcolor1064'><span class='ectt-0800'>const</span></span><span class='ectt-0800'> </span><span id='textcolor1065'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> __user *buffer,</span> 
+<a id='x1-39219r106'></a><span class='ecrm-0500'>106</span><span class='ectt-0800'>                            </span><span id='textcolor1066'><span class='ectt-0800'>size_t</span></span><span class='ectt-0800'> length, loff_t *offset)</span> 
+<a id='x1-39221r107'></a><span class='ecrm-0500'>107</span><span class='ectt-0800'>{</span> 
+<a id='x1-39223r108'></a><span class='ecrm-0500'>108</span><span class='ectt-0800'>    </span><span id='textcolor1067'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> i;</span> 
+<a id='x1-39225r109'></a><span class='ecrm-0500'>109</span> 
+<a id='x1-39227r110'></a><span class='ecrm-0500'>110</span><span class='ectt-0800'>    </span><span id='textcolor1068'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (atomic_cmpxchg(&amp;already_open, 1, 2) == 2)</span> 
+<a id='x1-39229r111'></a><span class='ecrm-0500'>111</span><span class='ectt-0800'>        </span><span id='textcolor1069'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> -EBUSY;</span> 
 <a id='x1-39231r112'></a><span class='ecrm-0500'>112</span> 
-<a id='x1-39233r113'></a><span class='ecrm-0500'>113</span><span class='ectt-0800'>    </span><span id='textcolor1071'><span class='ectt-0800'>for</span></span><span class='ectt-0800'> (i = 0; i &lt; length &amp;&amp; i &lt; BUF_LEN; i++)</span> 
-<a id='x1-39235r114'></a><span class='ecrm-0500'>114</span><span class='ectt-0800'>        get_user(message[i], buffer + i);</span> 
-<a id='x1-39237r115'></a><span class='ecrm-0500'>115</span> 
-<a id='x1-39239r116'></a><span class='ecrm-0500'>116</span><span class='ectt-0800'>    atomic_set(&amp;already_open, 1);</span> 
+<a id='x1-39233r113'></a><span class='ecrm-0500'>113</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor1070'><span class='ectt-0800'>"device_write(%p,%s,%ld)"</span></span><span class='ectt-0800'>, file, buffer, length);</span> 
+<a id='x1-39235r114'></a><span class='ecrm-0500'>114</span> 
+<a id='x1-39237r115'></a><span class='ecrm-0500'>115</span><span class='ectt-0800'>    </span><span id='textcolor1071'><span class='ectt-0800'>for</span></span><span class='ectt-0800'> (i = 0; i &lt; length &amp;&amp; i &lt; BUF_LEN; i++)</span> 
+<a id='x1-39239r116'></a><span class='ecrm-0500'>116</span><span class='ectt-0800'>        get_user(message[i], buffer + i);</span> 
 <a id='x1-39241r117'></a><span class='ecrm-0500'>117</span> 
-<a id='x1-39243r118'></a><span class='ecrm-0500'>118</span><span class='ectt-0800'>    </span><span id='textcolor1072'><span class='ectt-0800'>/* Again, return the number of input characters used. */</span></span> 
-<a id='x1-39245r119'></a><span class='ecrm-0500'>119</span><span class='ectt-0800'>    </span><span id='textcolor1073'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> i;</span> 
-<a id='x1-39247r120'></a><span class='ecrm-0500'>120</span><span class='ectt-0800'>}</span> 
-<a id='x1-39249r121'></a><span class='ecrm-0500'>121</span> 
-<a id='x1-39251r122'></a><span class='ecrm-0500'>122</span><span id='textcolor1074'><span class='ectt-0800'>/* This function is called whenever a process tries to do an ioctl on our</span></span> 
-<a id='x1-39253r123'></a><span class='ecrm-0500'>123</span><span id='textcolor1075'><span class='ectt-0800'> * device file. We get two extra parameters (additional to the inode and file</span></span> 
-<a id='x1-39255r124'></a><span class='ecrm-0500'>124</span><span id='textcolor1076'><span class='ectt-0800'> * structures, which all device functions get): the number of the ioctl called</span></span> 
-<a id='x1-39257r125'></a><span class='ecrm-0500'>125</span><span id='textcolor1077'><span class='ectt-0800'> * and the parameter given to the ioctl function.</span></span> 
-<a id='x1-39259r126'></a><span class='ecrm-0500'>126</span><span id='textcolor1078'><span class='ectt-0800'> *</span></span> 
-<a id='x1-39261r127'></a><span class='ecrm-0500'>127</span><span id='textcolor1079'><span class='ectt-0800'> * If the ioctl is write or read/write (meaning output is returned to the</span></span> 
-<a id='x1-39263r128'></a><span class='ecrm-0500'>128</span><span id='textcolor1080'><span class='ectt-0800'> * calling process), the ioctl call returns the output of this function.</span></span> 
-<a id='x1-39265r129'></a><span class='ecrm-0500'>129</span><span id='textcolor1081'><span class='ectt-0800'> */</span></span> 
-<a id='x1-39267r130'></a><span class='ecrm-0500'>130</span><span id='textcolor1082'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1083'><span class='ectt-0800'>long</span></span> 
-<a id='x1-39269r131'></a><span class='ecrm-0500'>131</span><span class='ectt-0800'>device_ioctl(</span><span id='textcolor1084'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> file *file, </span><span id='textcolor1085'><span class='ectt-0800'>/* ditto */</span></span> 
-<a id='x1-39271r132'></a><span class='ecrm-0500'>132</span><span class='ectt-0800'>             </span><span id='textcolor1086'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor1087'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> ioctl_num, </span><span id='textcolor1088'><span class='ectt-0800'>/* number and param for ioctl */</span></span> 
-<a id='x1-39273r133'></a><span class='ecrm-0500'>133</span><span class='ectt-0800'>             </span><span id='textcolor1089'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor1090'><span class='ectt-0800'>long</span></span><span class='ectt-0800'> ioctl_param)</span> 
-<a id='x1-39275r134'></a><span class='ecrm-0500'>134</span><span class='ectt-0800'>{</span> 
-<a id='x1-39277r135'></a><span class='ecrm-0500'>135</span><span class='ectt-0800'>    </span><span id='textcolor1091'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> i;</span> 
-<a id='x1-39279r136'></a><span class='ecrm-0500'>136</span><span class='ectt-0800'>    loff_t offset = 0;</span> 
-<a id='x1-39281r137'></a><span class='ecrm-0500'>137</span><span class='ectt-0800'>    </span><span id='textcolor1092'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> __user *temp;</span> 
-<a id='x1-39283r138'></a><span class='ecrm-0500'>138</span><span class='ectt-0800'>    </span><span id='textcolor1093'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> ch;</span> 
-<a id='x1-39285r139'></a><span class='ecrm-0500'>139</span> 
-<a id='x1-39287r140'></a><span class='ecrm-0500'>140</span><span class='ectt-0800'>    </span><span id='textcolor1094'><span class='ectt-0800'>/* Switch according to the ioctl called */</span></span> 
-<a id='x1-39289r141'></a><span class='ecrm-0500'>141</span><span class='ectt-0800'>    </span><span id='textcolor1095'><span class='ectt-0800'>switch</span></span><span class='ectt-0800'> (ioctl_num) {</span> 
-<a id='x1-39291r142'></a><span class='ecrm-0500'>142</span><span class='ectt-0800'>    </span><span id='textcolor1096'><span class='ectt-0800'>case</span></span><span class='ectt-0800'> IOCTL_SET_MSG:</span> 
-<a id='x1-39293r143'></a><span class='ecrm-0500'>143</span><span class='ectt-0800'>        </span><span id='textcolor1097'><span class='ectt-0800'>/* Receive a pointer to a message (in user space) and set that to</span></span> 
-<a id='x1-39295r144'></a><span class='ecrm-0500'>144</span><span id='textcolor1098'><span class='ectt-0800'>         * be the device</span><span class='tctt-0800'>'</span><span class='ectt-0800'>s message.  Get the parameter given to ioctl by</span></span> 
-<a id='x1-39297r145'></a><span class='ecrm-0500'>145</span><span id='textcolor1099'><span class='ectt-0800'>         * the process.</span></span> 
-<a id='x1-39299r146'></a><span class='ecrm-0500'>146</span><span id='textcolor1100'><span class='ectt-0800'>         */</span></span> 
-<a id='x1-39301r147'></a><span class='ecrm-0500'>147</span><span class='ectt-0800'>        temp = (</span><span id='textcolor1101'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> __user *)ioctl_param;</span> 
-<a id='x1-39303r148'></a><span class='ecrm-0500'>148</span> 
-<a id='x1-39305r149'></a><span class='ecrm-0500'>149</span><span class='ectt-0800'>        </span><span id='textcolor1102'><span class='ectt-0800'>/* Find the length of the message */</span></span> 
-<a id='x1-39307r150'></a><span class='ecrm-0500'>150</span><span class='ectt-0800'>        get_user(ch, temp);</span> 
-<a id='x1-39309r151'></a><span class='ecrm-0500'>151</span><span class='ectt-0800'>        </span><span id='textcolor1103'><span class='ectt-0800'>for</span></span><span class='ectt-0800'> (i = 0; ch &amp;&amp; i &lt; BUF_LEN; i++, temp++)</span> 
-<a id='x1-39311r152'></a><span class='ecrm-0500'>152</span><span class='ectt-0800'>            get_user(ch, temp);</span> 
-<a id='x1-39313r153'></a><span class='ecrm-0500'>153</span> 
-<a id='x1-39315r154'></a><span class='ecrm-0500'>154</span><span class='ectt-0800'>        device_write(file, (</span><span id='textcolor1104'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> __user *)ioctl_param, i, NULL);</span> 
-<a id='x1-39317r155'></a><span class='ecrm-0500'>155</span><span class='ectt-0800'>        </span><span id='textcolor1105'><span class='ectt-0800'>break</span></span><span class='ectt-0800'>;</span> 
-<a id='x1-39319r156'></a><span class='ecrm-0500'>156</span> 
-<a id='x1-39321r157'></a><span class='ecrm-0500'>157</span><span class='ectt-0800'>    </span><span id='textcolor1106'><span class='ectt-0800'>case</span></span><span class='ectt-0800'> IOCTL_GET_MSG:</span> 
-<a id='x1-39323r158'></a><span class='ecrm-0500'>158</span><span class='ectt-0800'>        </span><span id='textcolor1107'><span class='ectt-0800'>/* Give the current message to the calling process - the parameter</span></span> 
-<a id='x1-39325r159'></a><span class='ecrm-0500'>159</span><span id='textcolor1108'><span class='ectt-0800'>         * we got is a pointer, fill it.</span></span> 
-<a id='x1-39327r160'></a><span class='ecrm-0500'>160</span><span id='textcolor1109'><span class='ectt-0800'>         */</span></span> 
-<a id='x1-39329r161'></a><span class='ecrm-0500'>161</span><span class='ectt-0800'>        i = device_read(file, (</span><span id='textcolor1110'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> __user *)ioctl_param, 99, &amp;offset);</span> 
-<a id='x1-39331r162'></a><span class='ecrm-0500'>162</span> 
-<a id='x1-39333r163'></a><span class='ecrm-0500'>163</span><span class='ectt-0800'>        </span><span id='textcolor1111'><span class='ectt-0800'>/* Put a zero at the end of the buffer, so it will be properly</span></span> 
-<a id='x1-39335r164'></a><span class='ecrm-0500'>164</span><span id='textcolor1112'><span class='ectt-0800'>         * terminated.</span></span> 
-<a id='x1-39337r165'></a><span class='ecrm-0500'>165</span><span id='textcolor1113'><span class='ectt-0800'>         */</span></span> 
-<a id='x1-39339r166'></a><span class='ecrm-0500'>166</span><span class='ectt-0800'>        put_user(</span><span id='textcolor1114'><span class='tctt-0800'>'</span><span class='ectt-0800'>\0</span><span class='tctt-0800'>'</span></span><span class='ectt-0800'>, (</span><span id='textcolor1115'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> __user *)ioctl_param + i);</span> 
-<a id='x1-39341r167'></a><span class='ecrm-0500'>167</span><span class='ectt-0800'>        </span><span id='textcolor1116'><span class='ectt-0800'>break</span></span><span class='ectt-0800'>;</span> 
-<a id='x1-39343r168'></a><span class='ecrm-0500'>168</span> 
-<a id='x1-39345r169'></a><span class='ecrm-0500'>169</span><span class='ectt-0800'>    </span><span id='textcolor1117'><span class='ectt-0800'>case</span></span><span class='ectt-0800'> IOCTL_GET_NTH_BYTE:</span> 
-<a id='x1-39347r170'></a><span class='ecrm-0500'>170</span><span class='ectt-0800'>        </span><span id='textcolor1118'><span class='ectt-0800'>/* This ioctl is both input (ioctl_param) and output (the return</span></span> 
-<a id='x1-39349r171'></a><span class='ecrm-0500'>171</span><span id='textcolor1119'><span class='ectt-0800'>         * value of this function).</span></span> 
-<a id='x1-39351r172'></a><span class='ecrm-0500'>172</span><span id='textcolor1120'><span class='ectt-0800'>         */</span></span> 
-<a id='x1-39353r173'></a><span class='ecrm-0500'>173</span><span class='ectt-0800'>        </span><span id='textcolor1121'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> (</span><span id='textcolor1122'><span class='ectt-0800'>long</span></span><span class='ectt-0800'>)message[ioctl_param];</span> 
-<a id='x1-39355r174'></a><span class='ecrm-0500'>174</span><span class='ectt-0800'>        </span><span id='textcolor1123'><span class='ectt-0800'>break</span></span><span class='ectt-0800'>;</span> 
-<a id='x1-39357r175'></a><span class='ecrm-0500'>175</span><span class='ectt-0800'>    }</span> 
-<a id='x1-39359r176'></a><span class='ecrm-0500'>176</span> 
-<a id='x1-39361r177'></a><span class='ecrm-0500'>177</span><span class='ectt-0800'>    </span><span id='textcolor1124'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> SUCCESS;</span> 
-<a id='x1-39363r178'></a><span class='ecrm-0500'>178</span><span class='ectt-0800'>}</span> 
-<a id='x1-39365r179'></a><span class='ecrm-0500'>179</span> 
-<a id='x1-39367r180'></a><span class='ecrm-0500'>180</span><span id='textcolor1125'><span class='ectt-0800'>/* Module Declarations */</span></span> 
+<a id='x1-39243r118'></a><span class='ecrm-0500'>118</span><span class='ectt-0800'>    atomic_set(&amp;already_open, 1);</span> 
+<a id='x1-39245r119'></a><span class='ecrm-0500'>119</span> 
+<a id='x1-39247r120'></a><span class='ecrm-0500'>120</span><span class='ectt-0800'>    </span><span id='textcolor1072'><span class='ectt-0800'>/* Again, return the number of input characters used. */</span></span> 
+<a id='x1-39249r121'></a><span class='ecrm-0500'>121</span><span class='ectt-0800'>    </span><span id='textcolor1073'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> i;</span> 
+<a id='x1-39251r122'></a><span class='ecrm-0500'>122</span><span class='ectt-0800'>}</span> 
+<a id='x1-39253r123'></a><span class='ecrm-0500'>123</span> 
+<a id='x1-39255r124'></a><span class='ecrm-0500'>124</span><span id='textcolor1074'><span class='ectt-0800'>/* This function is called whenever a process tries to do an ioctl on our</span></span> 
+<a id='x1-39257r125'></a><span class='ecrm-0500'>125</span><span id='textcolor1075'><span class='ectt-0800'> * device file. We get two extra parameters (additional to the inode and file</span></span> 
+<a id='x1-39259r126'></a><span class='ecrm-0500'>126</span><span id='textcolor1076'><span class='ectt-0800'> * structures, which all device functions get): the number of the ioctl called</span></span> 
+<a id='x1-39261r127'></a><span class='ecrm-0500'>127</span><span id='textcolor1077'><span class='ectt-0800'> * and the parameter given to the ioctl function.</span></span> 
+<a id='x1-39263r128'></a><span class='ecrm-0500'>128</span><span id='textcolor1078'><span class='ectt-0800'> *</span></span> 
+<a id='x1-39265r129'></a><span class='ecrm-0500'>129</span><span id='textcolor1079'><span class='ectt-0800'> * If the ioctl is write or read/write (meaning output is returned to the</span></span> 
+<a id='x1-39267r130'></a><span class='ecrm-0500'>130</span><span id='textcolor1080'><span class='ectt-0800'> * calling process), the ioctl call returns the output of this function.</span></span> 
+<a id='x1-39269r131'></a><span class='ecrm-0500'>131</span><span id='textcolor1081'><span class='ectt-0800'> */</span></span> 
+<a id='x1-39271r132'></a><span class='ecrm-0500'>132</span><span id='textcolor1082'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1083'><span class='ectt-0800'>long</span></span> 
+<a id='x1-39273r133'></a><span class='ecrm-0500'>133</span><span class='ectt-0800'>device_ioctl(</span><span id='textcolor1084'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> file *file, </span><span id='textcolor1085'><span class='ectt-0800'>/* ditto */</span></span> 
+<a id='x1-39275r134'></a><span class='ecrm-0500'>134</span><span class='ectt-0800'>             </span><span id='textcolor1086'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor1087'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> ioctl_num, </span><span id='textcolor1088'><span class='ectt-0800'>/* number and param for ioctl */</span></span> 
+<a id='x1-39277r135'></a><span class='ecrm-0500'>135</span><span class='ectt-0800'>             </span><span id='textcolor1089'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor1090'><span class='ectt-0800'>long</span></span><span class='ectt-0800'> ioctl_param)</span> 
+<a id='x1-39279r136'></a><span class='ecrm-0500'>136</span><span class='ectt-0800'>{</span> 
+<a id='x1-39281r137'></a><span class='ecrm-0500'>137</span><span class='ectt-0800'>    </span><span id='textcolor1091'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> i;</span> 
+<a id='x1-39283r138'></a><span class='ecrm-0500'>138</span><span class='ectt-0800'>    loff_t offset = 0;</span> 
+<a id='x1-39285r139'></a><span class='ecrm-0500'>139</span><span class='ectt-0800'>    </span><span id='textcolor1092'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> __user *temp;</span> 
+<a id='x1-39287r140'></a><span class='ecrm-0500'>140</span><span class='ectt-0800'>    </span><span id='textcolor1093'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> ch;</span> 
+<a id='x1-39289r141'></a><span class='ecrm-0500'>141</span> 
+<a id='x1-39291r142'></a><span class='ecrm-0500'>142</span><span class='ectt-0800'>    </span><span id='textcolor1094'><span class='ectt-0800'>/* Switch according to the ioctl called */</span></span> 
+<a id='x1-39293r143'></a><span class='ecrm-0500'>143</span><span class='ectt-0800'>    </span><span id='textcolor1095'><span class='ectt-0800'>switch</span></span><span class='ectt-0800'> (ioctl_num) {</span> 
+<a id='x1-39295r144'></a><span class='ecrm-0500'>144</span><span class='ectt-0800'>    </span><span id='textcolor1096'><span class='ectt-0800'>case</span></span><span class='ectt-0800'> IOCTL_SET_MSG:</span> 
+<a id='x1-39297r145'></a><span class='ecrm-0500'>145</span><span class='ectt-0800'>        </span><span id='textcolor1097'><span class='ectt-0800'>/* Receive a pointer to a message (in user space) and set that to</span></span> 
+<a id='x1-39299r146'></a><span class='ecrm-0500'>146</span><span id='textcolor1098'><span class='ectt-0800'>         * be the device</span><span class='tctt-0800'>'</span><span class='ectt-0800'>s message.  Get the parameter given to ioctl by</span></span> 
+<a id='x1-39301r147'></a><span class='ecrm-0500'>147</span><span id='textcolor1099'><span class='ectt-0800'>         * the process.</span></span> 
+<a id='x1-39303r148'></a><span class='ecrm-0500'>148</span><span id='textcolor1100'><span class='ectt-0800'>         */</span></span> 
+<a id='x1-39305r149'></a><span class='ecrm-0500'>149</span><span class='ectt-0800'>        temp = (</span><span id='textcolor1101'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> __user *)ioctl_param;</span> 
+<a id='x1-39307r150'></a><span class='ecrm-0500'>150</span> 
+<a id='x1-39309r151'></a><span class='ecrm-0500'>151</span><span class='ectt-0800'>        </span><span id='textcolor1102'><span class='ectt-0800'>/* Find the length of the message */</span></span> 
+<a id='x1-39311r152'></a><span class='ecrm-0500'>152</span><span class='ectt-0800'>        get_user(ch, temp);</span> 
+<a id='x1-39313r153'></a><span class='ecrm-0500'>153</span><span class='ectt-0800'>        </span><span id='textcolor1103'><span class='ectt-0800'>for</span></span><span class='ectt-0800'> (i = 0; ch &amp;&amp; i &lt; BUF_LEN; i++, temp++)</span> 
+<a id='x1-39315r154'></a><span class='ecrm-0500'>154</span><span class='ectt-0800'>            get_user(ch, temp);</span> 
+<a id='x1-39317r155'></a><span class='ecrm-0500'>155</span> 
+<a id='x1-39319r156'></a><span class='ecrm-0500'>156</span><span class='ectt-0800'>        device_write(file, (</span><span id='textcolor1104'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> __user *)ioctl_param, i, NULL);</span> 
+<a id='x1-39321r157'></a><span class='ecrm-0500'>157</span><span class='ectt-0800'>        </span><span id='textcolor1105'><span class='ectt-0800'>break</span></span><span class='ectt-0800'>;</span> 
+<a id='x1-39323r158'></a><span class='ecrm-0500'>158</span> 
+<a id='x1-39325r159'></a><span class='ecrm-0500'>159</span><span class='ectt-0800'>    </span><span id='textcolor1106'><span class='ectt-0800'>case</span></span><span class='ectt-0800'> IOCTL_GET_MSG:</span> 
+<a id='x1-39327r160'></a><span class='ecrm-0500'>160</span><span class='ectt-0800'>        </span><span id='textcolor1107'><span class='ectt-0800'>/* Give the current message to the calling process - the parameter</span></span> 
+<a id='x1-39329r161'></a><span class='ecrm-0500'>161</span><span id='textcolor1108'><span class='ectt-0800'>         * we got is a pointer, fill it.</span></span> 
+<a id='x1-39331r162'></a><span class='ecrm-0500'>162</span><span id='textcolor1109'><span class='ectt-0800'>         */</span></span> 
+<a id='x1-39333r163'></a><span class='ecrm-0500'>163</span><span class='ectt-0800'>        i = device_read(file, (</span><span id='textcolor1110'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> __user *)ioctl_param, 99, &amp;offset);</span> 
+<a id='x1-39335r164'></a><span class='ecrm-0500'>164</span> 
+<a id='x1-39337r165'></a><span class='ecrm-0500'>165</span><span class='ectt-0800'>        </span><span id='textcolor1111'><span class='ectt-0800'>/* Put a zero at the end of the buffer, so it will be properly</span></span> 
+<a id='x1-39339r166'></a><span class='ecrm-0500'>166</span><span id='textcolor1112'><span class='ectt-0800'>         * terminated.</span></span> 
+<a id='x1-39341r167'></a><span class='ecrm-0500'>167</span><span id='textcolor1113'><span class='ectt-0800'>         */</span></span> 
+<a id='x1-39343r168'></a><span class='ecrm-0500'>168</span><span class='ectt-0800'>        put_user(</span><span id='textcolor1114'><span class='tctt-0800'>'</span><span class='ectt-0800'>\0</span><span class='tctt-0800'>'</span></span><span class='ectt-0800'>, (</span><span id='textcolor1115'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> __user *)ioctl_param + i);</span> 
+<a id='x1-39345r169'></a><span class='ecrm-0500'>169</span><span class='ectt-0800'>        </span><span id='textcolor1116'><span class='ectt-0800'>break</span></span><span class='ectt-0800'>;</span> 
+<a id='x1-39347r170'></a><span class='ecrm-0500'>170</span> 
+<a id='x1-39349r171'></a><span class='ecrm-0500'>171</span><span class='ectt-0800'>    </span><span id='textcolor1117'><span class='ectt-0800'>case</span></span><span class='ectt-0800'> IOCTL_GET_NTH_BYTE:</span> 
+<a id='x1-39351r172'></a><span class='ecrm-0500'>172</span><span class='ectt-0800'>        </span><span id='textcolor1118'><span class='ectt-0800'>/* This ioctl is both input (ioctl_param) and output (the return</span></span> 
+<a id='x1-39353r173'></a><span class='ecrm-0500'>173</span><span id='textcolor1119'><span class='ectt-0800'>         * value of this function).</span></span> 
+<a id='x1-39355r174'></a><span class='ecrm-0500'>174</span><span id='textcolor1120'><span class='ectt-0800'>         */</span></span> 
+<a id='x1-39357r175'></a><span class='ecrm-0500'>175</span><span class='ectt-0800'>        </span><span id='textcolor1121'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> (</span><span id='textcolor1122'><span class='ectt-0800'>long</span></span><span class='ectt-0800'>)message[ioctl_param];</span> 
+<a id='x1-39359r176'></a><span class='ecrm-0500'>176</span><span class='ectt-0800'>        </span><span id='textcolor1123'><span class='ectt-0800'>break</span></span><span class='ectt-0800'>;</span> 
+<a id='x1-39361r177'></a><span class='ecrm-0500'>177</span><span class='ectt-0800'>    }</span> 
+<a id='x1-39363r178'></a><span class='ecrm-0500'>178</span> 
+<a id='x1-39365r179'></a><span class='ecrm-0500'>179</span><span class='ectt-0800'>    </span><span id='textcolor1124'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> SUCCESS;</span> 
+<a id='x1-39367r180'></a><span class='ecrm-0500'>180</span><span class='ectt-0800'>}</span> 
 <a id='x1-39369r181'></a><span class='ecrm-0500'>181</span> 
-<a id='x1-39371r182'></a><span class='ecrm-0500'>182</span><span id='textcolor1126'><span class='ectt-0800'>/* This structure will hold the functions to be called when a process does</span></span> 
-<a id='x1-39373r183'></a><span class='ecrm-0500'>183</span><span id='textcolor1127'><span class='ectt-0800'> * something to the device we created. Since a pointer to this structure</span></span> 
-<a id='x1-39375r184'></a><span class='ecrm-0500'>184</span><span id='textcolor1128'><span class='ectt-0800'> * is kept in the devices table, it can</span><span class='tctt-0800'>'</span><span class='ectt-0800'>t be local to init_module. NULL is</span></span> 
-<a id='x1-39377r185'></a><span class='ecrm-0500'>185</span><span id='textcolor1129'><span class='ectt-0800'> * for unimplemented functions.</span></span> 
-<a id='x1-39379r186'></a><span class='ecrm-0500'>186</span><span id='textcolor1130'><span class='ectt-0800'> */</span></span> 
-<a id='x1-39381r187'></a><span class='ecrm-0500'>187</span><span id='textcolor1131'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1132'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> file_operations fops = {</span> 
-<a id='x1-39383r188'></a><span class='ecrm-0500'>188</span><span class='ectt-0800'>    .read = device_read,</span> 
-<a id='x1-39385r189'></a><span class='ecrm-0500'>189</span><span class='ectt-0800'>    .write = device_write,</span> 
-<a id='x1-39387r190'></a><span class='ecrm-0500'>190</span><span class='ectt-0800'>    .unlocked_ioctl = device_ioctl,</span> 
-<a id='x1-39389r191'></a><span class='ecrm-0500'>191</span><span class='ectt-0800'>    .open = device_open,</span> 
-<a id='x1-39391r192'></a><span class='ecrm-0500'>192</span><span class='ectt-0800'>    .release = device_release, </span><span id='textcolor1133'><span class='ectt-0800'>/* a.k.a. close */</span></span> 
-<a id='x1-39393r193'></a><span class='ecrm-0500'>193</span><span class='ectt-0800'>};</span> 
-<a id='x1-39395r194'></a><span class='ecrm-0500'>194</span> 
-<a id='x1-39397r195'></a><span class='ecrm-0500'>195</span><span id='textcolor1134'><span class='ectt-0800'>/* Initialize the module - Register the character device */</span></span> 
-<a id='x1-39399r196'></a><span class='ecrm-0500'>196</span><span id='textcolor1135'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1136'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> __init chardev2_init(</span><span id='textcolor1137'><span class='ectt-0800'>void</span></span><span class='ectt-0800'>)</span> 
-<a id='x1-39401r197'></a><span class='ecrm-0500'>197</span><span class='ectt-0800'>{</span> 
-<a id='x1-39403r198'></a><span class='ecrm-0500'>198</span><span class='ectt-0800'>    </span><span id='textcolor1138'><span class='ectt-0800'>/* Register the character device (atleast try) */</span></span> 
-<a id='x1-39405r199'></a><span class='ecrm-0500'>199</span><span class='ectt-0800'>    </span><span id='textcolor1139'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> ret_val = register_chrdev(MAJOR_NUM, DEVICE_NAME, &amp;fops);</span> 
-<a id='x1-39407r200'></a><span class='ecrm-0500'>200</span> 
-<a id='x1-39409r201'></a><span class='ecrm-0500'>201</span><span class='ectt-0800'>    </span><span id='textcolor1140'><span class='ectt-0800'>/* Negative values signify an error */</span></span> 
-<a id='x1-39411r202'></a><span class='ecrm-0500'>202</span><span class='ectt-0800'>    </span><span id='textcolor1141'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (ret_val &lt; 0) {</span> 
-<a id='x1-39413r203'></a><span class='ecrm-0500'>203</span><span class='ectt-0800'>        pr_alert(</span><span id='textcolor1142'><span class='ectt-0800'>"%s failed with %d</span></span><span id='textcolor1143'><span class='ectt-0800'>\n</span></span><span id='textcolor1144'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>,</span> 
-<a id='x1-39415r204'></a><span class='ecrm-0500'>204</span><span class='ectt-0800'>                 </span><span id='textcolor1145'><span class='ectt-0800'>"Sorry, registering the character device "</span></span><span class='ectt-0800'>, ret_val);</span> 
-<a id='x1-39417r205'></a><span class='ecrm-0500'>205</span><span class='ectt-0800'>        </span><span id='textcolor1146'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> ret_val;</span> 
-<a id='x1-39419r206'></a><span class='ecrm-0500'>206</span><span class='ectt-0800'>    }</span> 
-<a id='x1-39421r207'></a><span class='ecrm-0500'>207</span> 
-<a id='x1-39423r208'></a><span class='ecrm-0500'>208</span><span class='ectt-0800'>    cls = class_create(THIS_MODULE, DEVICE_FILE_NAME);</span> 
-<a id='x1-39425r209'></a><span class='ecrm-0500'>209</span><span class='ectt-0800'>    device_create(cls, NULL, MKDEV(MAJOR_NUM, 0), NULL, DEVICE_FILE_NAME);</span> 
-<a id='x1-39427r210'></a><span class='ecrm-0500'>210</span> 
-<a id='x1-39429r211'></a><span class='ecrm-0500'>211</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor1147'><span class='ectt-0800'>"Device created on /dev/%s</span></span><span id='textcolor1148'><span class='ectt-0800'>\n</span></span><span id='textcolor1149'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, DEVICE_FILE_NAME);</span> 
+<a id='x1-39371r182'></a><span class='ecrm-0500'>182</span><span id='textcolor1125'><span class='ectt-0800'>/* Module Declarations */</span></span> 
+<a id='x1-39373r183'></a><span class='ecrm-0500'>183</span> 
+<a id='x1-39375r184'></a><span class='ecrm-0500'>184</span><span id='textcolor1126'><span class='ectt-0800'>/* This structure will hold the functions to be called when a process does</span></span> 
+<a id='x1-39377r185'></a><span class='ecrm-0500'>185</span><span id='textcolor1127'><span class='ectt-0800'> * something to the device we created. Since a pointer to this structure</span></span> 
+<a id='x1-39379r186'></a><span class='ecrm-0500'>186</span><span id='textcolor1128'><span class='ectt-0800'> * is kept in the devices table, it can</span><span class='tctt-0800'>'</span><span class='ectt-0800'>t be local to init_module. NULL is</span></span> 
+<a id='x1-39381r187'></a><span class='ecrm-0500'>187</span><span id='textcolor1129'><span class='ectt-0800'> * for unimplemented functions.</span></span> 
+<a id='x1-39383r188'></a><span class='ecrm-0500'>188</span><span id='textcolor1130'><span class='ectt-0800'> */</span></span> 
+<a id='x1-39385r189'></a><span class='ecrm-0500'>189</span><span id='textcolor1131'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1132'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> file_operations fops = {</span> 
+<a id='x1-39387r190'></a><span class='ecrm-0500'>190</span><span class='ectt-0800'>    .read = device_read,</span> 
+<a id='x1-39389r191'></a><span class='ecrm-0500'>191</span><span class='ectt-0800'>    .write = device_write,</span> 
+<a id='x1-39391r192'></a><span class='ecrm-0500'>192</span><span class='ectt-0800'>    .unlocked_ioctl = device_ioctl,</span> 
+<a id='x1-39393r193'></a><span class='ecrm-0500'>193</span><span class='ectt-0800'>    .open = device_open,</span> 
+<a id='x1-39395r194'></a><span class='ecrm-0500'>194</span><span class='ectt-0800'>    .release = device_release, </span><span id='textcolor1133'><span class='ectt-0800'>/* a.k.a. close */</span></span> 
+<a id='x1-39397r195'></a><span class='ecrm-0500'>195</span><span class='ectt-0800'>};</span> 
+<a id='x1-39399r196'></a><span class='ecrm-0500'>196</span> 
+<a id='x1-39401r197'></a><span class='ecrm-0500'>197</span><span id='textcolor1134'><span class='ectt-0800'>/* Initialize the module - Register the character device */</span></span> 
+<a id='x1-39403r198'></a><span class='ecrm-0500'>198</span><span id='textcolor1135'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1136'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> __init chardev2_init(</span><span id='textcolor1137'><span class='ectt-0800'>void</span></span><span class='ectt-0800'>)</span> 
+<a id='x1-39405r199'></a><span class='ecrm-0500'>199</span><span class='ectt-0800'>{</span> 
+<a id='x1-39407r200'></a><span class='ecrm-0500'>200</span><span class='ectt-0800'>    </span><span id='textcolor1138'><span class='ectt-0800'>/* Register the character device (atleast try) */</span></span> 
+<a id='x1-39409r201'></a><span class='ecrm-0500'>201</span><span class='ectt-0800'>    </span><span id='textcolor1139'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> ret_val = register_chrdev(MAJOR_NUM, DEVICE_NAME, &amp;fops);</span> 
+<a id='x1-39411r202'></a><span class='ecrm-0500'>202</span> 
+<a id='x1-39413r203'></a><span class='ecrm-0500'>203</span><span class='ectt-0800'>    </span><span id='textcolor1140'><span class='ectt-0800'>/* Negative values signify an error */</span></span> 
+<a id='x1-39415r204'></a><span class='ecrm-0500'>204</span><span class='ectt-0800'>    </span><span id='textcolor1141'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (ret_val &lt; 0) {</span> 
+<a id='x1-39417r205'></a><span class='ecrm-0500'>205</span><span class='ectt-0800'>        pr_alert(</span><span id='textcolor1142'><span class='ectt-0800'>"%s failed with %d</span></span><span id='textcolor1143'><span class='ectt-0800'>\n</span></span><span id='textcolor1144'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>,</span> 
+<a id='x1-39419r206'></a><span class='ecrm-0500'>206</span><span class='ectt-0800'>                 </span><span id='textcolor1145'><span class='ectt-0800'>"Sorry, registering the character device "</span></span><span class='ectt-0800'>, ret_val);</span> 
+<a id='x1-39421r207'></a><span class='ecrm-0500'>207</span><span class='ectt-0800'>        </span><span id='textcolor1146'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> ret_val;</span> 
+<a id='x1-39423r208'></a><span class='ecrm-0500'>208</span><span class='ectt-0800'>    }</span> 
+<a id='x1-39425r209'></a><span class='ecrm-0500'>209</span> 
+<a id='x1-39427r210'></a><span class='ecrm-0500'>210</span><span class='ectt-0800'>    cls = class_create(THIS_MODULE, DEVICE_FILE_NAME);</span> 
+<a id='x1-39429r211'></a><span class='ecrm-0500'>211</span><span class='ectt-0800'>    device_create(cls, NULL, MKDEV(MAJOR_NUM, 0), NULL, DEVICE_FILE_NAME);</span> 
 <a id='x1-39431r212'></a><span class='ecrm-0500'>212</span> 
-<a id='x1-39433r213'></a><span class='ecrm-0500'>213</span><span class='ectt-0800'>    </span><span id='textcolor1150'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> 0;</span> 
-<a id='x1-39435r214'></a><span class='ecrm-0500'>214</span><span class='ectt-0800'>}</span> 
-<a id='x1-39437r215'></a><span class='ecrm-0500'>215</span> 
-<a id='x1-39439r216'></a><span class='ecrm-0500'>216</span><span id='textcolor1151'><span class='ectt-0800'>/* Cleanup - unregister the appropriate file from /proc */</span></span> 
-<a id='x1-39441r217'></a><span class='ecrm-0500'>217</span><span id='textcolor1152'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1153'><span class='ectt-0800'>void</span></span><span class='ectt-0800'> __exit chardev2_exit(</span><span id='textcolor1154'><span class='ectt-0800'>void</span></span><span class='ectt-0800'>)</span> 
-<a id='x1-39443r218'></a><span class='ecrm-0500'>218</span><span class='ectt-0800'>{</span> 
-<a id='x1-39445r219'></a><span class='ecrm-0500'>219</span><span class='ectt-0800'>    device_destroy(cls, MKDEV(MAJOR_NUM, 0));</span> 
-<a id='x1-39447r220'></a><span class='ecrm-0500'>220</span><span class='ectt-0800'>    class_destroy(cls);</span> 
-<a id='x1-39449r221'></a><span class='ecrm-0500'>221</span> 
-<a id='x1-39451r222'></a><span class='ecrm-0500'>222</span><span class='ectt-0800'>    </span><span id='textcolor1155'><span class='ectt-0800'>/* Unregister the device */</span></span> 
-<a id='x1-39453r223'></a><span class='ecrm-0500'>223</span><span class='ectt-0800'>    unregister_chrdev(MAJOR_NUM, DEVICE_NAME);</span> 
-<a id='x1-39455r224'></a><span class='ecrm-0500'>224</span><span class='ectt-0800'>}</span> 
-<a id='x1-39457r225'></a><span class='ecrm-0500'>225</span> 
-<a id='x1-39459r226'></a><span class='ecrm-0500'>226</span><span class='ectt-0800'>module_init(chardev2_init);</span> 
-<a id='x1-39461r227'></a><span class='ecrm-0500'>227</span><span class='ectt-0800'>module_exit(chardev2_exit);</span> 
-<a id='x1-39463r228'></a><span class='ecrm-0500'>228</span> 
-<a id='x1-39465r229'></a><span class='ecrm-0500'>229</span><span class='ectt-0800'>MODULE_LICENSE(</span><span id='textcolor1156'><span class='ectt-0800'>"GPL"</span></span><span class='ectt-0800'>);</span></pre>
+<a id='x1-39433r213'></a><span class='ecrm-0500'>213</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor1147'><span class='ectt-0800'>"Device created on /dev/%s</span></span><span id='textcolor1148'><span class='ectt-0800'>\n</span></span><span id='textcolor1149'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, DEVICE_FILE_NAME);</span> 
+<a id='x1-39435r214'></a><span class='ecrm-0500'>214</span> 
+<a id='x1-39437r215'></a><span class='ecrm-0500'>215</span><span class='ectt-0800'>    </span><span id='textcolor1150'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> 0;</span> 
+<a id='x1-39439r216'></a><span class='ecrm-0500'>216</span><span class='ectt-0800'>}</span> 
+<a id='x1-39441r217'></a><span class='ecrm-0500'>217</span> 
+<a id='x1-39443r218'></a><span class='ecrm-0500'>218</span><span id='textcolor1151'><span class='ectt-0800'>/* Cleanup - unregister the appropriate file from /proc */</span></span> 
+<a id='x1-39445r219'></a><span class='ecrm-0500'>219</span><span id='textcolor1152'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1153'><span class='ectt-0800'>void</span></span><span class='ectt-0800'> __exit chardev2_exit(</span><span id='textcolor1154'><span class='ectt-0800'>void</span></span><span class='ectt-0800'>)</span> 
+<a id='x1-39447r220'></a><span class='ecrm-0500'>220</span><span class='ectt-0800'>{</span> 
+<a id='x1-39449r221'></a><span class='ecrm-0500'>221</span><span class='ectt-0800'>    device_destroy(cls, MKDEV(MAJOR_NUM, 0));</span> 
+<a id='x1-39451r222'></a><span class='ecrm-0500'>222</span><span class='ectt-0800'>    class_destroy(cls);</span> 
+<a id='x1-39453r223'></a><span class='ecrm-0500'>223</span> 
+<a id='x1-39455r224'></a><span class='ecrm-0500'>224</span><span class='ectt-0800'>    </span><span id='textcolor1155'><span class='ectt-0800'>/* Unregister the device */</span></span> 
+<a id='x1-39457r225'></a><span class='ecrm-0500'>225</span><span class='ectt-0800'>    unregister_chrdev(MAJOR_NUM, DEVICE_NAME);</span> 
+<a id='x1-39459r226'></a><span class='ecrm-0500'>226</span><span class='ectt-0800'>}</span> 
+<a id='x1-39461r227'></a><span class='ecrm-0500'>227</span> 
+<a id='x1-39463r228'></a><span class='ecrm-0500'>228</span><span class='ectt-0800'>module_init(chardev2_init);</span> 
+<a id='x1-39465r229'></a><span class='ecrm-0500'>229</span><span class='ectt-0800'>module_exit(chardev2_exit);</span> 
+<a id='x1-39467r230'></a><span class='ecrm-0500'>230</span> 
+<a id='x1-39469r231'></a><span class='ecrm-0500'>231</span><span class='ectt-0800'>MODULE_LICENSE(</span><span id='textcolor1156'><span class='ectt-0800'>"GPL"</span></span><span class='ectt-0800'>);</span></pre>
 
 <!-- l. 1 --><p class='indent'>
 </p>
-   <pre class='fancyvrb' id='fancyvrb50'><a id='x1-39467r1'></a><span class='ecrm-0500'>1</span><span id='textcolor1157'><span class='ectt-0800'>/*</span></span> 
-<a id='x1-39469r2'></a><span class='ecrm-0500'>2</span><span id='textcolor1158'><span class='ectt-0800'> * chardev.h - the header file with the ioctl definitions.</span></span> 
-<a id='x1-39471r3'></a><span class='ecrm-0500'>3</span><span id='textcolor1159'><span class='ectt-0800'> *</span></span> 
-<a id='x1-39473r4'></a><span class='ecrm-0500'>4</span><span id='textcolor1160'><span class='ectt-0800'> * The declarations here have to be in a header file, because they need</span></span> 
-<a id='x1-39475r5'></a><span class='ecrm-0500'>5</span><span id='textcolor1161'><span class='ectt-0800'> * to be known both to the kernel module (in chardev.c) and the process</span></span> 
-<a id='x1-39477r6'></a><span class='ecrm-0500'>6</span><span id='textcolor1162'><span class='ectt-0800'> * calling ioctl (ioctl.c).</span></span> 
-<a id='x1-39479r7'></a><span class='ecrm-0500'>7</span><span id='textcolor1163'><span class='ectt-0800'> */</span></span> 
-<a id='x1-39481r8'></a><span class='ecrm-0500'>8</span> 
-<a id='x1-39483r9'></a><span class='ecrm-0500'>9</span><span id='textcolor1164'><span class='ectt-0800'>#ifndef CHARDEV_H</span></span> 
-<a id='x1-39485r10'></a><span class='ecrm-0500'>10</span><span id='textcolor1165'><span class='ectt-0800'>#define CHARDEV_H</span></span> 
-<a id='x1-39487r11'></a><span class='ecrm-0500'>11</span> 
-<a id='x1-39489r12'></a><span class='ecrm-0500'>12</span><span id='textcolor1166'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor1167'><span class='ectt-0800'>&lt;linux/ioctl.h&gt;</span></span> 
-<a id='x1-39491r13'></a><span class='ecrm-0500'>13</span> 
-<a id='x1-39493r14'></a><span class='ecrm-0500'>14</span><span id='textcolor1168'><span class='ectt-0800'>/* The major device number. We can not rely on dynamic registration</span></span> 
-<a id='x1-39495r15'></a><span class='ecrm-0500'>15</span><span id='textcolor1169'><span class='ectt-0800'> * any more, because ioctls need to know it.</span></span> 
-<a id='x1-39497r16'></a><span class='ecrm-0500'>16</span><span id='textcolor1170'><span class='ectt-0800'> */</span></span> 
-<a id='x1-39499r17'></a><span class='ecrm-0500'>17</span><span id='textcolor1171'><span class='ectt-0800'>#define MAJOR_NUM 100</span></span> 
-<a id='x1-39501r18'></a><span class='ecrm-0500'>18</span> 
-<a id='x1-39503r19'></a><span class='ecrm-0500'>19</span><span id='textcolor1172'><span class='ectt-0800'>/* Set the message of the device driver */</span></span> 
-<a id='x1-39505r20'></a><span class='ecrm-0500'>20</span><span id='textcolor1173'><span class='ectt-0800'>#define IOCTL_SET_MSG _IOW(MAJOR_NUM, 0, char *)</span></span> 
-<a id='x1-39507r21'></a><span class='ecrm-0500'>21</span><span id='textcolor1174'><span class='ectt-0800'>/* _IOW means that we are creating an ioctl command number for passing</span></span> 
-<a id='x1-39509r22'></a><span class='ecrm-0500'>22</span><span id='textcolor1175'><span class='ectt-0800'> * information from a user process to the kernel module.</span></span> 
-<a id='x1-39511r23'></a><span class='ecrm-0500'>23</span><span id='textcolor1176'><span class='ectt-0800'> *</span></span> 
-<a id='x1-39513r24'></a><span class='ecrm-0500'>24</span><span id='textcolor1177'><span class='ectt-0800'> * The first arguments, MAJOR_NUM, is the major device number we are using.</span></span> 
-<a id='x1-39515r25'></a><span class='ecrm-0500'>25</span><span id='textcolor1178'><span class='ectt-0800'> *</span></span> 
-<a id='x1-39517r26'></a><span class='ecrm-0500'>26</span><span id='textcolor1179'><span class='ectt-0800'> * The second argument is the number of the command (there could be several</span></span> 
-<a id='x1-39519r27'></a><span class='ecrm-0500'>27</span><span id='textcolor1180'><span class='ectt-0800'> * with different meanings).</span></span> 
-<a id='x1-39521r28'></a><span class='ecrm-0500'>28</span><span id='textcolor1181'><span class='ectt-0800'> *</span></span> 
-<a id='x1-39523r29'></a><span class='ecrm-0500'>29</span><span id='textcolor1182'><span class='ectt-0800'> * The third argument is the type we want to get from the process to the</span></span> 
-<a id='x1-39525r30'></a><span class='ecrm-0500'>30</span><span id='textcolor1183'><span class='ectt-0800'> * kernel.</span></span> 
-<a id='x1-39527r31'></a><span class='ecrm-0500'>31</span><span id='textcolor1184'><span class='ectt-0800'> */</span></span> 
-<a id='x1-39529r32'></a><span class='ecrm-0500'>32</span> 
-<a id='x1-39531r33'></a><span class='ecrm-0500'>33</span><span id='textcolor1185'><span class='ectt-0800'>/* Get the message of the device driver */</span></span> 
-<a id='x1-39533r34'></a><span class='ecrm-0500'>34</span><span id='textcolor1186'><span class='ectt-0800'>#define IOCTL_GET_MSG _IOR(MAJOR_NUM, 1, char *)</span></span> 
-<a id='x1-39535r35'></a><span class='ecrm-0500'>35</span><span id='textcolor1187'><span class='ectt-0800'>/* This IOCTL is used for output, to get the message of the device driver.</span></span> 
-<a id='x1-39537r36'></a><span class='ecrm-0500'>36</span><span id='textcolor1188'><span class='ectt-0800'> * However, we still need the buffer to place the message in to be input,</span></span> 
-<a id='x1-39539r37'></a><span class='ecrm-0500'>37</span><span id='textcolor1189'><span class='ectt-0800'> * as it is allocated by the process.</span></span> 
-<a id='x1-39541r38'></a><span class='ecrm-0500'>38</span><span id='textcolor1190'><span class='ectt-0800'> */</span></span> 
-<a id='x1-39543r39'></a><span class='ecrm-0500'>39</span> 
-<a id='x1-39545r40'></a><span class='ecrm-0500'>40</span><span id='textcolor1191'><span class='ectt-0800'>/* Get the n</span><span class='tctt-0800'>'</span><span class='ectt-0800'>th byte of the message */</span></span> 
-<a id='x1-39547r41'></a><span class='ecrm-0500'>41</span><span id='textcolor1192'><span class='ectt-0800'>#define IOCTL_GET_NTH_BYTE _IOWR(MAJOR_NUM, 2, int)</span></span> 
-<a id='x1-39549r42'></a><span class='ecrm-0500'>42</span><span id='textcolor1193'><span class='ectt-0800'>/* The IOCTL is used for both input and output. It receives from the user</span></span> 
-<a id='x1-39551r43'></a><span class='ecrm-0500'>43</span><span id='textcolor1194'><span class='ectt-0800'> * a number, n, and returns message[n].</span></span> 
-<a id='x1-39553r44'></a><span class='ecrm-0500'>44</span><span id='textcolor1195'><span class='ectt-0800'> */</span></span> 
-<a id='x1-39555r45'></a><span class='ecrm-0500'>45</span> 
-<a id='x1-39557r46'></a><span class='ecrm-0500'>46</span><span id='textcolor1196'><span class='ectt-0800'>/* The name of the device file */</span></span> 
-<a id='x1-39559r47'></a><span class='ecrm-0500'>47</span><span id='textcolor1197'><span class='ectt-0800'>#define DEVICE_FILE_NAME "char_dev"</span></span> 
-<a id='x1-39561r48'></a><span class='ecrm-0500'>48</span> 
-<a id='x1-39563r49'></a><span class='ecrm-0500'>49</span><span id='textcolor1198'><span class='ectt-0800'>#endif</span></span></pre>
+   <pre class='fancyvrb' id='fancyvrb50'><a id='x1-39471r1'></a><span class='ecrm-0500'>1</span><span id='textcolor1157'><span class='ectt-0800'>/*</span></span> 
+<a id='x1-39473r2'></a><span class='ecrm-0500'>2</span><span id='textcolor1158'><span class='ectt-0800'> * chardev.h - the header file with the ioctl definitions.</span></span> 
+<a id='x1-39475r3'></a><span class='ecrm-0500'>3</span><span id='textcolor1159'><span class='ectt-0800'> *</span></span> 
+<a id='x1-39477r4'></a><span class='ecrm-0500'>4</span><span id='textcolor1160'><span class='ectt-0800'> * The declarations here have to be in a header file, because they need</span></span> 
+<a id='x1-39479r5'></a><span class='ecrm-0500'>5</span><span id='textcolor1161'><span class='ectt-0800'> * to be known both to the kernel module (in chardev.c) and the process</span></span> 
+<a id='x1-39481r6'></a><span class='ecrm-0500'>6</span><span id='textcolor1162'><span class='ectt-0800'> * calling ioctl (ioctl.c).</span></span> 
+<a id='x1-39483r7'></a><span class='ecrm-0500'>7</span><span id='textcolor1163'><span class='ectt-0800'> */</span></span> 
+<a id='x1-39485r8'></a><span class='ecrm-0500'>8</span> 
+<a id='x1-39487r9'></a><span class='ecrm-0500'>9</span><span id='textcolor1164'><span class='ectt-0800'>#ifndef CHARDEV_H</span></span> 
+<a id='x1-39489r10'></a><span class='ecrm-0500'>10</span><span id='textcolor1165'><span class='ectt-0800'>#define CHARDEV_H</span></span> 
+<a id='x1-39491r11'></a><span class='ecrm-0500'>11</span> 
+<a id='x1-39493r12'></a><span class='ecrm-0500'>12</span><span id='textcolor1166'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor1167'><span class='ectt-0800'>&lt;linux/ioctl.h&gt;</span></span> 
+<a id='x1-39495r13'></a><span class='ecrm-0500'>13</span> 
+<a id='x1-39497r14'></a><span class='ecrm-0500'>14</span><span id='textcolor1168'><span class='ectt-0800'>/* The major device number. We can not rely on dynamic registration</span></span> 
+<a id='x1-39499r15'></a><span class='ecrm-0500'>15</span><span id='textcolor1169'><span class='ectt-0800'> * any more, because ioctls need to know it.</span></span> 
+<a id='x1-39501r16'></a><span class='ecrm-0500'>16</span><span id='textcolor1170'><span class='ectt-0800'> */</span></span> 
+<a id='x1-39503r17'></a><span class='ecrm-0500'>17</span><span id='textcolor1171'><span class='ectt-0800'>#define MAJOR_NUM 100</span></span> 
+<a id='x1-39505r18'></a><span class='ecrm-0500'>18</span> 
+<a id='x1-39507r19'></a><span class='ecrm-0500'>19</span><span id='textcolor1172'><span class='ectt-0800'>/* Set the message of the device driver */</span></span> 
+<a id='x1-39509r20'></a><span class='ecrm-0500'>20</span><span id='textcolor1173'><span class='ectt-0800'>#define IOCTL_SET_MSG _IOW(MAJOR_NUM, 0, char *)</span></span> 
+<a id='x1-39511r21'></a><span class='ecrm-0500'>21</span><span id='textcolor1174'><span class='ectt-0800'>/* _IOW means that we are creating an ioctl command number for passing</span></span> 
+<a id='x1-39513r22'></a><span class='ecrm-0500'>22</span><span id='textcolor1175'><span class='ectt-0800'> * information from a user process to the kernel module.</span></span> 
+<a id='x1-39515r23'></a><span class='ecrm-0500'>23</span><span id='textcolor1176'><span class='ectt-0800'> *</span></span> 
+<a id='x1-39517r24'></a><span class='ecrm-0500'>24</span><span id='textcolor1177'><span class='ectt-0800'> * The first arguments, MAJOR_NUM, is the major device number we are using.</span></span> 
+<a id='x1-39519r25'></a><span class='ecrm-0500'>25</span><span id='textcolor1178'><span class='ectt-0800'> *</span></span> 
+<a id='x1-39521r26'></a><span class='ecrm-0500'>26</span><span id='textcolor1179'><span class='ectt-0800'> * The second argument is the number of the command (there could be several</span></span> 
+<a id='x1-39523r27'></a><span class='ecrm-0500'>27</span><span id='textcolor1180'><span class='ectt-0800'> * with different meanings).</span></span> 
+<a id='x1-39525r28'></a><span class='ecrm-0500'>28</span><span id='textcolor1181'><span class='ectt-0800'> *</span></span> 
+<a id='x1-39527r29'></a><span class='ecrm-0500'>29</span><span id='textcolor1182'><span class='ectt-0800'> * The third argument is the type we want to get from the process to the</span></span> 
+<a id='x1-39529r30'></a><span class='ecrm-0500'>30</span><span id='textcolor1183'><span class='ectt-0800'> * kernel.</span></span> 
+<a id='x1-39531r31'></a><span class='ecrm-0500'>31</span><span id='textcolor1184'><span class='ectt-0800'> */</span></span> 
+<a id='x1-39533r32'></a><span class='ecrm-0500'>32</span> 
+<a id='x1-39535r33'></a><span class='ecrm-0500'>33</span><span id='textcolor1185'><span class='ectt-0800'>/* Get the message of the device driver */</span></span> 
+<a id='x1-39537r34'></a><span class='ecrm-0500'>34</span><span id='textcolor1186'><span class='ectt-0800'>#define IOCTL_GET_MSG _IOR(MAJOR_NUM, 1, char *)</span></span> 
+<a id='x1-39539r35'></a><span class='ecrm-0500'>35</span><span id='textcolor1187'><span class='ectt-0800'>/* This IOCTL is used for output, to get the message of the device driver.</span></span> 
+<a id='x1-39541r36'></a><span class='ecrm-0500'>36</span><span id='textcolor1188'><span class='ectt-0800'> * However, we still need the buffer to place the message in to be input,</span></span> 
+<a id='x1-39543r37'></a><span class='ecrm-0500'>37</span><span id='textcolor1189'><span class='ectt-0800'> * as it is allocated by the process.</span></span> 
+<a id='x1-39545r38'></a><span class='ecrm-0500'>38</span><span id='textcolor1190'><span class='ectt-0800'> */</span></span> 
+<a id='x1-39547r39'></a><span class='ecrm-0500'>39</span> 
+<a id='x1-39549r40'></a><span class='ecrm-0500'>40</span><span id='textcolor1191'><span class='ectt-0800'>/* Get the n</span><span class='tctt-0800'>'</span><span class='ectt-0800'>th byte of the message */</span></span> 
+<a id='x1-39551r41'></a><span class='ecrm-0500'>41</span><span id='textcolor1192'><span class='ectt-0800'>#define IOCTL_GET_NTH_BYTE _IOWR(MAJOR_NUM, 2, int)</span></span> 
+<a id='x1-39553r42'></a><span class='ecrm-0500'>42</span><span id='textcolor1193'><span class='ectt-0800'>/* The IOCTL is used for both input and output. It receives from the user</span></span> 
+<a id='x1-39555r43'></a><span class='ecrm-0500'>43</span><span id='textcolor1194'><span class='ectt-0800'> * a number, n, and returns message[n].</span></span> 
+<a id='x1-39557r44'></a><span class='ecrm-0500'>44</span><span id='textcolor1195'><span class='ectt-0800'> */</span></span> 
+<a id='x1-39559r45'></a><span class='ecrm-0500'>45</span> 
+<a id='x1-39561r46'></a><span class='ecrm-0500'>46</span><span id='textcolor1196'><span class='ectt-0800'>/* The name of the device file */</span></span> 
+<a id='x1-39563r47'></a><span class='ecrm-0500'>47</span><span id='textcolor1197'><span class='ectt-0800'>#define DEVICE_FILE_NAME "char_dev"</span></span> 
+<a id='x1-39565r48'></a><span class='ecrm-0500'>48</span> 
+<a id='x1-39567r49'></a><span class='ecrm-0500'>49</span><span id='textcolor1198'><span class='ectt-0800'>#endif</span></span></pre>
 
 <!-- l. 1 --><p class='indent'>
 </p>
-   <pre class='fancyvrb' id='fancyvrb51'><a id='x1-39565r1'></a><span class='ecrm-0500'>1</span><span id='textcolor1199'><span class='ectt-0800'>/*</span></span> 
-<a id='x1-39567r2'></a><span class='ecrm-0500'>2</span><span id='textcolor1200'><span class='ectt-0800'> * ioctl.c</span></span> 
-<a id='x1-39569r3'></a><span class='ecrm-0500'>3</span><span id='textcolor1201'><span class='ectt-0800'> */</span></span> 
-<a id='x1-39571r4'></a><span class='ecrm-0500'>4</span><span id='textcolor1202'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor1203'><span class='ectt-0800'>&lt;linux/cdev.h&gt;</span></span> 
-<a id='x1-39573r5'></a><span class='ecrm-0500'>5</span><span id='textcolor1204'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor1205'><span class='ectt-0800'>&lt;linux/fs.h&gt;</span></span> 
-<a id='x1-39575r6'></a><span class='ecrm-0500'>6</span><span id='textcolor1206'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor1207'><span class='ectt-0800'>&lt;linux/init.h&gt;</span></span> 
-<a id='x1-39577r7'></a><span class='ecrm-0500'>7</span><span id='textcolor1208'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor1209'><span class='ectt-0800'>&lt;linux/ioctl.h&gt;</span></span> 
-<a id='x1-39579r8'></a><span class='ecrm-0500'>8</span><span id='textcolor1210'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor1211'><span class='ectt-0800'>&lt;linux/module.h&gt;</span></span> 
-<a id='x1-39581r9'></a><span class='ecrm-0500'>9</span><span id='textcolor1212'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor1213'><span class='ectt-0800'>&lt;linux/slab.h&gt;</span></span> 
-<a id='x1-39583r10'></a><span class='ecrm-0500'>10</span><span id='textcolor1214'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor1215'><span class='ectt-0800'>&lt;linux/uaccess.h&gt;</span></span> 
-<a id='x1-39585r11'></a><span class='ecrm-0500'>11</span> 
-<a id='x1-39587r12'></a><span class='ecrm-0500'>12</span><span id='textcolor1216'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> ioctl_arg {</span> 
-<a id='x1-39589r13'></a><span class='ecrm-0500'>13</span><span class='ectt-0800'>    </span><span id='textcolor1217'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor1218'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> val;</span> 
-<a id='x1-39591r14'></a><span class='ecrm-0500'>14</span><span class='ectt-0800'>};</span> 
-<a id='x1-39593r15'></a><span class='ecrm-0500'>15</span> 
-<a id='x1-39595r16'></a><span class='ecrm-0500'>16</span><span id='textcolor1219'><span class='ectt-0800'>/* Documentation/ioctl/ioctl-number.txt */</span></span> 
-<a id='x1-39597r17'></a><span class='ecrm-0500'>17</span><span id='textcolor1220'><span class='ectt-0800'>#define IOC_MAGIC </span><span class='tctt-0800'>'</span><span class='ectt-0800'>\x66</span><span class='tctt-0800'>'</span></span> 
-<a id='x1-39599r18'></a><span class='ecrm-0500'>18</span> 
-<a id='x1-39601r19'></a><span class='ecrm-0500'>19</span><span id='textcolor1221'><span class='ectt-0800'>#define IOCTL_VALSET _IOW(IOC_MAGIC, 0, struct ioctl_arg)</span></span> 
-<a id='x1-39603r20'></a><span class='ecrm-0500'>20</span><span id='textcolor1222'><span class='ectt-0800'>#define IOCTL_VALGET _IOR(IOC_MAGIC, 1, struct ioctl_arg)</span></span> 
-<a id='x1-39605r21'></a><span class='ecrm-0500'>21</span><span id='textcolor1223'><span class='ectt-0800'>#define IOCTL_VALGET_NUM _IOR(IOC_MAGIC, 2, int)</span></span> 
-<a id='x1-39607r22'></a><span class='ecrm-0500'>22</span><span id='textcolor1224'><span class='ectt-0800'>#define IOCTL_VALSET_NUM _IOW(IOC_MAGIC, 3, int)</span></span> 
-<a id='x1-39609r23'></a><span class='ecrm-0500'>23</span> 
-<a id='x1-39611r24'></a><span class='ecrm-0500'>24</span><span id='textcolor1225'><span class='ectt-0800'>#define IOCTL_VAL_MAXNR 3</span></span> 
-<a id='x1-39613r25'></a><span class='ecrm-0500'>25</span><span id='textcolor1226'><span class='ectt-0800'>#define DRIVER_NAME "ioctltest"</span></span> 
-<a id='x1-39615r26'></a><span class='ecrm-0500'>26</span> 
-<a id='x1-39617r27'></a><span class='ecrm-0500'>27</span><span id='textcolor1227'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1228'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor1229'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> test_ioctl_major = 0;</span> 
-<a id='x1-39619r28'></a><span class='ecrm-0500'>28</span><span id='textcolor1230'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1231'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor1232'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> num_of_dev = 1;</span> 
-<a id='x1-39621r29'></a><span class='ecrm-0500'>29</span><span id='textcolor1233'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1234'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> cdev test_ioctl_cdev;</span> 
-<a id='x1-39623r30'></a><span class='ecrm-0500'>30</span><span id='textcolor1235'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1236'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> ioctl_num = 0;</span> 
-<a id='x1-39625r31'></a><span class='ecrm-0500'>31</span> 
-<a id='x1-39627r32'></a><span class='ecrm-0500'>32</span><span id='textcolor1237'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> test_ioctl_data {</span> 
-<a id='x1-39629r33'></a><span class='ecrm-0500'>33</span><span class='ectt-0800'>    </span><span id='textcolor1238'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor1239'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> val;</span> 
-<a id='x1-39631r34'></a><span class='ecrm-0500'>34</span><span class='ectt-0800'>    rwlock_t lock;</span> 
-<a id='x1-39633r35'></a><span class='ecrm-0500'>35</span><span class='ectt-0800'>};</span> 
-<a id='x1-39635r36'></a><span class='ecrm-0500'>36</span> 
-<a id='x1-39637r37'></a><span class='ecrm-0500'>37</span><span id='textcolor1240'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1241'><span class='ectt-0800'>long</span></span><span class='ectt-0800'> test_ioctl_ioctl(</span><span id='textcolor1242'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> file *filp, </span><span id='textcolor1243'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor1244'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> cmd,</span> 
-<a id='x1-39639r38'></a><span class='ecrm-0500'>38</span><span class='ectt-0800'>                             </span><span id='textcolor1245'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor1246'><span class='ectt-0800'>long</span></span><span class='ectt-0800'> arg)</span> 
-<a id='x1-39641r39'></a><span class='ecrm-0500'>39</span><span class='ectt-0800'>{</span> 
-<a id='x1-39643r40'></a><span class='ecrm-0500'>40</span><span class='ectt-0800'>    </span><span id='textcolor1247'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> test_ioctl_data *ioctl_data = filp-&gt;private_data;</span> 
-<a id='x1-39645r41'></a><span class='ecrm-0500'>41</span><span class='ectt-0800'>    </span><span id='textcolor1248'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> retval = 0;</span> 
-<a id='x1-39647r42'></a><span class='ecrm-0500'>42</span><span class='ectt-0800'>    </span><span id='textcolor1249'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor1250'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> val;</span> 
-<a id='x1-39649r43'></a><span class='ecrm-0500'>43</span><span class='ectt-0800'>    </span><span id='textcolor1251'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> ioctl_arg data;</span> 
-<a id='x1-39651r44'></a><span class='ecrm-0500'>44</span><span class='ectt-0800'>    memset(&amp;data, 0, </span><span id='textcolor1252'><span class='ectt-0800'>sizeof</span></span><span class='ectt-0800'>(data));</span> 
-<a id='x1-39653r45'></a><span class='ecrm-0500'>45</span> 
-<a id='x1-39655r46'></a><span class='ecrm-0500'>46</span><span class='ectt-0800'>    </span><span id='textcolor1253'><span class='ectt-0800'>switch</span></span><span class='ectt-0800'> (cmd) {</span> 
-<a id='x1-39657r47'></a><span class='ecrm-0500'>47</span><span class='ectt-0800'>    </span><span id='textcolor1254'><span class='ectt-0800'>case</span></span><span class='ectt-0800'> IOCTL_VALSET:</span> 
-<a id='x1-39659r48'></a><span class='ecrm-0500'>48</span><span class='ectt-0800'>        </span><span id='textcolor1255'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (copy_from_user(&amp;data, (</span><span id='textcolor1256'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> __user *)arg, </span><span id='textcolor1257'><span class='ectt-0800'>sizeof</span></span><span class='ectt-0800'>(data))) {</span> 
-<a id='x1-39661r49'></a><span class='ecrm-0500'>49</span><span class='ectt-0800'>            retval = -EFAULT;</span> 
-<a id='x1-39663r50'></a><span class='ecrm-0500'>50</span><span class='ectt-0800'>            </span><span id='textcolor1258'><span class='ectt-0800'>goto</span></span><span class='ectt-0800'> done;</span> 
-<a id='x1-39665r51'></a><span class='ecrm-0500'>51</span><span class='ectt-0800'>        }</span> 
-<a id='x1-39667r52'></a><span class='ecrm-0500'>52</span> 
-<a id='x1-39669r53'></a><span class='ecrm-0500'>53</span><span class='ectt-0800'>        pr_alert(</span><span id='textcolor1259'><span class='ectt-0800'>"IOCTL set val:%x .</span></span><span id='textcolor1260'><span class='ectt-0800'>\n</span></span><span id='textcolor1261'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, data.val);</span> 
-<a id='x1-39671r54'></a><span class='ecrm-0500'>54</span><span class='ectt-0800'>        write_lock(&amp;ioctl_data-&gt;lock);</span> 
-<a id='x1-39673r55'></a><span class='ecrm-0500'>55</span><span class='ectt-0800'>        ioctl_data-&gt;val = data.val;</span> 
-<a id='x1-39675r56'></a><span class='ecrm-0500'>56</span><span class='ectt-0800'>        write_unlock(&amp;ioctl_data-&gt;lock);</span> 
-<a id='x1-39677r57'></a><span class='ecrm-0500'>57</span><span class='ectt-0800'>        </span><span id='textcolor1262'><span class='ectt-0800'>break</span></span><span class='ectt-0800'>;</span> 
-<a id='x1-39679r58'></a><span class='ecrm-0500'>58</span> 
-<a id='x1-39681r59'></a><span class='ecrm-0500'>59</span><span class='ectt-0800'>    </span><span id='textcolor1263'><span class='ectt-0800'>case</span></span><span class='ectt-0800'> IOCTL_VALGET:</span> 
-<a id='x1-39683r60'></a><span class='ecrm-0500'>60</span><span class='ectt-0800'>        read_lock(&amp;ioctl_data-&gt;lock);</span> 
-<a id='x1-39685r61'></a><span class='ecrm-0500'>61</span><span class='ectt-0800'>        val = ioctl_data-&gt;val;</span> 
-<a id='x1-39687r62'></a><span class='ecrm-0500'>62</span><span class='ectt-0800'>        read_unlock(&amp;ioctl_data-&gt;lock);</span> 
-<a id='x1-39689r63'></a><span class='ecrm-0500'>63</span><span class='ectt-0800'>        data.val = val;</span> 
-<a id='x1-39691r64'></a><span class='ecrm-0500'>64</span> 
-<a id='x1-39693r65'></a><span class='ecrm-0500'>65</span><span class='ectt-0800'>        </span><span id='textcolor1264'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (copy_to_user((</span><span id='textcolor1265'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> __user *)arg, &amp;data, </span><span id='textcolor1266'><span class='ectt-0800'>sizeof</span></span><span class='ectt-0800'>(data))) {</span> 
-<a id='x1-39695r66'></a><span class='ecrm-0500'>66</span><span class='ectt-0800'>            retval = -EFAULT;</span> 
-<a id='x1-39697r67'></a><span class='ecrm-0500'>67</span><span class='ectt-0800'>            </span><span id='textcolor1267'><span class='ectt-0800'>goto</span></span><span class='ectt-0800'> done;</span> 
-<a id='x1-39699r68'></a><span class='ecrm-0500'>68</span><span class='ectt-0800'>        }</span> 
-<a id='x1-39701r69'></a><span class='ecrm-0500'>69</span> 
-<a id='x1-39703r70'></a><span class='ecrm-0500'>70</span><span class='ectt-0800'>        </span><span id='textcolor1268'><span class='ectt-0800'>break</span></span><span class='ectt-0800'>;</span> 
-<a id='x1-39705r71'></a><span class='ecrm-0500'>71</span> 
-<a id='x1-39707r72'></a><span class='ecrm-0500'>72</span><span class='ectt-0800'>    </span><span id='textcolor1269'><span class='ectt-0800'>case</span></span><span class='ectt-0800'> IOCTL_VALGET_NUM:</span> 
-<a id='x1-39709r73'></a><span class='ecrm-0500'>73</span><span class='ectt-0800'>        retval = __put_user(ioctl_num, (</span><span id='textcolor1270'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> __user *)arg);</span> 
-<a id='x1-39711r74'></a><span class='ecrm-0500'>74</span><span class='ectt-0800'>        </span><span id='textcolor1271'><span class='ectt-0800'>break</span></span><span class='ectt-0800'>;</span> 
-<a id='x1-39713r75'></a><span class='ecrm-0500'>75</span> 
-<a id='x1-39715r76'></a><span class='ecrm-0500'>76</span><span class='ectt-0800'>    </span><span id='textcolor1272'><span class='ectt-0800'>case</span></span><span class='ectt-0800'> IOCTL_VALSET_NUM:</span> 
-<a id='x1-39717r77'></a><span class='ecrm-0500'>77</span><span class='ectt-0800'>        ioctl_num = arg;</span> 
-<a id='x1-39719r78'></a><span class='ecrm-0500'>78</span><span class='ectt-0800'>        </span><span id='textcolor1273'><span class='ectt-0800'>break</span></span><span class='ectt-0800'>;</span> 
-<a id='x1-39721r79'></a><span class='ecrm-0500'>79</span> 
-<a id='x1-39723r80'></a><span class='ecrm-0500'>80</span><span class='ectt-0800'>    </span><span id='textcolor1274'><span class='ectt-0800'>default</span></span><span class='ectt-0800'>:</span> 
-<a id='x1-39725r81'></a><span class='ecrm-0500'>81</span><span class='ectt-0800'>        retval = -ENOTTY;</span> 
-<a id='x1-39727r82'></a><span class='ecrm-0500'>82</span><span class='ectt-0800'>    }</span> 
-<a id='x1-39729r83'></a><span class='ecrm-0500'>83</span> 
-<a id='x1-39731r84'></a><span class='ecrm-0500'>84</span><span class='ectt-0800'>done:</span> 
-<a id='x1-39733r85'></a><span class='ecrm-0500'>85</span><span class='ectt-0800'>    </span><span id='textcolor1275'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> retval;</span> 
-<a id='x1-39735r86'></a><span class='ecrm-0500'>86</span><span class='ectt-0800'>}</span> 
-<a id='x1-39737r87'></a><span class='ecrm-0500'>87</span> 
-<a id='x1-39739r88'></a><span class='ecrm-0500'>88</span><span id='textcolor1276'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1277'><span class='ectt-0800'>ssize_t</span></span><span class='ectt-0800'> test_ioctl_read(</span><span id='textcolor1278'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> file *filp, </span><span id='textcolor1279'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> __user *buf,</span> 
-<a id='x1-39741r89'></a><span class='ecrm-0500'>89</span><span class='ectt-0800'>                               </span><span id='textcolor1280'><span class='ectt-0800'>size_t</span></span><span class='ectt-0800'> count, loff_t *f_pos)</span> 
-<a id='x1-39743r90'></a><span class='ecrm-0500'>90</span><span class='ectt-0800'>{</span> 
-<a id='x1-39745r91'></a><span class='ecrm-0500'>91</span><span class='ectt-0800'>    </span><span id='textcolor1281'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> test_ioctl_data *ioctl_data = filp-&gt;private_data;</span> 
-<a id='x1-39747r92'></a><span class='ecrm-0500'>92</span><span class='ectt-0800'>    </span><span id='textcolor1282'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor1283'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> val;</span> 
-<a id='x1-39749r93'></a><span class='ecrm-0500'>93</span><span class='ectt-0800'>    </span><span id='textcolor1284'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> retval;</span> 
-<a id='x1-39751r94'></a><span class='ecrm-0500'>94</span><span class='ectt-0800'>    </span><span id='textcolor1285'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> i = 0;</span> 
-<a id='x1-39753r95'></a><span class='ecrm-0500'>95</span> 
-<a id='x1-39755r96'></a><span class='ecrm-0500'>96</span><span class='ectt-0800'>    read_lock(&amp;ioctl_data-&gt;lock);</span> 
-<a id='x1-39757r97'></a><span class='ecrm-0500'>97</span><span class='ectt-0800'>    val = ioctl_data-&gt;val;</span> 
-<a id='x1-39759r98'></a><span class='ecrm-0500'>98</span><span class='ectt-0800'>    read_unlock(&amp;ioctl_data-&gt;lock);</span> 
-<a id='x1-39761r99'></a><span class='ecrm-0500'>99</span> 
-<a id='x1-39763r100'></a><span class='ecrm-0500'>100</span><span class='ectt-0800'>    </span><span id='textcolor1286'><span class='ectt-0800'>for</span></span><span class='ectt-0800'> (; i &lt; count; i++) {</span> 
-<a id='x1-39765r101'></a><span class='ecrm-0500'>101</span><span class='ectt-0800'>        </span><span id='textcolor1287'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (copy_to_user(&amp;buf[i], &amp;val, 1)) {</span> 
-<a id='x1-39767r102'></a><span class='ecrm-0500'>102</span><span class='ectt-0800'>            retval = -EFAULT;</span> 
-<a id='x1-39769r103'></a><span class='ecrm-0500'>103</span><span class='ectt-0800'>            </span><span id='textcolor1288'><span class='ectt-0800'>goto</span></span><span class='ectt-0800'> out;</span> 
-<a id='x1-39771r104'></a><span class='ecrm-0500'>104</span><span class='ectt-0800'>        }</span> 
-<a id='x1-39773r105'></a><span class='ecrm-0500'>105</span><span class='ectt-0800'>    }</span> 
-<a id='x1-39775r106'></a><span class='ecrm-0500'>106</span> 
-<a id='x1-39777r107'></a><span class='ecrm-0500'>107</span><span class='ectt-0800'>    retval = count;</span> 
-<a id='x1-39779r108'></a><span class='ecrm-0500'>108</span><span class='ectt-0800'>out:</span> 
-<a id='x1-39781r109'></a><span class='ecrm-0500'>109</span><span class='ectt-0800'>    </span><span id='textcolor1289'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> retval;</span> 
-<a id='x1-39783r110'></a><span class='ecrm-0500'>110</span><span class='ectt-0800'>}</span> 
-<a id='x1-39785r111'></a><span class='ecrm-0500'>111</span> 
-<a id='x1-39787r112'></a><span class='ecrm-0500'>112</span><span id='textcolor1290'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1291'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> test_ioctl_close(</span><span id='textcolor1292'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> inode *inode, </span><span id='textcolor1293'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> file *filp)</span> 
-<a id='x1-39789r113'></a><span class='ecrm-0500'>113</span><span class='ectt-0800'>{</span> 
-<a id='x1-39791r114'></a><span class='ecrm-0500'>114</span><span class='ectt-0800'>    pr_alert(</span><span id='textcolor1294'><span class='ectt-0800'>"%s call.</span></span><span id='textcolor1295'><span class='ectt-0800'>\n</span></span><span id='textcolor1296'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, __func__);</span> 
-<a id='x1-39793r115'></a><span class='ecrm-0500'>115</span> 
-<a id='x1-39795r116'></a><span class='ecrm-0500'>116</span><span class='ectt-0800'>    </span><span id='textcolor1297'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (filp-&gt;private_data) {</span> 
-<a id='x1-39797r117'></a><span class='ecrm-0500'>117</span><span class='ectt-0800'>        kfree(filp-&gt;private_data);</span> 
-<a id='x1-39799r118'></a><span class='ecrm-0500'>118</span><span class='ectt-0800'>        filp-&gt;private_data = NULL;</span> 
-<a id='x1-39801r119'></a><span class='ecrm-0500'>119</span><span class='ectt-0800'>    }</span> 
-<a id='x1-39803r120'></a><span class='ecrm-0500'>120</span> 
-<a id='x1-39805r121'></a><span class='ecrm-0500'>121</span><span class='ectt-0800'>    </span><span id='textcolor1298'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> 0;</span> 
-<a id='x1-39807r122'></a><span class='ecrm-0500'>122</span><span class='ectt-0800'>}</span> 
-<a id='x1-39809r123'></a><span class='ecrm-0500'>123</span> 
-<a id='x1-39811r124'></a><span class='ecrm-0500'>124</span><span id='textcolor1299'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1300'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> test_ioctl_open(</span><span id='textcolor1301'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> inode *inode, </span><span id='textcolor1302'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> file *filp)</span> 
-<a id='x1-39813r125'></a><span class='ecrm-0500'>125</span><span class='ectt-0800'>{</span> 
-<a id='x1-39815r126'></a><span class='ecrm-0500'>126</span><span class='ectt-0800'>    </span><span id='textcolor1303'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> test_ioctl_data *ioctl_data;</span> 
-<a id='x1-39817r127'></a><span class='ecrm-0500'>127</span> 
-<a id='x1-39819r128'></a><span class='ecrm-0500'>128</span><span class='ectt-0800'>    pr_alert(</span><span id='textcolor1304'><span class='ectt-0800'>"%s call.</span></span><span id='textcolor1305'><span class='ectt-0800'>\n</span></span><span id='textcolor1306'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, __func__);</span> 
-<a id='x1-39821r129'></a><span class='ecrm-0500'>129</span><span class='ectt-0800'>    ioctl_data = kmalloc(</span><span id='textcolor1307'><span class='ectt-0800'>sizeof</span></span><span class='ectt-0800'>(</span><span id='textcolor1308'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> test_ioctl_data), GFP_KERNEL);</span> 
-<a id='x1-39823r130'></a><span class='ecrm-0500'>130</span> 
-<a id='x1-39825r131'></a><span class='ecrm-0500'>131</span><span class='ectt-0800'>    </span><span id='textcolor1309'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (ioctl_data == NULL)</span> 
-<a id='x1-39827r132'></a><span class='ecrm-0500'>132</span><span class='ectt-0800'>        </span><span id='textcolor1310'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> -ENOMEM;</span> 
-<a id='x1-39829r133'></a><span class='ecrm-0500'>133</span> 
-<a id='x1-39831r134'></a><span class='ecrm-0500'>134</span><span class='ectt-0800'>    rwlock_init(&amp;ioctl_data-&gt;lock);</span> 
-<a id='x1-39833r135'></a><span class='ecrm-0500'>135</span><span class='ectt-0800'>    ioctl_data-&gt;val = 0xFF;</span> 
-<a id='x1-39835r136'></a><span class='ecrm-0500'>136</span><span class='ectt-0800'>    filp-&gt;private_data = ioctl_data;</span> 
-<a id='x1-39837r137'></a><span class='ecrm-0500'>137</span> 
-<a id='x1-39839r138'></a><span class='ecrm-0500'>138</span><span class='ectt-0800'>    </span><span id='textcolor1311'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> 0;</span> 
-<a id='x1-39841r139'></a><span class='ecrm-0500'>139</span><span class='ectt-0800'>}</span> 
-<a id='x1-39843r140'></a><span class='ecrm-0500'>140</span> 
-<a id='x1-39845r141'></a><span class='ecrm-0500'>141</span><span id='textcolor1312'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1313'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> file_operations fops = {</span> 
-<a id='x1-39847r142'></a><span class='ecrm-0500'>142</span><span class='ectt-0800'>    .owner = THIS_MODULE,</span> 
-<a id='x1-39849r143'></a><span class='ecrm-0500'>143</span><span class='ectt-0800'>    .open = test_ioctl_open,</span> 
-<a id='x1-39851r144'></a><span class='ecrm-0500'>144</span><span class='ectt-0800'>    .release = test_ioctl_close,</span> 
-<a id='x1-39853r145'></a><span class='ecrm-0500'>145</span><span class='ectt-0800'>    .read = test_ioctl_read,</span> 
-<a id='x1-39855r146'></a><span class='ecrm-0500'>146</span><span class='ectt-0800'>    .unlocked_ioctl = test_ioctl_ioctl,</span> 
-<a id='x1-39857r147'></a><span class='ecrm-0500'>147</span><span class='ectt-0800'>};</span> 
-<a id='x1-39859r148'></a><span class='ecrm-0500'>148</span> 
-<a id='x1-39861r149'></a><span class='ecrm-0500'>149</span><span id='textcolor1314'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1315'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> ioctl_init(</span><span id='textcolor1316'><span class='ectt-0800'>void</span></span><span class='ectt-0800'>)</span> 
-<a id='x1-39863r150'></a><span class='ecrm-0500'>150</span><span class='ectt-0800'>{</span> 
-<a id='x1-39865r151'></a><span class='ecrm-0500'>151</span><span class='ectt-0800'>    </span><span id='textcolor1317'><span class='ectt-0800'>dev_t</span></span><span class='ectt-0800'> dev;</span> 
-<a id='x1-39867r152'></a><span class='ecrm-0500'>152</span><span class='ectt-0800'>    </span><span id='textcolor1318'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> alloc_ret = 0;</span> 
-<a id='x1-39869r153'></a><span class='ecrm-0500'>153</span><span class='ectt-0800'>    </span><span id='textcolor1319'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> cdev_ret = 0;</span> 
-<a id='x1-39871r154'></a><span class='ecrm-0500'>154</span><span class='ectt-0800'>    alloc_ret = alloc_chrdev_region(&amp;dev, 0, num_of_dev, DRIVER_NAME);</span> 
-<a id='x1-39873r155'></a><span class='ecrm-0500'>155</span> 
-<a id='x1-39875r156'></a><span class='ecrm-0500'>156</span><span class='ectt-0800'>    </span><span id='textcolor1320'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (alloc_ret)</span> 
-<a id='x1-39877r157'></a><span class='ecrm-0500'>157</span><span class='ectt-0800'>        </span><span id='textcolor1321'><span class='ectt-0800'>goto</span></span><span class='ectt-0800'> error;</span> 
-<a id='x1-39879r158'></a><span class='ecrm-0500'>158</span> 
-<a id='x1-39881r159'></a><span class='ecrm-0500'>159</span><span class='ectt-0800'>    test_ioctl_major = MAJOR(dev);</span> 
-<a id='x1-39883r160'></a><span class='ecrm-0500'>160</span><span class='ectt-0800'>    cdev_init(&amp;test_ioctl_cdev, &amp;fops);</span> 
-<a id='x1-39885r161'></a><span class='ecrm-0500'>161</span><span class='ectt-0800'>    cdev_ret = cdev_add(&amp;test_ioctl_cdev, dev, num_of_dev);</span> 
-<a id='x1-39887r162'></a><span class='ecrm-0500'>162</span> 
-<a id='x1-39889r163'></a><span class='ecrm-0500'>163</span><span class='ectt-0800'>    </span><span id='textcolor1322'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (cdev_ret)</span> 
-<a id='x1-39891r164'></a><span class='ecrm-0500'>164</span><span class='ectt-0800'>        </span><span id='textcolor1323'><span class='ectt-0800'>goto</span></span><span class='ectt-0800'> error;</span> 
-<a id='x1-39893r165'></a><span class='ecrm-0500'>165</span> 
-<a id='x1-39895r166'></a><span class='ecrm-0500'>166</span><span class='ectt-0800'>    pr_alert(</span><span id='textcolor1324'><span class='ectt-0800'>"%s driver(major: %d) installed.</span></span><span id='textcolor1325'><span class='ectt-0800'>\n</span></span><span id='textcolor1326'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, DRIVER_NAME,</span> 
-<a id='x1-39897r167'></a><span class='ecrm-0500'>167</span><span class='ectt-0800'>             test_ioctl_major);</span> 
-<a id='x1-39899r168'></a><span class='ecrm-0500'>168</span><span class='ectt-0800'>    </span><span id='textcolor1327'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> 0;</span> 
-<a id='x1-39901r169'></a><span class='ecrm-0500'>169</span><span class='ectt-0800'>error:</span> 
-<a id='x1-39903r170'></a><span class='ecrm-0500'>170</span><span class='ectt-0800'>    </span><span id='textcolor1328'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (cdev_ret == 0)</span> 
-<a id='x1-39905r171'></a><span class='ecrm-0500'>171</span><span class='ectt-0800'>        cdev_del(&amp;test_ioctl_cdev);</span> 
-<a id='x1-39907r172'></a><span class='ecrm-0500'>172</span><span class='ectt-0800'>    </span><span id='textcolor1329'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (alloc_ret == 0)</span> 
-<a id='x1-39909r173'></a><span class='ecrm-0500'>173</span><span class='ectt-0800'>        unregister_chrdev_region(dev, num_of_dev);</span> 
-<a id='x1-39911r174'></a><span class='ecrm-0500'>174</span><span class='ectt-0800'>    </span><span id='textcolor1330'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> -1;</span> 
-<a id='x1-39913r175'></a><span class='ecrm-0500'>175</span><span class='ectt-0800'>}</span> 
-<a id='x1-39915r176'></a><span class='ecrm-0500'>176</span> 
-<a id='x1-39917r177'></a><span class='ecrm-0500'>177</span><span id='textcolor1331'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1332'><span class='ectt-0800'>void</span></span><span class='ectt-0800'> ioctl_exit(</span><span id='textcolor1333'><span class='ectt-0800'>void</span></span><span class='ectt-0800'>)</span> 
-<a id='x1-39919r178'></a><span class='ecrm-0500'>178</span><span class='ectt-0800'>{</span> 
-<a id='x1-39921r179'></a><span class='ecrm-0500'>179</span><span class='ectt-0800'>    </span><span id='textcolor1334'><span class='ectt-0800'>dev_t</span></span><span class='ectt-0800'> dev = MKDEV(test_ioctl_major, 0);</span> 
-<a id='x1-39923r180'></a><span class='ecrm-0500'>180</span> 
-<a id='x1-39925r181'></a><span class='ecrm-0500'>181</span><span class='ectt-0800'>    cdev_del(&amp;test_ioctl_cdev);</span> 
-<a id='x1-39927r182'></a><span class='ecrm-0500'>182</span><span class='ectt-0800'>    unregister_chrdev_region(dev, num_of_dev);</span> 
-<a id='x1-39929r183'></a><span class='ecrm-0500'>183</span><span class='ectt-0800'>    pr_alert(</span><span id='textcolor1335'><span class='ectt-0800'>"%s driver removed.</span></span><span id='textcolor1336'><span class='ectt-0800'>\n</span></span><span id='textcolor1337'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, DRIVER_NAME);</span> 
-<a id='x1-39931r184'></a><span class='ecrm-0500'>184</span><span class='ectt-0800'>}</span> 
-<a id='x1-39933r185'></a><span class='ecrm-0500'>185</span> 
-<a id='x1-39935r186'></a><span class='ecrm-0500'>186</span><span class='ectt-0800'>module_init(ioctl_init);</span> 
-<a id='x1-39937r187'></a><span class='ecrm-0500'>187</span><span class='ectt-0800'>module_exit(ioctl_exit);</span> 
-<a id='x1-39939r188'></a><span class='ecrm-0500'>188</span> 
-<a id='x1-39941r189'></a><span class='ecrm-0500'>189</span><span class='ectt-0800'>MODULE_LICENSE(</span><span id='textcolor1338'><span class='ectt-0800'>"GPL"</span></span><span class='ectt-0800'>);</span> 
-<a id='x1-39943r190'></a><span class='ecrm-0500'>190</span><span class='ectt-0800'>MODULE_DESCRIPTION(</span><span id='textcolor1339'><span class='ectt-0800'>"This is test_ioctl module"</span></span><span class='ectt-0800'>);</span></pre>
+   <pre class='fancyvrb' id='fancyvrb51'><a id='x1-39569r1'></a><span class='ecrm-0500'>1</span><span id='textcolor1199'><span class='ectt-0800'>/*</span></span> 
+<a id='x1-39571r2'></a><span class='ecrm-0500'>2</span><span id='textcolor1200'><span class='ectt-0800'> * ioctl.c</span></span> 
+<a id='x1-39573r3'></a><span class='ecrm-0500'>3</span><span id='textcolor1201'><span class='ectt-0800'> */</span></span> 
+<a id='x1-39575r4'></a><span class='ecrm-0500'>4</span><span id='textcolor1202'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor1203'><span class='ectt-0800'>&lt;linux/cdev.h&gt;</span></span> 
+<a id='x1-39577r5'></a><span class='ecrm-0500'>5</span><span id='textcolor1204'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor1205'><span class='ectt-0800'>&lt;linux/fs.h&gt;</span></span> 
+<a id='x1-39579r6'></a><span class='ecrm-0500'>6</span><span id='textcolor1206'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor1207'><span class='ectt-0800'>&lt;linux/init.h&gt;</span></span> 
+<a id='x1-39581r7'></a><span class='ecrm-0500'>7</span><span id='textcolor1208'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor1209'><span class='ectt-0800'>&lt;linux/ioctl.h&gt;</span></span> 
+<a id='x1-39583r8'></a><span class='ecrm-0500'>8</span><span id='textcolor1210'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor1211'><span class='ectt-0800'>&lt;linux/module.h&gt;</span></span> 
+<a id='x1-39585r9'></a><span class='ecrm-0500'>9</span><span id='textcolor1212'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor1213'><span class='ectt-0800'>&lt;linux/slab.h&gt;</span></span> 
+<a id='x1-39587r10'></a><span class='ecrm-0500'>10</span><span id='textcolor1214'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor1215'><span class='ectt-0800'>&lt;linux/uaccess.h&gt;</span></span> 
+<a id='x1-39589r11'></a><span class='ecrm-0500'>11</span> 
+<a id='x1-39591r12'></a><span class='ecrm-0500'>12</span><span id='textcolor1216'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> ioctl_arg {</span> 
+<a id='x1-39593r13'></a><span class='ecrm-0500'>13</span><span class='ectt-0800'>    </span><span id='textcolor1217'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor1218'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> val;</span> 
+<a id='x1-39595r14'></a><span class='ecrm-0500'>14</span><span class='ectt-0800'>};</span> 
+<a id='x1-39597r15'></a><span class='ecrm-0500'>15</span> 
+<a id='x1-39599r16'></a><span class='ecrm-0500'>16</span><span id='textcolor1219'><span class='ectt-0800'>/* Documentation/ioctl/ioctl-number.txt */</span></span> 
+<a id='x1-39601r17'></a><span class='ecrm-0500'>17</span><span id='textcolor1220'><span class='ectt-0800'>#define IOC_MAGIC </span><span class='tctt-0800'>'</span><span class='ectt-0800'>\x66</span><span class='tctt-0800'>'</span></span> 
+<a id='x1-39603r18'></a><span class='ecrm-0500'>18</span> 
+<a id='x1-39605r19'></a><span class='ecrm-0500'>19</span><span id='textcolor1221'><span class='ectt-0800'>#define IOCTL_VALSET _IOW(IOC_MAGIC, 0, struct ioctl_arg)</span></span> 
+<a id='x1-39607r20'></a><span class='ecrm-0500'>20</span><span id='textcolor1222'><span class='ectt-0800'>#define IOCTL_VALGET _IOR(IOC_MAGIC, 1, struct ioctl_arg)</span></span> 
+<a id='x1-39609r21'></a><span class='ecrm-0500'>21</span><span id='textcolor1223'><span class='ectt-0800'>#define IOCTL_VALGET_NUM _IOR(IOC_MAGIC, 2, int)</span></span> 
+<a id='x1-39611r22'></a><span class='ecrm-0500'>22</span><span id='textcolor1224'><span class='ectt-0800'>#define IOCTL_VALSET_NUM _IOW(IOC_MAGIC, 3, int)</span></span> 
+<a id='x1-39613r23'></a><span class='ecrm-0500'>23</span> 
+<a id='x1-39615r24'></a><span class='ecrm-0500'>24</span><span id='textcolor1225'><span class='ectt-0800'>#define IOCTL_VAL_MAXNR 3</span></span> 
+<a id='x1-39617r25'></a><span class='ecrm-0500'>25</span><span id='textcolor1226'><span class='ectt-0800'>#define DRIVER_NAME "ioctltest"</span></span> 
+<a id='x1-39619r26'></a><span class='ecrm-0500'>26</span> 
+<a id='x1-39621r27'></a><span class='ecrm-0500'>27</span><span id='textcolor1227'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1228'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor1229'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> test_ioctl_major = 0;</span> 
+<a id='x1-39623r28'></a><span class='ecrm-0500'>28</span><span id='textcolor1230'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1231'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor1232'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> num_of_dev = 1;</span> 
+<a id='x1-39625r29'></a><span class='ecrm-0500'>29</span><span id='textcolor1233'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1234'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> cdev test_ioctl_cdev;</span> 
+<a id='x1-39627r30'></a><span class='ecrm-0500'>30</span><span id='textcolor1235'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1236'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> ioctl_num = 0;</span> 
+<a id='x1-39629r31'></a><span class='ecrm-0500'>31</span> 
+<a id='x1-39631r32'></a><span class='ecrm-0500'>32</span><span id='textcolor1237'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> test_ioctl_data {</span> 
+<a id='x1-39633r33'></a><span class='ecrm-0500'>33</span><span class='ectt-0800'>    </span><span id='textcolor1238'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor1239'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> val;</span> 
+<a id='x1-39635r34'></a><span class='ecrm-0500'>34</span><span class='ectt-0800'>    rwlock_t lock;</span> 
+<a id='x1-39637r35'></a><span class='ecrm-0500'>35</span><span class='ectt-0800'>};</span> 
+<a id='x1-39639r36'></a><span class='ecrm-0500'>36</span> 
+<a id='x1-39641r37'></a><span class='ecrm-0500'>37</span><span id='textcolor1240'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1241'><span class='ectt-0800'>long</span></span><span class='ectt-0800'> test_ioctl_ioctl(</span><span id='textcolor1242'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> file *filp, </span><span id='textcolor1243'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor1244'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> cmd,</span> 
+<a id='x1-39643r38'></a><span class='ecrm-0500'>38</span><span class='ectt-0800'>                             </span><span id='textcolor1245'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor1246'><span class='ectt-0800'>long</span></span><span class='ectt-0800'> arg)</span> 
+<a id='x1-39645r39'></a><span class='ecrm-0500'>39</span><span class='ectt-0800'>{</span> 
+<a id='x1-39647r40'></a><span class='ecrm-0500'>40</span><span class='ectt-0800'>    </span><span id='textcolor1247'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> test_ioctl_data *ioctl_data = filp-&gt;private_data;</span> 
+<a id='x1-39649r41'></a><span class='ecrm-0500'>41</span><span class='ectt-0800'>    </span><span id='textcolor1248'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> retval = 0;</span> 
+<a id='x1-39651r42'></a><span class='ecrm-0500'>42</span><span class='ectt-0800'>    </span><span id='textcolor1249'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor1250'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> val;</span> 
+<a id='x1-39653r43'></a><span class='ecrm-0500'>43</span><span class='ectt-0800'>    </span><span id='textcolor1251'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> ioctl_arg data;</span> 
+<a id='x1-39655r44'></a><span class='ecrm-0500'>44</span><span class='ectt-0800'>    memset(&amp;data, 0, </span><span id='textcolor1252'><span class='ectt-0800'>sizeof</span></span><span class='ectt-0800'>(data));</span> 
+<a id='x1-39657r45'></a><span class='ecrm-0500'>45</span> 
+<a id='x1-39659r46'></a><span class='ecrm-0500'>46</span><span class='ectt-0800'>    </span><span id='textcolor1253'><span class='ectt-0800'>switch</span></span><span class='ectt-0800'> (cmd) {</span> 
+<a id='x1-39661r47'></a><span class='ecrm-0500'>47</span><span class='ectt-0800'>    </span><span id='textcolor1254'><span class='ectt-0800'>case</span></span><span class='ectt-0800'> IOCTL_VALSET:</span> 
+<a id='x1-39663r48'></a><span class='ecrm-0500'>48</span><span class='ectt-0800'>        </span><span id='textcolor1255'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (copy_from_user(&amp;data, (</span><span id='textcolor1256'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> __user *)arg, </span><span id='textcolor1257'><span class='ectt-0800'>sizeof</span></span><span class='ectt-0800'>(data))) {</span> 
+<a id='x1-39665r49'></a><span class='ecrm-0500'>49</span><span class='ectt-0800'>            retval = -EFAULT;</span> 
+<a id='x1-39667r50'></a><span class='ecrm-0500'>50</span><span class='ectt-0800'>            </span><span id='textcolor1258'><span class='ectt-0800'>goto</span></span><span class='ectt-0800'> done;</span> 
+<a id='x1-39669r51'></a><span class='ecrm-0500'>51</span><span class='ectt-0800'>        }</span> 
+<a id='x1-39671r52'></a><span class='ecrm-0500'>52</span> 
+<a id='x1-39673r53'></a><span class='ecrm-0500'>53</span><span class='ectt-0800'>        pr_alert(</span><span id='textcolor1259'><span class='ectt-0800'>"IOCTL set val:%x .</span></span><span id='textcolor1260'><span class='ectt-0800'>\n</span></span><span id='textcolor1261'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, data.val);</span> 
+<a id='x1-39675r54'></a><span class='ecrm-0500'>54</span><span class='ectt-0800'>        write_lock(&amp;ioctl_data-&gt;lock);</span> 
+<a id='x1-39677r55'></a><span class='ecrm-0500'>55</span><span class='ectt-0800'>        ioctl_data-&gt;val = data.val;</span> 
+<a id='x1-39679r56'></a><span class='ecrm-0500'>56</span><span class='ectt-0800'>        write_unlock(&amp;ioctl_data-&gt;lock);</span> 
+<a id='x1-39681r57'></a><span class='ecrm-0500'>57</span><span class='ectt-0800'>        </span><span id='textcolor1262'><span class='ectt-0800'>break</span></span><span class='ectt-0800'>;</span> 
+<a id='x1-39683r58'></a><span class='ecrm-0500'>58</span> 
+<a id='x1-39685r59'></a><span class='ecrm-0500'>59</span><span class='ectt-0800'>    </span><span id='textcolor1263'><span class='ectt-0800'>case</span></span><span class='ectt-0800'> IOCTL_VALGET:</span> 
+<a id='x1-39687r60'></a><span class='ecrm-0500'>60</span><span class='ectt-0800'>        read_lock(&amp;ioctl_data-&gt;lock);</span> 
+<a id='x1-39689r61'></a><span class='ecrm-0500'>61</span><span class='ectt-0800'>        val = ioctl_data-&gt;val;</span> 
+<a id='x1-39691r62'></a><span class='ecrm-0500'>62</span><span class='ectt-0800'>        read_unlock(&amp;ioctl_data-&gt;lock);</span> 
+<a id='x1-39693r63'></a><span class='ecrm-0500'>63</span><span class='ectt-0800'>        data.val = val;</span> 
+<a id='x1-39695r64'></a><span class='ecrm-0500'>64</span> 
+<a id='x1-39697r65'></a><span class='ecrm-0500'>65</span><span class='ectt-0800'>        </span><span id='textcolor1264'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (copy_to_user((</span><span id='textcolor1265'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> __user *)arg, &amp;data, </span><span id='textcolor1266'><span class='ectt-0800'>sizeof</span></span><span class='ectt-0800'>(data))) {</span> 
+<a id='x1-39699r66'></a><span class='ecrm-0500'>66</span><span class='ectt-0800'>            retval = -EFAULT;</span> 
+<a id='x1-39701r67'></a><span class='ecrm-0500'>67</span><span class='ectt-0800'>            </span><span id='textcolor1267'><span class='ectt-0800'>goto</span></span><span class='ectt-0800'> done;</span> 
+<a id='x1-39703r68'></a><span class='ecrm-0500'>68</span><span class='ectt-0800'>        }</span> 
+<a id='x1-39705r69'></a><span class='ecrm-0500'>69</span> 
+<a id='x1-39707r70'></a><span class='ecrm-0500'>70</span><span class='ectt-0800'>        </span><span id='textcolor1268'><span class='ectt-0800'>break</span></span><span class='ectt-0800'>;</span> 
+<a id='x1-39709r71'></a><span class='ecrm-0500'>71</span> 
+<a id='x1-39711r72'></a><span class='ecrm-0500'>72</span><span class='ectt-0800'>    </span><span id='textcolor1269'><span class='ectt-0800'>case</span></span><span class='ectt-0800'> IOCTL_VALGET_NUM:</span> 
+<a id='x1-39713r73'></a><span class='ecrm-0500'>73</span><span class='ectt-0800'>        retval = __put_user(ioctl_num, (</span><span id='textcolor1270'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> __user *)arg);</span> 
+<a id='x1-39715r74'></a><span class='ecrm-0500'>74</span><span class='ectt-0800'>        </span><span id='textcolor1271'><span class='ectt-0800'>break</span></span><span class='ectt-0800'>;</span> 
+<a id='x1-39717r75'></a><span class='ecrm-0500'>75</span> 
+<a id='x1-39719r76'></a><span class='ecrm-0500'>76</span><span class='ectt-0800'>    </span><span id='textcolor1272'><span class='ectt-0800'>case</span></span><span class='ectt-0800'> IOCTL_VALSET_NUM:</span> 
+<a id='x1-39721r77'></a><span class='ecrm-0500'>77</span><span class='ectt-0800'>        ioctl_num = arg;</span> 
+<a id='x1-39723r78'></a><span class='ecrm-0500'>78</span><span class='ectt-0800'>        </span><span id='textcolor1273'><span class='ectt-0800'>break</span></span><span class='ectt-0800'>;</span> 
+<a id='x1-39725r79'></a><span class='ecrm-0500'>79</span> 
+<a id='x1-39727r80'></a><span class='ecrm-0500'>80</span><span class='ectt-0800'>    </span><span id='textcolor1274'><span class='ectt-0800'>default</span></span><span class='ectt-0800'>:</span> 
+<a id='x1-39729r81'></a><span class='ecrm-0500'>81</span><span class='ectt-0800'>        retval = -ENOTTY;</span> 
+<a id='x1-39731r82'></a><span class='ecrm-0500'>82</span><span class='ectt-0800'>    }</span> 
+<a id='x1-39733r83'></a><span class='ecrm-0500'>83</span> 
+<a id='x1-39735r84'></a><span class='ecrm-0500'>84</span><span class='ectt-0800'>done:</span> 
+<a id='x1-39737r85'></a><span class='ecrm-0500'>85</span><span class='ectt-0800'>    </span><span id='textcolor1275'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> retval;</span> 
+<a id='x1-39739r86'></a><span class='ecrm-0500'>86</span><span class='ectt-0800'>}</span> 
+<a id='x1-39741r87'></a><span class='ecrm-0500'>87</span> 
+<a id='x1-39743r88'></a><span class='ecrm-0500'>88</span><span id='textcolor1276'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1277'><span class='ectt-0800'>ssize_t</span></span><span class='ectt-0800'> test_ioctl_read(</span><span id='textcolor1278'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> file *filp, </span><span id='textcolor1279'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> __user *buf,</span> 
+<a id='x1-39745r89'></a><span class='ecrm-0500'>89</span><span class='ectt-0800'>                               </span><span id='textcolor1280'><span class='ectt-0800'>size_t</span></span><span class='ectt-0800'> count, loff_t *f_pos)</span> 
+<a id='x1-39747r90'></a><span class='ecrm-0500'>90</span><span class='ectt-0800'>{</span> 
+<a id='x1-39749r91'></a><span class='ecrm-0500'>91</span><span class='ectt-0800'>    </span><span id='textcolor1281'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> test_ioctl_data *ioctl_data = filp-&gt;private_data;</span> 
+<a id='x1-39751r92'></a><span class='ecrm-0500'>92</span><span class='ectt-0800'>    </span><span id='textcolor1282'><span class='ectt-0800'>unsigned</span></span><span class='ectt-0800'> </span><span id='textcolor1283'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> val;</span> 
+<a id='x1-39753r93'></a><span class='ecrm-0500'>93</span><span class='ectt-0800'>    </span><span id='textcolor1284'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> retval;</span> 
+<a id='x1-39755r94'></a><span class='ecrm-0500'>94</span><span class='ectt-0800'>    </span><span id='textcolor1285'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> i = 0;</span> 
+<a id='x1-39757r95'></a><span class='ecrm-0500'>95</span> 
+<a id='x1-39759r96'></a><span class='ecrm-0500'>96</span><span class='ectt-0800'>    read_lock(&amp;ioctl_data-&gt;lock);</span> 
+<a id='x1-39761r97'></a><span class='ecrm-0500'>97</span><span class='ectt-0800'>    val = ioctl_data-&gt;val;</span> 
+<a id='x1-39763r98'></a><span class='ecrm-0500'>98</span><span class='ectt-0800'>    read_unlock(&amp;ioctl_data-&gt;lock);</span> 
+<a id='x1-39765r99'></a><span class='ecrm-0500'>99</span> 
+<a id='x1-39767r100'></a><span class='ecrm-0500'>100</span><span class='ectt-0800'>    </span><span id='textcolor1286'><span class='ectt-0800'>for</span></span><span class='ectt-0800'> (; i &lt; count; i++) {</span> 
+<a id='x1-39769r101'></a><span class='ecrm-0500'>101</span><span class='ectt-0800'>        </span><span id='textcolor1287'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (copy_to_user(&amp;buf[i], &amp;val, 1)) {</span> 
+<a id='x1-39771r102'></a><span class='ecrm-0500'>102</span><span class='ectt-0800'>            retval = -EFAULT;</span> 
+<a id='x1-39773r103'></a><span class='ecrm-0500'>103</span><span class='ectt-0800'>            </span><span id='textcolor1288'><span class='ectt-0800'>goto</span></span><span class='ectt-0800'> out;</span> 
+<a id='x1-39775r104'></a><span class='ecrm-0500'>104</span><span class='ectt-0800'>        }</span> 
+<a id='x1-39777r105'></a><span class='ecrm-0500'>105</span><span class='ectt-0800'>    }</span> 
+<a id='x1-39779r106'></a><span class='ecrm-0500'>106</span> 
+<a id='x1-39781r107'></a><span class='ecrm-0500'>107</span><span class='ectt-0800'>    retval = count;</span> 
+<a id='x1-39783r108'></a><span class='ecrm-0500'>108</span><span class='ectt-0800'>out:</span> 
+<a id='x1-39785r109'></a><span class='ecrm-0500'>109</span><span class='ectt-0800'>    </span><span id='textcolor1289'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> retval;</span> 
+<a id='x1-39787r110'></a><span class='ecrm-0500'>110</span><span class='ectt-0800'>}</span> 
+<a id='x1-39789r111'></a><span class='ecrm-0500'>111</span> 
+<a id='x1-39791r112'></a><span class='ecrm-0500'>112</span><span id='textcolor1290'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1291'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> test_ioctl_close(</span><span id='textcolor1292'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> inode *inode, </span><span id='textcolor1293'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> file *filp)</span> 
+<a id='x1-39793r113'></a><span class='ecrm-0500'>113</span><span class='ectt-0800'>{</span> 
+<a id='x1-39795r114'></a><span class='ecrm-0500'>114</span><span class='ectt-0800'>    pr_alert(</span><span id='textcolor1294'><span class='ectt-0800'>"%s call.</span></span><span id='textcolor1295'><span class='ectt-0800'>\n</span></span><span id='textcolor1296'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, __func__);</span> 
+<a id='x1-39797r115'></a><span class='ecrm-0500'>115</span> 
+<a id='x1-39799r116'></a><span class='ecrm-0500'>116</span><span class='ectt-0800'>    </span><span id='textcolor1297'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (filp-&gt;private_data) {</span> 
+<a id='x1-39801r117'></a><span class='ecrm-0500'>117</span><span class='ectt-0800'>        kfree(filp-&gt;private_data);</span> 
+<a id='x1-39803r118'></a><span class='ecrm-0500'>118</span><span class='ectt-0800'>        filp-&gt;private_data = NULL;</span> 
+<a id='x1-39805r119'></a><span class='ecrm-0500'>119</span><span class='ectt-0800'>    }</span> 
+<a id='x1-39807r120'></a><span class='ecrm-0500'>120</span> 
+<a id='x1-39809r121'></a><span class='ecrm-0500'>121</span><span class='ectt-0800'>    </span><span id='textcolor1298'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> 0;</span> 
+<a id='x1-39811r122'></a><span class='ecrm-0500'>122</span><span class='ectt-0800'>}</span> 
+<a id='x1-39813r123'></a><span class='ecrm-0500'>123</span> 
+<a id='x1-39815r124'></a><span class='ecrm-0500'>124</span><span id='textcolor1299'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1300'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> test_ioctl_open(</span><span id='textcolor1301'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> inode *inode, </span><span id='textcolor1302'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> file *filp)</span> 
+<a id='x1-39817r125'></a><span class='ecrm-0500'>125</span><span class='ectt-0800'>{</span> 
+<a id='x1-39819r126'></a><span class='ecrm-0500'>126</span><span class='ectt-0800'>    </span><span id='textcolor1303'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> test_ioctl_data *ioctl_data;</span> 
+<a id='x1-39821r127'></a><span class='ecrm-0500'>127</span> 
+<a id='x1-39823r128'></a><span class='ecrm-0500'>128</span><span class='ectt-0800'>    pr_alert(</span><span id='textcolor1304'><span class='ectt-0800'>"%s call.</span></span><span id='textcolor1305'><span class='ectt-0800'>\n</span></span><span id='textcolor1306'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, __func__);</span> 
+<a id='x1-39825r129'></a><span class='ecrm-0500'>129</span><span class='ectt-0800'>    ioctl_data = kmalloc(</span><span id='textcolor1307'><span class='ectt-0800'>sizeof</span></span><span class='ectt-0800'>(</span><span id='textcolor1308'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> test_ioctl_data), GFP_KERNEL);</span> 
+<a id='x1-39827r130'></a><span class='ecrm-0500'>130</span> 
+<a id='x1-39829r131'></a><span class='ecrm-0500'>131</span><span class='ectt-0800'>    </span><span id='textcolor1309'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (ioctl_data == NULL)</span> 
+<a id='x1-39831r132'></a><span class='ecrm-0500'>132</span><span class='ectt-0800'>        </span><span id='textcolor1310'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> -ENOMEM;</span> 
+<a id='x1-39833r133'></a><span class='ecrm-0500'>133</span> 
+<a id='x1-39835r134'></a><span class='ecrm-0500'>134</span><span class='ectt-0800'>    rwlock_init(&amp;ioctl_data-&gt;lock);</span> 
+<a id='x1-39837r135'></a><span class='ecrm-0500'>135</span><span class='ectt-0800'>    ioctl_data-&gt;val = 0xFF;</span> 
+<a id='x1-39839r136'></a><span class='ecrm-0500'>136</span><span class='ectt-0800'>    filp-&gt;private_data = ioctl_data;</span> 
+<a id='x1-39841r137'></a><span class='ecrm-0500'>137</span> 
+<a id='x1-39843r138'></a><span class='ecrm-0500'>138</span><span class='ectt-0800'>    </span><span id='textcolor1311'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> 0;</span> 
+<a id='x1-39845r139'></a><span class='ecrm-0500'>139</span><span class='ectt-0800'>}</span> 
+<a id='x1-39847r140'></a><span class='ecrm-0500'>140</span> 
+<a id='x1-39849r141'></a><span class='ecrm-0500'>141</span><span id='textcolor1312'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1313'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> file_operations fops = {</span> 
+<a id='x1-39851r142'></a><span class='ecrm-0500'>142</span><span class='ectt-0800'>    .owner = THIS_MODULE,</span> 
+<a id='x1-39853r143'></a><span class='ecrm-0500'>143</span><span class='ectt-0800'>    .open = test_ioctl_open,</span> 
+<a id='x1-39855r144'></a><span class='ecrm-0500'>144</span><span class='ectt-0800'>    .release = test_ioctl_close,</span> 
+<a id='x1-39857r145'></a><span class='ecrm-0500'>145</span><span class='ectt-0800'>    .read = test_ioctl_read,</span> 
+<a id='x1-39859r146'></a><span class='ecrm-0500'>146</span><span class='ectt-0800'>    .unlocked_ioctl = test_ioctl_ioctl,</span> 
+<a id='x1-39861r147'></a><span class='ecrm-0500'>147</span><span class='ectt-0800'>};</span> 
+<a id='x1-39863r148'></a><span class='ecrm-0500'>148</span> 
+<a id='x1-39865r149'></a><span class='ecrm-0500'>149</span><span id='textcolor1314'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1315'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> ioctl_init(</span><span id='textcolor1316'><span class='ectt-0800'>void</span></span><span class='ectt-0800'>)</span> 
+<a id='x1-39867r150'></a><span class='ecrm-0500'>150</span><span class='ectt-0800'>{</span> 
+<a id='x1-39869r151'></a><span class='ecrm-0500'>151</span><span class='ectt-0800'>    </span><span id='textcolor1317'><span class='ectt-0800'>dev_t</span></span><span class='ectt-0800'> dev;</span> 
+<a id='x1-39871r152'></a><span class='ecrm-0500'>152</span><span class='ectt-0800'>    </span><span id='textcolor1318'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> alloc_ret = 0;</span> 
+<a id='x1-39873r153'></a><span class='ecrm-0500'>153</span><span class='ectt-0800'>    </span><span id='textcolor1319'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> cdev_ret = 0;</span> 
+<a id='x1-39875r154'></a><span class='ecrm-0500'>154</span><span class='ectt-0800'>    alloc_ret = alloc_chrdev_region(&amp;dev, 0, num_of_dev, DRIVER_NAME);</span> 
+<a id='x1-39877r155'></a><span class='ecrm-0500'>155</span> 
+<a id='x1-39879r156'></a><span class='ecrm-0500'>156</span><span class='ectt-0800'>    </span><span id='textcolor1320'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (alloc_ret)</span> 
+<a id='x1-39881r157'></a><span class='ecrm-0500'>157</span><span class='ectt-0800'>        </span><span id='textcolor1321'><span class='ectt-0800'>goto</span></span><span class='ectt-0800'> error;</span> 
+<a id='x1-39883r158'></a><span class='ecrm-0500'>158</span> 
+<a id='x1-39885r159'></a><span class='ecrm-0500'>159</span><span class='ectt-0800'>    test_ioctl_major = MAJOR(dev);</span> 
+<a id='x1-39887r160'></a><span class='ecrm-0500'>160</span><span class='ectt-0800'>    cdev_init(&amp;test_ioctl_cdev, &amp;fops);</span> 
+<a id='x1-39889r161'></a><span class='ecrm-0500'>161</span><span class='ectt-0800'>    cdev_ret = cdev_add(&amp;test_ioctl_cdev, dev, num_of_dev);</span> 
+<a id='x1-39891r162'></a><span class='ecrm-0500'>162</span> 
+<a id='x1-39893r163'></a><span class='ecrm-0500'>163</span><span class='ectt-0800'>    </span><span id='textcolor1322'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (cdev_ret)</span> 
+<a id='x1-39895r164'></a><span class='ecrm-0500'>164</span><span class='ectt-0800'>        </span><span id='textcolor1323'><span class='ectt-0800'>goto</span></span><span class='ectt-0800'> error;</span> 
+<a id='x1-39897r165'></a><span class='ecrm-0500'>165</span> 
+<a id='x1-39899r166'></a><span class='ecrm-0500'>166</span><span class='ectt-0800'>    pr_alert(</span><span id='textcolor1324'><span class='ectt-0800'>"%s driver(major: %d) installed.</span></span><span id='textcolor1325'><span class='ectt-0800'>\n</span></span><span id='textcolor1326'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, DRIVER_NAME,</span> 
+<a id='x1-39901r167'></a><span class='ecrm-0500'>167</span><span class='ectt-0800'>             test_ioctl_major);</span> 
+<a id='x1-39903r168'></a><span class='ecrm-0500'>168</span><span class='ectt-0800'>    </span><span id='textcolor1327'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> 0;</span> 
+<a id='x1-39905r169'></a><span class='ecrm-0500'>169</span><span class='ectt-0800'>error:</span> 
+<a id='x1-39907r170'></a><span class='ecrm-0500'>170</span><span class='ectt-0800'>    </span><span id='textcolor1328'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (cdev_ret == 0)</span> 
+<a id='x1-39909r171'></a><span class='ecrm-0500'>171</span><span class='ectt-0800'>        cdev_del(&amp;test_ioctl_cdev);</span> 
+<a id='x1-39911r172'></a><span class='ecrm-0500'>172</span><span class='ectt-0800'>    </span><span id='textcolor1329'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (alloc_ret == 0)</span> 
+<a id='x1-39913r173'></a><span class='ecrm-0500'>173</span><span class='ectt-0800'>        unregister_chrdev_region(dev, num_of_dev);</span> 
+<a id='x1-39915r174'></a><span class='ecrm-0500'>174</span><span class='ectt-0800'>    </span><span id='textcolor1330'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> -1;</span> 
+<a id='x1-39917r175'></a><span class='ecrm-0500'>175</span><span class='ectt-0800'>}</span> 
+<a id='x1-39919r176'></a><span class='ecrm-0500'>176</span> 
+<a id='x1-39921r177'></a><span class='ecrm-0500'>177</span><span id='textcolor1331'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1332'><span class='ectt-0800'>void</span></span><span class='ectt-0800'> ioctl_exit(</span><span id='textcolor1333'><span class='ectt-0800'>void</span></span><span class='ectt-0800'>)</span> 
+<a id='x1-39923r178'></a><span class='ecrm-0500'>178</span><span class='ectt-0800'>{</span> 
+<a id='x1-39925r179'></a><span class='ecrm-0500'>179</span><span class='ectt-0800'>    </span><span id='textcolor1334'><span class='ectt-0800'>dev_t</span></span><span class='ectt-0800'> dev = MKDEV(test_ioctl_major, 0);</span> 
+<a id='x1-39927r180'></a><span class='ecrm-0500'>180</span> 
+<a id='x1-39929r181'></a><span class='ecrm-0500'>181</span><span class='ectt-0800'>    cdev_del(&amp;test_ioctl_cdev);</span> 
+<a id='x1-39931r182'></a><span class='ecrm-0500'>182</span><span class='ectt-0800'>    unregister_chrdev_region(dev, num_of_dev);</span> 
+<a id='x1-39933r183'></a><span class='ecrm-0500'>183</span><span class='ectt-0800'>    pr_alert(</span><span id='textcolor1335'><span class='ectt-0800'>"%s driver removed.</span></span><span id='textcolor1336'><span class='ectt-0800'>\n</span></span><span id='textcolor1337'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, DRIVER_NAME);</span> 
+<a id='x1-39935r184'></a><span class='ecrm-0500'>184</span><span class='ectt-0800'>}</span> 
+<a id='x1-39937r185'></a><span class='ecrm-0500'>185</span> 
+<a id='x1-39939r186'></a><span class='ecrm-0500'>186</span><span class='ectt-0800'>module_init(ioctl_init);</span> 
+<a id='x1-39941r187'></a><span class='ecrm-0500'>187</span><span class='ectt-0800'>module_exit(ioctl_exit);</span> 
+<a id='x1-39943r188'></a><span class='ecrm-0500'>188</span> 
+<a id='x1-39945r189'></a><span class='ecrm-0500'>189</span><span class='ectt-0800'>MODULE_LICENSE(</span><span id='textcolor1338'><span class='ectt-0800'>"GPL"</span></span><span class='ectt-0800'>);</span> 
+<a id='x1-39947r190'></a><span class='ecrm-0500'>190</span><span class='ectt-0800'>MODULE_DESCRIPTION(</span><span id='textcolor1339'><span class='ectt-0800'>"This is test_ioctl module"</span></span><span class='ectt-0800'>);</span></pre>
                                                                   
 
                                                                   
