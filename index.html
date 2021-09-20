@@ -1533,8 +1533,8 @@ section.
 <a id='x1-31226r111'></a><span class='ecrm-0500'>111</span><span class='ectt-0800'>    </span><span id='textcolor517'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> bytes_read = 0;</span> 
 <a id='x1-31228r112'></a><span class='ecrm-0500'>112</span><span class='ectt-0800'>    </span><span id='textcolor518'><span class='ectt-0800'>const</span></span><span class='ectt-0800'> </span><span id='textcolor519'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> *msg_ptr = msg;</span> 
 <a id='x1-31230r113'></a><span class='ecrm-0500'>113</span> 
-<a id='x1-31232r114'></a><span class='ecrm-0500'>114</span><span class='ectt-0800'>    </span><span id='textcolor520'><span class='ectt-0800'>/* If we are at the end of message, reset the offset and</span></span> 
-<a id='x1-31234r115'></a><span class='ecrm-0500'>115</span><span id='textcolor521'><span class='ectt-0800'>     * return 0 (which signifies end of file).</span></span> 
+<a id='x1-31232r114'></a><span class='ecrm-0500'>114</span><span class='ectt-0800'>    </span><span id='textcolor520'><span class='ectt-0800'>/* If we are at the end of message, reset the offset and return 0 (which</span></span> 
+<a id='x1-31234r115'></a><span class='ecrm-0500'>115</span><span id='textcolor521'><span class='ectt-0800'>     * signifies end of file).</span></span> 
 <a id='x1-31236r116'></a><span class='ecrm-0500'>116</span><span id='textcolor522'><span class='ectt-0800'>     */</span></span> 
 <a id='x1-31238r117'></a><span class='ecrm-0500'>117</span><span class='ectt-0800'>    </span><span id='textcolor523'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (!*(msg_ptr + *offset)) {</span> 
 <a id='x1-31240r118'></a><span class='ecrm-0500'>118</span><span class='ectt-0800'>        *offset = 0;</span> 
@@ -2439,8 +2439,8 @@ which we mentioned at <a href='#chardevc'>6.5<!-- tex4ht:ref: sec:chardev_c  -->
 <a id='x1-39139r66'></a><span class='ecrm-0500'>66</span><span id='textcolor1039'><span class='ectt-0800'>     */</span></span> 
 <a id='x1-39141r67'></a><span class='ecrm-0500'>67</span><span class='ectt-0800'>    </span><span id='textcolor1040'><span class='ectt-0800'>const</span></span><span class='ectt-0800'> </span><span id='textcolor1041'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> *message_ptr = message;</span> 
 <a id='x1-39143r68'></a><span class='ecrm-0500'>68</span> 
-<a id='x1-39145r69'></a><span class='ecrm-0500'>69</span><span class='ectt-0800'>    </span><span id='textcolor1042'><span class='ectt-0800'>/* If at the end of message, reset the offset and</span></span> 
-<a id='x1-39147r70'></a><span class='ecrm-0500'>70</span><span id='textcolor1043'><span class='ectt-0800'>     * return 0 (which signifies end of file).</span></span> 
+<a id='x1-39145r69'></a><span class='ecrm-0500'>69</span><span class='ectt-0800'>    </span><span id='textcolor1042'><span class='ectt-0800'>/* If at the end of message, reset the offset and return 0 (which signifies</span></span> 
+<a id='x1-39147r70'></a><span class='ecrm-0500'>70</span><span id='textcolor1043'><span class='ectt-0800'>     * end of file).</span></span> 
 <a id='x1-39149r71'></a><span class='ecrm-0500'>71</span><span id='textcolor1044'><span class='ectt-0800'>     */</span></span> 
 <a id='x1-39151r72'></a><span class='ecrm-0500'>72</span><span class='ectt-0800'>    </span><span id='textcolor1045'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (!*(message_ptr + *offset)) {</span> 
 <a id='x1-39153r73'></a><span class='ecrm-0500'>73</span><span class='ectt-0800'>        *offset = 0;</span> 
@@ -2517,7 +2517,7 @@ which we mentioned at <a href='#chardevc'>6.5<!-- tex4ht:ref: sec:chardev_c  -->
 <a id='x1-39295r144'></a><span class='ecrm-0500'>144</span><span class='ectt-0800'>{</span> 
 <a id='x1-39297r145'></a><span class='ecrm-0500'>145</span><span class='ectt-0800'>    </span><span id='textcolor1103'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> i;</span> 
 <a id='x1-39299r146'></a><span class='ecrm-0500'>146</span><span class='ectt-0800'>    loff_t offset = 0;</span> 
-<a id='x1-39301r147'></a><span class='ecrm-0500'>147</span><span class='ectt-0800'>    </span><span id='textcolor1104'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> __user *temp;</span> 
+<a id='x1-39301r147'></a><span class='ecrm-0500'>147</span><span class='ectt-0800'>    </span><span id='textcolor1104'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> __user *tmp;</span> 
 <a id='x1-39303r148'></a><span class='ecrm-0500'>148</span><span class='ectt-0800'>    </span><span id='textcolor1105'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> ch;</span> 
 <a id='x1-39305r149'></a><span class='ecrm-0500'>149</span> 
 <a id='x1-39307r150'></a><span class='ecrm-0500'>150</span><span class='ectt-0800'>    </span><span id='textcolor1106'><span class='ectt-0800'>/* Switch according to the ioctl called */</span></span> 
@@ -2527,12 +2527,12 @@ which we mentioned at <a href='#chardevc'>6.5<!-- tex4ht:ref: sec:chardev_c  -->
 <a id='x1-39315r154'></a><span class='ecrm-0500'>154</span><span id='textcolor1110'><span class='ectt-0800'>         * be the device</span><span class='tctt-0800'>'</span><span class='ectt-0800'>s message.  Get the parameter given to ioctl by</span></span> 
 <a id='x1-39317r155'></a><span class='ecrm-0500'>155</span><span id='textcolor1111'><span class='ectt-0800'>         * the process.</span></span> 
 <a id='x1-39319r156'></a><span class='ecrm-0500'>156</span><span id='textcolor1112'><span class='ectt-0800'>         */</span></span> 
-<a id='x1-39321r157'></a><span class='ecrm-0500'>157</span><span class='ectt-0800'>        temp = (</span><span id='textcolor1113'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> __user *)ioctl_param;</span> 
+<a id='x1-39321r157'></a><span class='ecrm-0500'>157</span><span class='ectt-0800'>        tmp = (</span><span id='textcolor1113'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> __user *)ioctl_param;</span> 
 <a id='x1-39323r158'></a><span class='ecrm-0500'>158</span> 
 <a id='x1-39325r159'></a><span class='ecrm-0500'>159</span><span class='ectt-0800'>        </span><span id='textcolor1114'><span class='ectt-0800'>/* Find the length of the message */</span></span> 
-<a id='x1-39327r160'></a><span class='ecrm-0500'>160</span><span class='ectt-0800'>        get_user(ch, temp);</span> 
-<a id='x1-39329r161'></a><span class='ecrm-0500'>161</span><span class='ectt-0800'>        </span><span id='textcolor1115'><span class='ectt-0800'>for</span></span><span class='ectt-0800'> (i = 0; ch &amp;&amp; i &lt; BUF_LEN; i++, temp++)</span> 
-<a id='x1-39331r162'></a><span class='ecrm-0500'>162</span><span class='ectt-0800'>            get_user(ch, temp);</span> 
+<a id='x1-39327r160'></a><span class='ecrm-0500'>160</span><span class='ectt-0800'>        get_user(ch, tmp);</span> 
+<a id='x1-39329r161'></a><span class='ecrm-0500'>161</span><span class='ectt-0800'>        </span><span id='textcolor1115'><span class='ectt-0800'>for</span></span><span class='ectt-0800'> (i = 0; ch &amp;&amp; i &lt; BUF_LEN; i++, tmp++)</span> 
+<a id='x1-39331r162'></a><span class='ecrm-0500'>162</span><span class='ectt-0800'>            get_user(ch, tmp);</span> 
 <a id='x1-39333r163'></a><span class='ecrm-0500'>163</span> 
 <a id='x1-39335r164'></a><span class='ecrm-0500'>164</span><span class='ectt-0800'>        device_write(file, (</span><span id='textcolor1116'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> __user *)ioctl_param, i, NULL);</span> 
 <a id='x1-39337r165'></a><span class='ecrm-0500'>165</span><span class='ectt-0800'>        </span><span id='textcolor1117'><span class='ectt-0800'>break</span></span><span class='ectt-0800'>;</span> 
