@@ -1450,13 +1450,13 @@ section.
 <a id='x1-31060r28'></a><span class='ecrm-0500'>28</span> 
 <a id='x1-31062r29'></a><span class='ecrm-0500'>29</span><span id='textcolor448'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor449'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> major; </span><span id='textcolor450'><span class='ectt-0800'>/* major number assigned to our device driver */</span></span> 
 <a id='x1-31064r30'></a><span class='ecrm-0500'>30</span> 
-<a id='x1-31066r31'></a><span class='ecrm-0500'>31</span><span id='textcolor451'><span class='ectt-0800'>/* Is device open? Used to prevent multiple access to device */</span></span> 
-<a id='x1-31068r32'></a><span class='ecrm-0500'>32</span><span id='textcolor452'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> atomic_t already_open = ATOMIC_INIT(0);</span> 
-<a id='x1-31070r33'></a><span class='ecrm-0500'>33</span> 
-<a id='x1-31072r34'></a><span class='ecrm-0500'>34</span><span id='textcolor453'><span class='ectt-0800'>enum</span></span><span class='ectt-0800'> {</span> 
-<a id='x1-31074r35'></a><span class='ecrm-0500'>35</span><span class='ectt-0800'>    CDEV_UNUSED = 0,</span> 
-<a id='x1-31076r36'></a><span class='ecrm-0500'>36</span><span class='ectt-0800'>    CDEV_EXCLUSIVE_OPEN = 1,</span> 
-<a id='x1-31078r37'></a><span class='ecrm-0500'>37</span><span class='ectt-0800'>};</span> 
+<a id='x1-31066r31'></a><span class='ecrm-0500'>31</span><span id='textcolor451'><span class='ectt-0800'>enum</span></span><span class='ectt-0800'> {</span> 
+<a id='x1-31068r32'></a><span class='ecrm-0500'>32</span><span class='ectt-0800'>    CDEV_UNUSED = 0,</span> 
+<a id='x1-31070r33'></a><span class='ecrm-0500'>33</span><span class='ectt-0800'>    CDEV_EXCLUSIVE_OPEN = 1,</span> 
+<a id='x1-31072r34'></a><span class='ecrm-0500'>34</span><span class='ectt-0800'>};</span> 
+<a id='x1-31074r35'></a><span class='ecrm-0500'>35</span> 
+<a id='x1-31076r36'></a><span class='ecrm-0500'>36</span><span id='textcolor452'><span class='ectt-0800'>/* Is device open? Used to prevent multiple access to device */</span></span> 
+<a id='x1-31078r37'></a><span class='ecrm-0500'>37</span><span id='textcolor453'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> atomic_t already_open = ATOMIC_INIT(CDEV_UNUSED);</span> 
 <a id='x1-31080r38'></a><span class='ecrm-0500'>38</span> 
 <a id='x1-31082r39'></a><span class='ecrm-0500'>39</span><span id='textcolor454'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor455'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> msg[BUF_LEN]; </span><span id='textcolor456'><span class='ectt-0800'>/* The msg the device will give when asked */</span></span> 
 <a id='x1-31084r40'></a><span class='ecrm-0500'>40</span> 
@@ -2395,16 +2395,16 @@ which we mentioned at <a href='#chardevc'>6.5<!-- tex4ht:ref: sec:chardev_c  -->
 <a id='x1-39041r17'></a><span class='ecrm-0500'>17</span><span id='textcolor993'><span class='ectt-0800'>#define DEVICE_NAME "char_dev"</span></span> 
 <a id='x1-39043r18'></a><span class='ecrm-0500'>18</span><span id='textcolor994'><span class='ectt-0800'>#define BUF_LEN 80</span></span> 
 <a id='x1-39045r19'></a><span class='ecrm-0500'>19</span> 
-<a id='x1-39047r20'></a><span class='ecrm-0500'>20</span><span id='textcolor995'><span class='ectt-0800'>/* Is the device open right now? Used to prevent concurrent access into</span></span> 
-<a id='x1-39049r21'></a><span class='ecrm-0500'>21</span><span id='textcolor996'><span class='ectt-0800'> * the same device</span></span> 
-<a id='x1-39051r22'></a><span class='ecrm-0500'>22</span><span id='textcolor997'><span class='ectt-0800'> */</span></span> 
-<a id='x1-39053r23'></a><span class='ecrm-0500'>23</span><span id='textcolor998'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> atomic_t already_open = ATOMIC_INIT(0);</span> 
-<a id='x1-39055r24'></a><span class='ecrm-0500'>24</span> 
-<a id='x1-39057r25'></a><span class='ecrm-0500'>25</span><span id='textcolor999'><span class='ectt-0800'>enum</span></span><span class='ectt-0800'> {</span> 
-<a id='x1-39059r26'></a><span class='ecrm-0500'>26</span><span class='ectt-0800'>    CDEV_UNUSED = 0,</span> 
-<a id='x1-39061r27'></a><span class='ecrm-0500'>27</span><span class='ectt-0800'>    CDEV_EXCLUSIVE_OPEN = 1,</span> 
-<a id='x1-39063r28'></a><span class='ecrm-0500'>28</span><span class='ectt-0800'>    CDEV_EXCLUSIVE_ACCESS = 2,</span> 
-<a id='x1-39065r29'></a><span class='ecrm-0500'>29</span><span class='ectt-0800'>};</span> 
+<a id='x1-39047r20'></a><span class='ecrm-0500'>20</span><span id='textcolor995'><span class='ectt-0800'>enum</span></span><span class='ectt-0800'> {</span> 
+<a id='x1-39049r21'></a><span class='ecrm-0500'>21</span><span class='ectt-0800'>    CDEV_UNUSED = 0,</span> 
+<a id='x1-39051r22'></a><span class='ecrm-0500'>22</span><span class='ectt-0800'>    CDEV_EXCLUSIVE_OPEN = 1,</span> 
+<a id='x1-39053r23'></a><span class='ecrm-0500'>23</span><span class='ectt-0800'>    CDEV_EXCLUSIVE_ACCESS = 2,</span> 
+<a id='x1-39055r24'></a><span class='ecrm-0500'>24</span><span class='ectt-0800'>};</span> 
+<a id='x1-39057r25'></a><span class='ecrm-0500'>25</span> 
+<a id='x1-39059r26'></a><span class='ecrm-0500'>26</span><span id='textcolor996'><span class='ectt-0800'>/* Is the device open right now? Used to prevent concurrent access into</span></span> 
+<a id='x1-39061r27'></a><span class='ecrm-0500'>27</span><span id='textcolor997'><span class='ectt-0800'> * the same device</span></span> 
+<a id='x1-39063r28'></a><span class='ecrm-0500'>28</span><span id='textcolor998'><span class='ectt-0800'> */</span></span> 
+<a id='x1-39065r29'></a><span class='ecrm-0500'>29</span><span id='textcolor999'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> atomic_t already_open = ATOMIC_INIT(CDEV_UNUSED);</span> 
 <a id='x1-39067r30'></a><span class='ecrm-0500'>30</span> 
 <a id='x1-39069r31'></a><span class='ecrm-0500'>31</span><span id='textcolor1000'><span class='ectt-0800'>/* The message the device will give when asked */</span></span> 
 <a id='x1-39071r32'></a><span class='ecrm-0500'>32</span><span id='textcolor1001'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1002'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> message[BUF_LEN];</span> 
