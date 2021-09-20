@@ -1518,8 +1518,8 @@ section.
 <a id='x1-31196r96'></a><span class='ecrm-0500'>96</span><span id='textcolor496'><span class='ectt-0800'>/* Called when a process closes the device file. */</span></span> 
 <a id='x1-31198r97'></a><span class='ecrm-0500'>97</span><span id='textcolor497'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor498'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> device_release(</span><span id='textcolor499'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> inode *inode, </span><span id='textcolor500'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> file *file)</span> 
 <a id='x1-31200r98'></a><span class='ecrm-0500'>98</span><span class='ectt-0800'>{</span> 
-<a id='x1-31202r99'></a><span class='ecrm-0500'>99</span><span class='ectt-0800'>    atomic_set(&amp;already_open,</span> 
-<a id='x1-31204r100'></a><span class='ecrm-0500'>100</span><span class='ectt-0800'>               CDEV_UNUSED); </span><span id='textcolor501'><span class='ectt-0800'>/* We</span><span class='tctt-0800'>'</span><span class='ectt-0800'>re now ready for our next caller */</span></span> 
+<a id='x1-31202r99'></a><span class='ecrm-0500'>99</span><span class='ectt-0800'>    </span><span id='textcolor501'><span class='ectt-0800'>/* We</span><span class='tctt-0800'>'</span><span class='ectt-0800'>re now ready for our next caller */</span></span> 
+<a id='x1-31204r100'></a><span class='ecrm-0500'>100</span><span class='ectt-0800'>    atomic_set(&amp;already_open, CDEV_UNUSED);</span> 
 <a id='x1-31206r101'></a><span class='ecrm-0500'>101</span> 
 <a id='x1-31208r102'></a><span class='ecrm-0500'>102</span><span class='ectt-0800'>    </span><span id='textcolor502'><span class='ectt-0800'>/* Decrement the usage count, or else once you opened the file, you will</span></span> 
 <a id='x1-31210r103'></a><span class='ecrm-0500'>103</span><span id='textcolor503'><span class='ectt-0800'>     * never get get rid of the module.</span></span> 
