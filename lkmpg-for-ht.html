@@ -18,7 +18,7 @@
 
 <h2 class='titleHead'>The Linux Kernel Module Programming Guide</h2>
 <div class='author'><span class='ecrm-1200'>Peter Jay Salzman, Michael Burian, Ori Pomerantz, Bob Mottram, Jim Huang</span></div><br />
-<div class='date'><span class='ecrm-1200'>September 20, 2021</span></div>
+<div class='date'><span class='ecrm-1200'>September 21, 2021</span></div>
                                                                   
 
                                                                   
@@ -1414,11 +1414,15 @@ performance. In the kernel module, this problem may happen due to multiple
 instances accessing the shared resources. Therefore, a solution is to enforce the
 exclusive access. We use atomic Compare-And-Swap (CAS) to determine
 whether the file is currently open by someone and the shared resource is access
-simultaneously. CAS compares the contents of a memory location with the
-expected value and, only if they are the same, modifies the contents of that
-memory location to the desired value. See more concurrency details in the <a href='#avoiding-collisions-and-deadlocks'>12<!-- tex4ht:ref: sec:synchronization  --></a>
-section.
+simultaneously by maintaining the states, CDEV_EXCLUSIVE_OPEN and
+CDEV_EXCLUSIVE_ACCESS, separately. CAS compares the contents of a
+memory location with the expected value and, only if they are the same, modifies the
+contents of that memory location to the desired value. See more concurrency details
+in the <a href='#avoiding-collisions-and-deadlocks'>12<!-- tex4ht:ref: sec:synchronization  --></a> section.
 </p><!-- l. 1 --><p class='indent'>
+                                                                  
+
+                                                                  
 </p>
    <pre class='fancyvrb' id='fancyvrb37'><a id='x1-31006r1'></a><span class='ecrm-0500'>1</span><span id='textcolor400'><span class='ectt-0800'>/*</span></span> 
 <a id='x1-31008r2'></a><span class='ecrm-0500'>2</span><span id='textcolor401'><span class='ectt-0800'> * chardev.c: Creates a read-only char device that says how many times</span></span> 
@@ -1451,12 +1455,12 @@ section.
 <a id='x1-31062r29'></a><span class='ecrm-0500'>29</span><span id='textcolor448'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor449'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> major; </span><span id='textcolor450'><span class='ectt-0800'>/* major number assigned to our device driver */</span></span> 
 <a id='x1-31064r30'></a><span class='ecrm-0500'>30</span> 
 <a id='x1-31066r31'></a><span class='ecrm-0500'>31</span><span id='textcolor451'><span class='ectt-0800'>enum</span></span><span class='ectt-0800'> {</span> 
-<a id='x1-31068r32'></a><span class='ecrm-0500'>32</span><span class='ectt-0800'>    CDEV_UNUSED = 0,</span> 
+<a id='x1-31068r32'></a><span class='ecrm-0500'>32</span><span class='ectt-0800'>    CDEC_NOT_USED = 0,</span> 
 <a id='x1-31070r33'></a><span class='ecrm-0500'>33</span><span class='ectt-0800'>    CDEV_EXCLUSIVE_OPEN = 1,</span> 
 <a id='x1-31072r34'></a><span class='ecrm-0500'>34</span><span class='ectt-0800'>};</span> 
 <a id='x1-31074r35'></a><span class='ecrm-0500'>35</span> 
 <a id='x1-31076r36'></a><span class='ecrm-0500'>36</span><span id='textcolor452'><span class='ectt-0800'>/* Is device open? Used to prevent multiple access to device */</span></span> 
-<a id='x1-31078r37'></a><span class='ecrm-0500'>37</span><span id='textcolor453'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> atomic_t already_open = ATOMIC_INIT(CDEV_UNUSED);</span> 
+<a id='x1-31078r37'></a><span class='ecrm-0500'>37</span><span id='textcolor453'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> atomic_t already_open = ATOMIC_INIT(CDEC_NOT_USED);</span> 
 <a id='x1-31080r38'></a><span class='ecrm-0500'>38</span> 
 <a id='x1-31082r39'></a><span class='ecrm-0500'>39</span><span id='textcolor454'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor455'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> msg[BUF_LEN]; </span><span id='textcolor456'><span class='ectt-0800'>/* The msg the device will give when asked */</span></span> 
 <a id='x1-31084r40'></a><span class='ecrm-0500'>40</span> 
@@ -1506,7 +1510,7 @@ section.
 <a id='x1-31172r84'></a><span class='ecrm-0500'>84</span><span class='ectt-0800'>{</span> 
 <a id='x1-31174r85'></a><span class='ecrm-0500'>85</span><span class='ectt-0800'>    </span><span id='textcolor488'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor489'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> counter = 0;</span> 
 <a id='x1-31176r86'></a><span class='ecrm-0500'>86</span> 
-<a id='x1-31178r87'></a><span class='ecrm-0500'>87</span><span class='ectt-0800'>    </span><span id='textcolor490'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (atomic_cmpxchg(&amp;already_open, CDEV_UNUSED, CDEV_EXCLUSIVE_OPEN))</span> 
+<a id='x1-31178r87'></a><span class='ecrm-0500'>87</span><span class='ectt-0800'>    </span><span id='textcolor490'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (atomic_cmpxchg(&amp;already_open, CDEC_NOT_USED, CDEV_EXCLUSIVE_OPEN))</span> 
 <a id='x1-31180r88'></a><span class='ecrm-0500'>88</span><span class='ectt-0800'>        </span><span id='textcolor491'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> -EBUSY;</span> 
 <a id='x1-31182r89'></a><span class='ecrm-0500'>89</span> 
 <a id='x1-31184r90'></a><span class='ecrm-0500'>90</span><span class='ectt-0800'>    sprintf(msg, </span><span id='textcolor492'><span class='ectt-0800'>"I already told you %d times Hello world!</span></span><span id='textcolor493'><span class='ectt-0800'>\n</span></span><span id='textcolor494'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, counter++);</span> 
@@ -1519,7 +1523,7 @@ section.
 <a id='x1-31198r97'></a><span class='ecrm-0500'>97</span><span id='textcolor497'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor498'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> device_release(</span><span id='textcolor499'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> inode *inode, </span><span id='textcolor500'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> file *file)</span> 
 <a id='x1-31200r98'></a><span class='ecrm-0500'>98</span><span class='ectt-0800'>{</span> 
 <a id='x1-31202r99'></a><span class='ecrm-0500'>99</span><span class='ectt-0800'>    </span><span id='textcolor501'><span class='ectt-0800'>/* We</span><span class='tctt-0800'>'</span><span class='ectt-0800'>re now ready for our next caller */</span></span> 
-<a id='x1-31204r100'></a><span class='ecrm-0500'>100</span><span class='ectt-0800'>    atomic_set(&amp;already_open, CDEV_UNUSED);</span> 
+<a id='x1-31204r100'></a><span class='ecrm-0500'>100</span><span class='ectt-0800'>    atomic_set(&amp;already_open, CDEC_NOT_USED);</span> 
 <a id='x1-31206r101'></a><span class='ecrm-0500'>101</span> 
 <a id='x1-31208r102'></a><span class='ecrm-0500'>102</span><span class='ectt-0800'>    </span><span id='textcolor502'><span class='ectt-0800'>/* Decrement the usage count, or else once you opened the file, you will</span></span> 
 <a id='x1-31210r103'></a><span class='ecrm-0500'>103</span><span id='textcolor503'><span class='ectt-0800'>     * never get get rid of the module.</span></span> 
@@ -1577,9 +1581,6 @@ section.
 <a id='x1-31314r155'></a><span class='ecrm-0500'>155</span><span class='ectt-0800'>module_exit(chardev_exit);</span> 
 <a id='x1-31316r156'></a><span class='ecrm-0500'>156</span> 
 <a id='x1-31318r157'></a><span class='ecrm-0500'>157</span><span class='ectt-0800'>MODULE_LICENSE(</span><span id='textcolor546'><span class='ectt-0800'>"GPL"</span></span><span class='ectt-0800'>);</span></pre>
-                                                                  
-
-                                                                  
 <!-- l. 936 --><p class='noindent'>
 </p>
    <h4 class='subsectionHead' id='writing-modules-for-multiple-kernel-versions'><span class='titlemark'>6.6   </span> <a id='x1-320006.6'></a>Writing Modules for Multiple Kernel Versions</h4>
@@ -1618,14 +1619,14 @@ where <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>/proc
 location where the file’s index-node (inode for short) is located. The inode
 contains information about the file, for example the file’s permissions, together
 with a pointer to the disk location or locations where the file’s data can be
+                                                                  
+
+                                                                  
 found.
 </p><!-- l. 958 --><p class='indent'>   Because we don’t get called when the file is opened or closed, there’s nowhere for
 us to put <code>  <span class='ectt-1000'>try_module_get</span>
 </code> and <code>  <span class='ectt-1000'>module_put</span>
 </code> in this module, and if the file is opened and then the module is removed, there’s no
-                                                                  
-
-                                                                  
 way to avoid the consequences.
 </p><!-- l. 960 --><p class='indent'>   Here a simple example showing how to use a <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>/proc</span></span></span> file. This is the HelloWorld for
 the <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>/proc</span></span></span> filesystem. There are three parts: create the file <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>/proc/helloworld</span></span></span> in the
@@ -2396,7 +2397,7 @@ which we mentioned at <a href='#chardevc'>6.5<!-- tex4ht:ref: sec:chardev_c  -->
 <a id='x1-39043r18'></a><span class='ecrm-0500'>18</span><span id='textcolor994'><span class='ectt-0800'>#define BUF_LEN 80</span></span> 
 <a id='x1-39045r19'></a><span class='ecrm-0500'>19</span> 
 <a id='x1-39047r20'></a><span class='ecrm-0500'>20</span><span id='textcolor995'><span class='ectt-0800'>enum</span></span><span class='ectt-0800'> {</span> 
-<a id='x1-39049r21'></a><span class='ecrm-0500'>21</span><span class='ectt-0800'>    CDEV_UNUSED = 0,</span> 
+<a id='x1-39049r21'></a><span class='ecrm-0500'>21</span><span class='ectt-0800'>    CDEC_NOT_USED = 0,</span> 
 <a id='x1-39051r22'></a><span class='ecrm-0500'>22</span><span class='ectt-0800'>    CDEV_EXCLUSIVE_OPEN = 1,</span> 
 <a id='x1-39053r23'></a><span class='ecrm-0500'>23</span><span class='ectt-0800'>    CDEV_EXCLUSIVE_ACCESS = 2,</span> 
 <a id='x1-39055r24'></a><span class='ecrm-0500'>24</span><span class='ectt-0800'>};</span> 
@@ -2404,7 +2405,7 @@ which we mentioned at <a href='#chardevc'>6.5<!-- tex4ht:ref: sec:chardev_c  -->
 <a id='x1-39059r26'></a><span class='ecrm-0500'>26</span><span id='textcolor996'><span class='ectt-0800'>/* Is the device open right now? Used to prevent concurrent access into</span></span> 
 <a id='x1-39061r27'></a><span class='ecrm-0500'>27</span><span id='textcolor997'><span class='ectt-0800'> * the same device</span></span> 
 <a id='x1-39063r28'></a><span class='ecrm-0500'>28</span><span id='textcolor998'><span class='ectt-0800'> */</span></span> 
-<a id='x1-39065r29'></a><span class='ecrm-0500'>29</span><span id='textcolor999'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> atomic_t already_open = ATOMIC_INIT(CDEV_UNUSED);</span> 
+<a id='x1-39065r29'></a><span class='ecrm-0500'>29</span><span id='textcolor999'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> atomic_t already_open = ATOMIC_INIT(CDEC_NOT_USED);</span> 
 <a id='x1-39067r30'></a><span class='ecrm-0500'>30</span> 
 <a id='x1-39069r31'></a><span class='ecrm-0500'>31</span><span id='textcolor1000'><span class='ectt-0800'>/* The message the device will give when asked */</span></span> 
 <a id='x1-39071r32'></a><span class='ecrm-0500'>32</span><span id='textcolor1001'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1002'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> message[BUF_LEN];</span> 
@@ -2417,7 +2418,7 @@ which we mentioned at <a href='#chardevc'>6.5<!-- tex4ht:ref: sec:chardev_c  -->
 <a id='x1-39085r39'></a><span class='ecrm-0500'>39</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor1010'><span class='ectt-0800'>"device_open(%p)</span></span><span id='textcolor1011'><span class='ectt-0800'>\n</span></span><span id='textcolor1012'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, file);</span> 
 <a id='x1-39087r40'></a><span class='ecrm-0500'>40</span> 
 <a id='x1-39089r41'></a><span class='ecrm-0500'>41</span><span class='ectt-0800'>    </span><span id='textcolor1013'><span class='ectt-0800'>/* We don</span><span class='tctt-0800'>'</span><span class='ectt-0800'>t want to talk to two processes at the same time. */</span></span> 
-<a id='x1-39091r42'></a><span class='ecrm-0500'>42</span><span class='ectt-0800'>    </span><span id='textcolor1014'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (atomic_cmpxchg(&amp;already_open, CDEV_UNUSED, CDEV_EXCLUSIVE_OPEN))</span> 
+<a id='x1-39091r42'></a><span class='ecrm-0500'>42</span><span class='ectt-0800'>    </span><span id='textcolor1014'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (atomic_cmpxchg(&amp;already_open, CDEC_NOT_USED, CDEV_EXCLUSIVE_OPEN))</span> 
 <a id='x1-39093r43'></a><span class='ecrm-0500'>43</span><span class='ectt-0800'>        </span><span id='textcolor1015'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> -EBUSY;</span> 
 <a id='x1-39095r44'></a><span class='ecrm-0500'>44</span> 
 <a id='x1-39097r45'></a><span class='ecrm-0500'>45</span><span class='ectt-0800'>    try_module_get(THIS_MODULE);</span> 
@@ -2429,7 +2430,7 @@ which we mentioned at <a href='#chardevc'>6.5<!-- tex4ht:ref: sec:chardev_c  -->
 <a id='x1-39109r51'></a><span class='ecrm-0500'>51</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor1021'><span class='ectt-0800'>"device_release(%p,%p)</span></span><span id='textcolor1022'><span class='ectt-0800'>\n</span></span><span id='textcolor1023'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, inode, file);</span> 
 <a id='x1-39111r52'></a><span class='ecrm-0500'>52</span> 
 <a id='x1-39113r53'></a><span class='ecrm-0500'>53</span><span class='ectt-0800'>    </span><span id='textcolor1024'><span class='ectt-0800'>/* We</span><span class='tctt-0800'>'</span><span class='ectt-0800'>re now ready for our next caller */</span></span> 
-<a id='x1-39115r54'></a><span class='ecrm-0500'>54</span><span class='ectt-0800'>    atomic_set(&amp;already_open, CDEV_UNUSED);</span> 
+<a id='x1-39115r54'></a><span class='ecrm-0500'>54</span><span class='ectt-0800'>    atomic_set(&amp;already_open, CDEC_NOT_USED);</span> 
 <a id='x1-39117r55'></a><span class='ecrm-0500'>55</span> 
 <a id='x1-39119r56'></a><span class='ecrm-0500'>56</span><span class='ectt-0800'>    module_put(THIS_MODULE);</span> 
 <a id='x1-39121r57'></a><span class='ecrm-0500'>57</span><span class='ectt-0800'>    </span><span id='textcolor1025'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> SUCCESS;</span> 
