@@ -18,7 +18,7 @@
 
 <h2 class='titleHead'>The Linux Kernel Module Programming Guide</h2>
 <div class='author'><span class='ecrm-1200'>Peter Jay Salzman, Michael Burian, Ori Pomerantz, Bob Mottram, Jim Huang</span></div><br />
-<div class='date'><span class='ecrm-1200'>September 22, 2021</span></div>
+<div class='date'><span class='ecrm-1200'>September 23, 2021</span></div>
                                                                   
 
                                                                   
@@ -1426,8 +1426,8 @@ exclusive access. We use atomic Compare-And-Swap (CAS) to maintain the states,
 
                                                                   
 </code> and <code>  <span class='ectt-1000'>CDEV_EXCLUSIVE_OPEN</span>
-</code>, to determine the file is currently opened by someone or not. CAS compares the
-contents of a memory location with the expected value and, only if they are the
+</code>, to determine whether the file is currently opened by someone or not. CAS compares
+the contents of a memory location with the expected value and, only if they are the
 same, modifies the contents of that memory location to the desired value. See more
 concurrency details in the <a href='#avoiding-collisions-and-deadlocks'>12<!-- tex4ht:ref: sec:synchronization  --></a> section.
 </p><!-- l. 1 --><p class='indent'>
