@@ -30,6 +30,10 @@ obj-m += example_mutex.o
 obj-m += bottomhalf.o
 obj-m += ioctl.o
 
+# lkb
+obj-m += memory1.o
+
+
 PWD := $(CURDIR)
 
 ifeq ($(CONFIG_STATUS_CHECK_GCC),y)
