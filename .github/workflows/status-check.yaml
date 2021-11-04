@@ -2,7 +2,7 @@ name: status-checks
 
 on:
   push:
-    branches: [ master ]
+    branches: [ lkb ]
   pull_request:
     branches: [ master ]
 
