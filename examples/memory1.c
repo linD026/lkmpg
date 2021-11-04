@@ -46,9 +46,8 @@ MODULE_AUTHOR("Arshad Hussain <arshad.super@gmail.com>");
 
 static int __init code_init(void)
 {
-    struct page *p, *p1, *p2;
+    struct page *p, *p1;
     unsigned long va; /* virtual address returned */
-    unsigned long *page;
 
     /*
 	 * Allocate single page. (Physical memory)
@@ -72,6 +71,9 @@ static int __init code_init(void)
         printk(KERN_INFO "alloc_pages Alocation failed\n");
         return -1;
     } else {
+        struct page *p2;
+        unsigned long *page;
+
         printk(KERN_INFO "alloc_pages Alloation done\n");
         /*
 		 * macro page_address() - return virtual address that 
@@ -83,7 +85,7 @@ static int __init code_init(void)
 		 * convert virtual address back to page
 		 */
         p2 = virt_to_page(page);
-        __free_pages(p1, 3);
+        __free_pages(p2, 3);
     }
 
     /*
