@@ -2881,7 +2881,7 @@ which we mentioned at <a href='#chardevc'>6.5<!-- tex4ht:ref: sec:chardev_c  -->
 <a id='x1-39621r32'></a><span class='ecrm-0500'>32</span><span id='textcolor1260'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> ioctl_get_msg(</span><span id='textcolor1261'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> file_desc)</span> 
 <a id='x1-39623r33'></a><span class='ecrm-0500'>33</span><span class='ectt-0800'>{</span> 
 <a id='x1-39625r34'></a><span class='ecrm-0500'>34</span><span class='ectt-0800'>    </span><span id='textcolor1262'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> ret_val;</span> 
-<a id='x1-39627r35'></a><span class='ecrm-0500'>35</span><span class='ectt-0800'>    </span><span id='textcolor1263'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> message[100];</span> 
+<a id='x1-39627r35'></a><span class='ecrm-0500'>35</span><span class='ectt-0800'>    </span><span id='textcolor1263'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> message[100] = { 0 };</span> 
 <a id='x1-39629r36'></a><span class='ecrm-0500'>36</span> 
 <a id='x1-39631r37'></a><span class='ecrm-0500'>37</span><span class='ectt-0800'>    </span><span id='textcolor1264'><span class='ectt-0800'>/* Warning - this is dangerous because we don</span><span class='tctt-0800'>'</span><span class='ectt-0800'>t tell </span></span> 
 <a id='x1-39633r38'></a><span class='ecrm-0500'>38</span><span id='textcolor1265'><span class='ectt-0800'>   * the kernel how far it</span><span class='tctt-0800'>'</span><span class='ectt-0800'>s allowed to write, so it </span></span> 
