@@ -2555,7 +2555,7 @@ call (<code>  <span class='ectt-1000'>_IO</span>
 </code> — depending on the type) in a header file. This header file should then be
 included both by the programs which will use ioctl (so they can generate the
 appropriate ioctl’s) and by the kernel module (so it can understand it). In the
-example below, the header file is chardev.h and the program which uses it is
+example below, the header file is <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>chardev.h</span></span></span> and the program which uses it is
 <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>userspace_ioctl.c</span></span></span>.
 </p><!-- l. 1323 --><p class='indent'>   If you want to use ioctls in your own kernel modules, it is best to receive an
 official ioctl assignment, so if you accidentally get somebody else’s ioctls, or if they
