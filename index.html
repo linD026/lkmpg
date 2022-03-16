@@ -18,7 +18,7 @@
 
 <h2 class='titleHead'>The Linux Kernel Module Programming Guide</h2>
 <div class='author'><span class='ecrm-1200'>Peter Jay Salzman, Michael Burian, Ori Pomerantz, Bob Mottram, Jim Huang</span></div><br />
-<div class='date'><span class='ecrm-1200'>February 15, 2022</span></div>
+<div class='date'><span class='ecrm-1200'>March 16, 2022</span></div>
                                                                   
 
                                                                   
@@ -726,7 +726,7 @@ pass <code>  <span class='ectt-1000'>NULL</span>
 <a id='x1-16027r4'></a><span class='ecrm-0500'>4</span><span id='textcolor129'><span class='ectt-0800'>short</span></span><span class='ectt-0800'> myshortarray[4];</span> 
 <a id='x1-16029r5'></a><span class='ecrm-0500'>5</span><span id='textcolor130'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> count;</span> 
 <a id='x1-16031r6'></a><span class='ecrm-0500'>6</span><span class='ectt-0800'>module_param_array(myshortarray, </span><span id='textcolor131'><span class='ectt-0800'>short</span></span><span class='ectt-0800'>, &amp;count, 0); </span><span id='textcolor132'><span class='ectt-0800'>/* put count into "count" variable */</span></span></pre>
-<!-- l. 516 --><p class='indent'>   A good use for this is to have the module variable’s default values set, like an port
+<!-- l. 516 --><p class='indent'>   A good use for this is to have the module variable’s default values set, like a port
 or IO address. If the variables contain the default values, then perform autodetection
 (explained elsewhere). Otherwise, keep the current value. This will be made clear
 later on.
@@ -771,7 +771,7 @@ parameters: a variable name and a free form string describing that variable.
 <a id='x1-16100r34'></a><span class='ecrm-0500'>34</span><span id='textcolor175'><span class='ectt-0800'>/* module_param_array(name, type, num, perm);</span></span> 
 <a id='x1-16102r35'></a><span class='ecrm-0500'>35</span><span id='textcolor176'><span class='ectt-0800'> * The first param is the parameter</span><span class='tctt-0800'>'</span><span class='ectt-0800'>s (in this case the array</span><span class='tctt-0800'>'</span><span class='ectt-0800'>s) name.</span></span> 
 <a id='x1-16104r36'></a><span class='ecrm-0500'>36</span><span id='textcolor177'><span class='ectt-0800'> * The second param is the data type of the elements of the array.</span></span> 
-<a id='x1-16106r37'></a><span class='ecrm-0500'>37</span><span id='textcolor178'><span class='ectt-0800'> * The third argument is a pointer to the variable that will store the number.</span></span> 
+<a id='x1-16106r37'></a><span class='ecrm-0500'>37</span><span id='textcolor178'><span class='ectt-0800'> * The third argument is a pointer to the variable that will store the number</span></span> 
 <a id='x1-16108r38'></a><span class='ecrm-0500'>38</span><span id='textcolor179'><span class='ectt-0800'> * of elements of the array initialized by the user at module loading time.</span></span> 
 <a id='x1-16110r39'></a><span class='ecrm-0500'>39</span><span id='textcolor180'><span class='ectt-0800'> * The fourth argument is the permission bits.</span></span> 
 <a id='x1-16112r40'></a><span class='ecrm-0500'>40</span><span id='textcolor181'><span class='ectt-0800'> */</span></span> 
@@ -987,7 +987,7 @@ custom string which appears in the module’s version magic and not in the
 kernel’s one, is due to a modification with respect to the original, in the
 makefile that some distributions include. Then, examine your <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>Makefile</span></span></span>,
 and make sure that the specified version information matches exactly the
-one used for your current kernel. For example, you makefile could start as
+one used for your current kernel. For example, your makefile could start as
 follows:
                                                                   
 
@@ -1079,12 +1079,13 @@ code.
 </p><!-- l. 706 --><p class='indent'>   Kernel modules are different here, too. In the hello world
 example, you might have noticed that we used a function,
 <code> <span class='ectt-1000'>pr_info()</span>
-</code> but did not include a standard I/O library. That is because modules are object files whose symbols
-get resolved upon <code>  <span class='ectt-1000'>insmod</span>
-</code>’ing. The definition for the symbols comes from the kernel itself; the only
-external functions you can use are the ones provided by the kernel. If you’re
-curious about what symbols have been exported by your kernel, take a look at
-<span class='obeylines-h'><span class='verb'><span class='ectt-1000'>/proc/kallsyms</span></span></span>.
+</code> but did not include a standard I/O library. That is because
+modules are object files whose symbols get resolved upon running
+<code> <span class='ectt-1000'>insmod</span>
+</code> or <code>  <span class='ectt-1000'>modprobe</span>
+</code>. The definition for the symbols comes from the kernel itself; the only external
+functions you can use are the ones provided by the kernel. If you’re curious about
+what symbols have been exported by your kernel, take a look at <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>/proc/kallsyms</span></span></span>.
 </p><!-- l. 711 --><p class='indent'>   One point to keep in mind is the difference between library functions and system
 calls. Library functions are higher level, run completely in user space and
 provide a more convenient interface for the programmer to the functions
@@ -1103,13 +1104,13 @@ data into strings and write the string data using the low-level system call
 </code>? It is easy! Compile the following program:
 </p><!-- l. 1 --><p class='indent'>
 </p>
-   <pre class='fancyvrb' id='fancyvrb35'><a id='x1-21016r1'></a><span class='ecrm-0500'>1</span><span id='textcolor259'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor260'><span class='ectt-0800'>&lt;stdio.h&gt;</span></span> 
-<a id='x1-21018r2'></a><span class='ecrm-0500'>2</span> 
-<a id='x1-21020r3'></a><span class='ecrm-0500'>3</span><span id='textcolor261'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> main(</span><span id='textcolor262'><span class='ectt-0800'>void</span></span><span class='ectt-0800'>)</span> 
-<a id='x1-21022r4'></a><span class='ecrm-0500'>4</span><span class='ectt-0800'>{</span> 
-<a id='x1-21024r5'></a><span class='ecrm-0500'>5</span><span class='ectt-0800'>    printf(</span><span id='textcolor263'><span class='ectt-0800'>"hello"</span></span><span class='ectt-0800'>);</span> 
-<a id='x1-21026r6'></a><span class='ecrm-0500'>6</span><span class='ectt-0800'>    </span><span id='textcolor264'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> 0;</span> 
-<a id='x1-21028r7'></a><span class='ecrm-0500'>7</span><span class='ectt-0800'>}</span></pre>
+   <pre class='fancyvrb' id='fancyvrb35'><a id='x1-21017r1'></a><span class='ecrm-0500'>1</span><span id='textcolor259'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor260'><span class='ectt-0800'>&lt;stdio.h&gt;</span></span> 
+<a id='x1-21019r2'></a><span class='ecrm-0500'>2</span> 
+<a id='x1-21021r3'></a><span class='ecrm-0500'>3</span><span id='textcolor261'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> main(</span><span id='textcolor262'><span class='ectt-0800'>void</span></span><span class='ectt-0800'>)</span> 
+<a id='x1-21023r4'></a><span class='ecrm-0500'>4</span><span class='ectt-0800'>{</span> 
+<a id='x1-21025r5'></a><span class='ecrm-0500'>5</span><span class='ectt-0800'>    printf(</span><span id='textcolor263'><span class='ectt-0800'>"hello"</span></span><span class='ectt-0800'>);</span> 
+<a id='x1-21027r6'></a><span class='ecrm-0500'>6</span><span class='ectt-0800'>    </span><span id='textcolor264'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> 0;</span> 
+<a id='x1-21029r7'></a><span class='ecrm-0500'>7</span><span class='ectt-0800'>}</span></pre>
 <!-- l. 729 --><p class='indent'>   with <code>  <span class='ectt-1000'>gcc -Wall -o hello hello.c</span>
 </code>. Run the executable with <code>  <span class='ectt-1000'>strace ./hello</span>
 </code>. Are you impressed? Every line you see corresponds to a system call. <a href='https://strace.io/'>strace</a> is a
@@ -1156,7 +1157,7 @@ mode”.
 library function in user mode. The library function calls one or more system calls,
 and these system calls execute on the library function’s behalf, but do so in
 supervisor mode since they are part of the kernel itself. Once the system call
-completes its task, it returns and execution gets transfered back to user
+completes its task, it returns and execution gets transferred back to user
 mode.
 </p><!-- l. 761 --><p class='noindent'>
 </p>
@@ -1712,7 +1713,7 @@ concurrency details in the <a href='#avoiding-collisions-and-deadlocks'>12<!-- t
 <a id='x1-31206r100'></a><span class='ecrm-0500'>100</span><span class='ectt-0800'>    atomic_set(&amp;already_open, CDEV_NOT_USED);</span> 
 <a id='x1-31208r101'></a><span class='ecrm-0500'>101</span> 
 <a id='x1-31210r102'></a><span class='ecrm-0500'>102</span><span class='ectt-0800'>    </span><span id='textcolor529'><span class='ectt-0800'>/* Decrement the usage count, or else once you opened the file, you will</span></span> 
-<a id='x1-31212r103'></a><span class='ecrm-0500'>103</span><span id='textcolor530'><span class='ectt-0800'>     * never get get rid of the module.</span></span> 
+<a id='x1-31212r103'></a><span class='ecrm-0500'>103</span><span id='textcolor530'><span class='ectt-0800'>     * never get rid of the module.</span></span> 
 <a id='x1-31214r104'></a><span class='ecrm-0500'>104</span><span id='textcolor531'><span class='ectt-0800'>     */</span></span> 
 <a id='x1-31216r105'></a><span class='ecrm-0500'>105</span><span class='ectt-0800'>    module_put(THIS_MODULE);</span> 
 <a id='x1-31218r106'></a><span class='ecrm-0500'>106</span> 
@@ -2699,8 +2700,8 @@ example:
 <a id='x1-39301r149'></a><span class='ecrm-0500'>149</span><span id='textcolor1114'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor1115'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> ioctl_init(</span><span id='textcolor1116'><span class='ectt-0800'>void</span></span><span class='ectt-0800'>)</span> 
 <a id='x1-39303r150'></a><span class='ecrm-0500'>150</span><span class='ectt-0800'>{</span> 
 <a id='x1-39305r151'></a><span class='ecrm-0500'>151</span><span class='ectt-0800'>    </span><span id='textcolor1117'><span class='ectt-0800'>dev_t</span></span><span class='ectt-0800'> dev;</span> 
-<a id='x1-39307r152'></a><span class='ecrm-0500'>152</span><span class='ectt-0800'>    </span><span id='textcolor1118'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> alloc_ret = 0;</span> 
-<a id='x1-39309r153'></a><span class='ecrm-0500'>153</span><span class='ectt-0800'>    </span><span id='textcolor1119'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> cdev_ret = 0;</span> 
+<a id='x1-39307r152'></a><span class='ecrm-0500'>152</span><span class='ectt-0800'>    </span><span id='textcolor1118'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> alloc_ret = -1;</span> 
+<a id='x1-39309r153'></a><span class='ecrm-0500'>153</span><span class='ectt-0800'>    </span><span id='textcolor1119'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> cdev_ret = -1;</span> 
 <a id='x1-39311r154'></a><span class='ecrm-0500'>154</span><span class='ectt-0800'>    alloc_ret = alloc_chrdev_region(&amp;dev, 0, num_of_dev, DRIVER_NAME);</span> 
 <a id='x1-39313r155'></a><span class='ecrm-0500'>155</span> 
 <a id='x1-39315r156'></a><span class='ecrm-0500'>156</span><span class='ectt-0800'>    </span><span id='textcolor1120'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (alloc_ret)</span> 
@@ -3433,9 +3434,9 @@ dry run of this example, you will have to patch your current kernel in order to 
 <a id='x1-41090r24'></a><span class='ecrm-0500'>24</span><span id='textcolor1479'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor1480'><span class='ectt-0800'>&lt;linux/uaccess.h&gt;</span></span> 
 <a id='x1-41092r25'></a><span class='ecrm-0500'>25</span> 
 <a id='x1-41094r26'></a><span class='ecrm-0500'>26</span><span id='textcolor1481'><span class='ectt-0800'>/* The way we access "sys_call_table" varies as kernel internal changes.</span></span> 
-<a id='x1-41096r27'></a><span class='ecrm-0500'>27</span><span id='textcolor1482'><span class='ectt-0800'> * - ver &lt;= 5.4 : manual symbol lookup</span></span> 
-<a id='x1-41098r28'></a><span class='ecrm-0500'>28</span><span id='textcolor1483'><span class='ectt-0800'> * - 5.4 &lt; ver &lt; 5.7 : kallsyms_lookup_name</span></span> 
-<a id='x1-41100r29'></a><span class='ecrm-0500'>29</span><span id='textcolor1484'><span class='ectt-0800'> * - 5.7 &lt;= ver : Kprobes or specific kernel module parameter</span></span> 
+<a id='x1-41096r27'></a><span class='ecrm-0500'>27</span><span id='textcolor1482'><span class='ectt-0800'> * - Previous to v5.4 : manual symbol lookup</span></span> 
+<a id='x1-41098r28'></a><span class='ecrm-0500'>28</span><span id='textcolor1483'><span class='ectt-0800'> * - v5.5 to v5.6     : use kallsyms_lookup_name()</span></span> 
+<a id='x1-41100r29'></a><span class='ecrm-0500'>29</span><span id='textcolor1484'><span class='ectt-0800'> * - v5.7+            : Kprobes or specific kernel module parameter</span></span> 
 <a id='x1-41102r30'></a><span class='ecrm-0500'>30</span><span id='textcolor1485'><span class='ectt-0800'> */</span></span> 
 <a id='x1-41104r31'></a><span class='ecrm-0500'>31</span> 
 <a id='x1-41106r32'></a><span class='ecrm-0500'>32</span><span id='textcolor1486'><span class='ectt-0800'>/* The in-kernel calls to the ksys_close() syscall were removed in Linux v5.11+.</span></span> 
@@ -4501,7 +4502,7 @@ tty.
 <a id='x1-51100r50'></a><span class='ecrm-0500'>50</span><span id='textcolor2240'><span class='ectt-0800'>         *</span></span> 
 <a id='x1-51102r51'></a><span class='ecrm-0500'>51</span><span id='textcolor2241'><span class='ectt-0800'>         * This is why text files are different between Unix and MS Windows.</span></span> 
 <a id='x1-51104r52'></a><span class='ecrm-0500'>52</span><span id='textcolor2242'><span class='ectt-0800'>         * In CP/M and derivatives, like MS-DOS and MS Windows, the ASCII</span></span> 
-<a id='x1-51106r53'></a><span class='ecrm-0500'>53</span><span id='textcolor2243'><span class='ectt-0800'>         * standard was strictly adhered to, and therefore a newline requirs</span></span> 
+<a id='x1-51106r53'></a><span class='ecrm-0500'>53</span><span id='textcolor2243'><span class='ectt-0800'>         * standard was strictly adhered to, and therefore a newline requires</span></span> 
 <a id='x1-51108r54'></a><span class='ecrm-0500'>54</span><span id='textcolor2244'><span class='ectt-0800'>         * both a LF and a CR.</span></span> 
 <a id='x1-51110r55'></a><span class='ecrm-0500'>55</span><span id='textcolor2245'><span class='ectt-0800'>         */</span></span> 
 <a id='x1-51112r56'></a><span class='ecrm-0500'>56</span><span class='ectt-0800'>        (ttyops-&gt;write)(my_tty, </span><span id='textcolor2246'><span class='ectt-0800'>"</span></span><span id='textcolor2247'><span class='ectt-0800'>\015\012</span></span><span id='textcolor2248'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, 2);</span> 
@@ -4731,7 +4732,7 @@ better suited to running multiple things in a sequence.
 <a id='x1-54014r6'></a><span class='ecrm-0500'>6</span><span id='textcolor2381'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor2382'><span class='ectt-0800'>&lt;linux/kernel.h&gt;</span></span> 
 <a id='x1-54016r7'></a><span class='ecrm-0500'>7</span><span id='textcolor2383'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor2384'><span class='ectt-0800'>&lt;linux/module.h&gt;</span></span> 
 <a id='x1-54018r8'></a><span class='ecrm-0500'>8</span> 
-<a id='x1-54020r9'></a><span class='ecrm-0500'>9</span><span id='textcolor2385'><span class='ectt-0800'>/* Macro DECLARE_TASKLET_OLD exists for compatibiity.</span></span> 
+<a id='x1-54020r9'></a><span class='ecrm-0500'>9</span><span id='textcolor2385'><span class='ectt-0800'>/* Macro DECLARE_TASKLET_OLD exists for compatibility.</span></span> 
 <a id='x1-54022r10'></a><span class='ecrm-0500'>10</span><span id='textcolor2386'><span class='ectt-0800'> * See https://lwn.net/Articles/830964/</span></span> 
 <a id='x1-54024r11'></a><span class='ecrm-0500'>11</span><span id='textcolor2387'><span class='ectt-0800'> */</span></span> 
 <a id='x1-54026r12'></a><span class='ecrm-0500'>12</span><span id='textcolor2388'><span class='ectt-0800'>#ifndef DECLARE_TASKLET_OLD</span></span> 
@@ -5082,7 +5083,7 @@ when an interrupt is triggered.
 <a id='x1-59010r5'></a><span class='ecrm-0500'>5</span><span id='textcolor2561'><span class='ectt-0800'> * from:</span></span> 
 <a id='x1-59012r6'></a><span class='ecrm-0500'>6</span><span id='textcolor2562'><span class='ectt-0800'> *    https://github.com/wendlers/rpi-kmod-samples</span></span> 
 <a id='x1-59014r7'></a><span class='ecrm-0500'>7</span><span id='textcolor2563'><span class='ectt-0800'> *</span></span> 
-<a id='x1-59016r8'></a><span class='ecrm-0500'>8</span><span id='textcolor2564'><span class='ectt-0800'> * Press one button to turn on a LED and another to turn it off</span></span> 
+<a id='x1-59016r8'></a><span class='ecrm-0500'>8</span><span id='textcolor2564'><span class='ectt-0800'> * Press one button to turn on an LED and another to turn it off</span></span> 
 <a id='x1-59018r9'></a><span class='ecrm-0500'>9</span><span id='textcolor2565'><span class='ectt-0800'> */</span></span> 
 <a id='x1-59020r10'></a><span class='ecrm-0500'>10</span> 
 <a id='x1-59022r11'></a><span class='ecrm-0500'>11</span><span id='textcolor2566'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor2567'><span class='ectt-0800'>&lt;linux/delay.h&gt;</span></span> 
