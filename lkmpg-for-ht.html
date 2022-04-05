@@ -18,7 +18,7 @@
 
 <h2 class='titleHead'>The Linux Kernel Module Programming Guide</h2>
 <div class='author'><span class='ecrm-1200'>Peter Jay Salzman, Michael Burian, Ori Pomerantz, Bob Mottram, Jim Huang</span></div><br />
-<div class='date'><span class='ecrm-1200'>March 16, 2022</span></div>
+<div class='date'><span class='ecrm-1200'>April 5, 2022</span></div>
                                                                   
 
                                                                   
@@ -88,13 +88,14 @@
 <br />    <span class='sectionToc'>16 <a href='#crypto' id='QQ2-1-60'>Crypto</a></span>
 <br />     <span class='subsectionToc'>16.1 <a href='#hash-functions' id='QQ2-1-61'>Hash functions</a></span>
 <br />     <span class='subsectionToc'>16.2 <a href='#symmetric-key-encryption' id='QQ2-1-62'>Symmetric key encryption</a></span>
-<br />    <span class='sectionToc'>17 <a href='#standardizing-the-interfaces-the-device-model' id='QQ2-1-63'>Standardizing the interfaces: The Device Model</a></span>
-<br />    <span class='sectionToc'>18 <a href='#optimizations' id='QQ2-1-64'>Optimizations</a></span>
-<br />     <span class='subsectionToc'>18.1 <a href='#likely-and-unlikely-conditions' id='QQ2-1-65'>Likely and Unlikely conditions</a></span>
-<br />    <span class='sectionToc'>19 <a href='#common-pitfalls' id='QQ2-1-66'>Common Pitfalls</a></span>
-<br />     <span class='subsectionToc'>19.1 <a href='#using-standard-libraries' id='QQ2-1-67'>Using standard libraries</a></span>
-<br />     <span class='subsectionToc'>19.2 <a href='#disabling-interrupts' id='QQ2-1-68'>Disabling interrupts</a></span>
-<br />    <span class='sectionToc'>20 <a href='#where-to-go-from-here' id='QQ2-1-69'>Where To Go From Here?</a></span>
+<br />    <span class='sectionToc'>17 <a href='#virtual-input-device-driver' id='QQ2-1-63'>Virtual Input Device Driver</a></span>
+<br />    <span class='sectionToc'>18 <a href='#standardizing-the-interfaces-the-device-model' id='QQ2-1-64'>Standardizing the interfaces: The Device Model</a></span>
+<br />    <span class='sectionToc'>19 <a href='#optimizations' id='QQ2-1-65'>Optimizations</a></span>
+<br />     <span class='subsectionToc'>19.1 <a href='#likely-and-unlikely-conditions' id='QQ2-1-66'>Likely and Unlikely conditions</a></span>
+<br />    <span class='sectionToc'>20 <a href='#common-pitfalls' id='QQ2-1-67'>Common Pitfalls</a></span>
+<br />     <span class='subsectionToc'>20.1 <a href='#using-standard-libraries' id='QQ2-1-68'>Using standard libraries</a></span>
+<br />     <span class='subsectionToc'>20.2 <a href='#disabling-interrupts' id='QQ2-1-69'>Disabling interrupts</a></span>
+<br />    <span class='sectionToc'>21 <a href='#where-to-go-from-here' id='QQ2-1-70'>Where To Go From Here?</a></span>
    </div>
    <h3 class='sectionHead' id='introduction'><span class='titlemark'>1   </span> <a id='x1-10001'></a>Introduction</h3>
 <!-- l. 65 --><p class='noindent'>The Linux Kernel Module Programming Guide is a free book; you may reproduce
@@ -112,10 +113,10 @@ electronic.
 </p><!-- l. 72 --><p class='indent'>   Derivative works and translations of this document must be placed under the
 Open Software License, and the original copyright notice must remain intact. If you
 have contributed new material to this book, you must make the material and source
-code available for your revisions. Please make revisions and updates available directly
                                                                   
 
                                                                   
+code available for your revisions. Please make revisions and updates available directly
 to the document maintainer, Jim Huang &lt;jserv@ccns.ncku.edu.tw&gt;. This will allow
 for the merging of updates and provide consistent revisions to the Linux
 community.
@@ -5543,8 +5544,12 @@ and a password.
 <a id='x1-62396r198'></a><span class='ecrm-0500'>198</span><span class='ectt-0800'>MODULE_LICENSE(</span><span id='textcolor2891'><span class='ectt-0800'>"GPL"</span></span><span class='ectt-0800'>);</span></pre>
 <!-- l. 1860 --><p class='noindent'>
 </p>
-   <h3 class='sectionHead' id='standardizing-the-interfaces-the-device-model'><span class='titlemark'>17   </span> <a id='x1-6300017'></a>Standardizing the interfaces: The Device Model</h3>
-<!-- l. 1862 --><p class='noindent'>Up to this point we have seen all kinds of modules doing all kinds of things, but there
+   <h3 class='sectionHead' id='virtual-input-device-driver'><span class='titlemark'>17   </span> <a id='x1-6300017'></a>Virtual Input Device Driver</h3>
+<!-- l. 1862 --><p class='noindent'>vinput.[ch] vkbd.c vmouse.c
+</p><!-- l. 1866 --><p class='noindent'>
+</p>
+   <h3 class='sectionHead' id='standardizing-the-interfaces-the-device-model'><span class='titlemark'>18   </span> <a id='x1-6400018'></a>Standardizing the interfaces: The Device Model</h3>
+<!-- l. 1868 --><p class='noindent'>Up to this point we have seen all kinds of modules doing all kinds of things, but there
 was no consistency in their interfaces with the rest of the kernel. To impose some
 consistency such that there is at minimum a standardized way to start, suspend and
 resume a device a device model was added. An example is shown below, and you can
@@ -5552,112 +5557,112 @@ use this as a template to add your own suspend, resume or other interface
 functions.
 </p><!-- l. 1 --><p class='indent'>
 </p>
-   <pre class='fancyvrb' id='fancyvrb83'><a id='x1-63002r1'></a><span class='ecrm-0500'>1</span><span id='textcolor2892'><span class='ectt-0800'>/*</span></span> 
-<a id='x1-63004r2'></a><span class='ecrm-0500'>2</span><span id='textcolor2893'><span class='ectt-0800'> * devicemodel.c</span></span> 
-<a id='x1-63006r3'></a><span class='ecrm-0500'>3</span><span id='textcolor2894'><span class='ectt-0800'> */</span></span> 
-<a id='x1-63008r4'></a><span class='ecrm-0500'>4</span><span id='textcolor2895'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor2896'><span class='ectt-0800'>&lt;linux/kernel.h&gt;</span></span> 
-<a id='x1-63010r5'></a><span class='ecrm-0500'>5</span><span id='textcolor2897'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor2898'><span class='ectt-0800'>&lt;linux/module.h&gt;</span></span> 
-<a id='x1-63012r6'></a><span class='ecrm-0500'>6</span><span id='textcolor2899'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor2900'><span class='ectt-0800'>&lt;linux/platform_device.h&gt;</span></span> 
-<a id='x1-63014r7'></a><span class='ecrm-0500'>7</span> 
-<a id='x1-63016r8'></a><span class='ecrm-0500'>8</span><span id='textcolor2901'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> devicemodel_data {</span> 
-<a id='x1-63018r9'></a><span class='ecrm-0500'>9</span><span class='ectt-0800'>    </span><span id='textcolor2902'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> *greeting;</span> 
-<a id='x1-63020r10'></a><span class='ecrm-0500'>10</span><span class='ectt-0800'>    </span><span id='textcolor2903'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> number;</span> 
-<a id='x1-63022r11'></a><span class='ecrm-0500'>11</span><span class='ectt-0800'>};</span> 
-<a id='x1-63024r12'></a><span class='ecrm-0500'>12</span> 
-<a id='x1-63026r13'></a><span class='ecrm-0500'>13</span><span id='textcolor2904'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2905'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> devicemodel_probe(</span><span id='textcolor2906'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> platform_device *dev)</span> 
-<a id='x1-63028r14'></a><span class='ecrm-0500'>14</span><span class='ectt-0800'>{</span> 
-<a id='x1-63030r15'></a><span class='ecrm-0500'>15</span><span class='ectt-0800'>    </span><span id='textcolor2907'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> devicemodel_data *pd =</span> 
-<a id='x1-63032r16'></a><span class='ecrm-0500'>16</span><span class='ectt-0800'>        (</span><span id='textcolor2908'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> devicemodel_data *)(dev-&gt;dev.platform_data);</span> 
-<a id='x1-63034r17'></a><span class='ecrm-0500'>17</span> 
-<a id='x1-63036r18'></a><span class='ecrm-0500'>18</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor2909'><span class='ectt-0800'>"devicemodel probe</span></span><span id='textcolor2910'><span class='ectt-0800'>\n</span></span><span id='textcolor2911'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>);</span> 
-<a id='x1-63038r19'></a><span class='ecrm-0500'>19</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor2912'><span class='ectt-0800'>"devicemodel greeting: %s; %d</span></span><span id='textcolor2913'><span class='ectt-0800'>\n</span></span><span id='textcolor2914'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, pd-&gt;greeting, pd-&gt;number);</span> 
-<a id='x1-63040r20'></a><span class='ecrm-0500'>20</span> 
-<a id='x1-63042r21'></a><span class='ecrm-0500'>21</span><span class='ectt-0800'>    </span><span id='textcolor2915'><span class='ectt-0800'>/* Your device initialization code */</span></span> 
-<a id='x1-63044r22'></a><span class='ecrm-0500'>22</span> 
-<a id='x1-63046r23'></a><span class='ecrm-0500'>23</span><span class='ectt-0800'>    </span><span id='textcolor2916'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> 0;</span> 
-<a id='x1-63048r24'></a><span class='ecrm-0500'>24</span><span class='ectt-0800'>}</span> 
-<a id='x1-63050r25'></a><span class='ecrm-0500'>25</span> 
-<a id='x1-63052r26'></a><span class='ecrm-0500'>26</span><span id='textcolor2917'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2918'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> devicemodel_remove(</span><span id='textcolor2919'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> platform_device *dev)</span> 
-<a id='x1-63054r27'></a><span class='ecrm-0500'>27</span><span class='ectt-0800'>{</span> 
-<a id='x1-63056r28'></a><span class='ecrm-0500'>28</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor2920'><span class='ectt-0800'>"devicemodel example removed</span></span><span id='textcolor2921'><span class='ectt-0800'>\n</span></span><span id='textcolor2922'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>);</span> 
-<a id='x1-63058r29'></a><span class='ecrm-0500'>29</span> 
-<a id='x1-63060r30'></a><span class='ecrm-0500'>30</span><span class='ectt-0800'>    </span><span id='textcolor2923'><span class='ectt-0800'>/* Your device removal code */</span></span> 
-<a id='x1-63062r31'></a><span class='ecrm-0500'>31</span> 
-<a id='x1-63064r32'></a><span class='ecrm-0500'>32</span><span class='ectt-0800'>    </span><span id='textcolor2924'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> 0;</span> 
-<a id='x1-63066r33'></a><span class='ecrm-0500'>33</span><span class='ectt-0800'>}</span> 
-<a id='x1-63068r34'></a><span class='ecrm-0500'>34</span> 
-<a id='x1-63070r35'></a><span class='ecrm-0500'>35</span><span id='textcolor2925'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2926'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> devicemodel_suspend(</span><span id='textcolor2927'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> device *dev)</span> 
-<a id='x1-63072r36'></a><span class='ecrm-0500'>36</span><span class='ectt-0800'>{</span> 
-<a id='x1-63074r37'></a><span class='ecrm-0500'>37</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor2928'><span class='ectt-0800'>"devicemodel example suspend</span></span><span id='textcolor2929'><span class='ectt-0800'>\n</span></span><span id='textcolor2930'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>);</span> 
-<a id='x1-63076r38'></a><span class='ecrm-0500'>38</span> 
-<a id='x1-63078r39'></a><span class='ecrm-0500'>39</span><span class='ectt-0800'>    </span><span id='textcolor2931'><span class='ectt-0800'>/* Your device suspend code */</span></span> 
-<a id='x1-63080r40'></a><span class='ecrm-0500'>40</span> 
-<a id='x1-63082r41'></a><span class='ecrm-0500'>41</span><span class='ectt-0800'>    </span><span id='textcolor2932'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> 0;</span> 
-<a id='x1-63084r42'></a><span class='ecrm-0500'>42</span><span class='ectt-0800'>}</span> 
-<a id='x1-63086r43'></a><span class='ecrm-0500'>43</span> 
-<a id='x1-63088r44'></a><span class='ecrm-0500'>44</span><span id='textcolor2933'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2934'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> devicemodel_resume(</span><span id='textcolor2935'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> device *dev)</span> 
-<a id='x1-63090r45'></a><span class='ecrm-0500'>45</span><span class='ectt-0800'>{</span> 
-<a id='x1-63092r46'></a><span class='ecrm-0500'>46</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor2936'><span class='ectt-0800'>"devicemodel example resume</span></span><span id='textcolor2937'><span class='ectt-0800'>\n</span></span><span id='textcolor2938'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>);</span> 
-<a id='x1-63094r47'></a><span class='ecrm-0500'>47</span> 
-<a id='x1-63096r48'></a><span class='ecrm-0500'>48</span><span class='ectt-0800'>    </span><span id='textcolor2939'><span class='ectt-0800'>/* Your device resume code */</span></span> 
-<a id='x1-63098r49'></a><span class='ecrm-0500'>49</span> 
-<a id='x1-63100r50'></a><span class='ecrm-0500'>50</span><span class='ectt-0800'>    </span><span id='textcolor2940'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> 0;</span> 
-<a id='x1-63102r51'></a><span class='ecrm-0500'>51</span><span class='ectt-0800'>}</span> 
-<a id='x1-63104r52'></a><span class='ecrm-0500'>52</span> 
-<a id='x1-63106r53'></a><span class='ecrm-0500'>53</span><span id='textcolor2941'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2942'><span class='ectt-0800'>const</span></span><span class='ectt-0800'> </span><span id='textcolor2943'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> dev_pm_ops devicemodel_pm_ops = {</span> 
-<a id='x1-63108r54'></a><span class='ecrm-0500'>54</span><span class='ectt-0800'>    .suspend = devicemodel_suspend,</span> 
-<a id='x1-63110r55'></a><span class='ecrm-0500'>55</span><span class='ectt-0800'>    .resume = devicemodel_resume,</span> 
-<a id='x1-63112r56'></a><span class='ecrm-0500'>56</span><span class='ectt-0800'>    .poweroff = devicemodel_suspend,</span> 
-<a id='x1-63114r57'></a><span class='ecrm-0500'>57</span><span class='ectt-0800'>    .freeze = devicemodel_suspend,</span> 
-<a id='x1-63116r58'></a><span class='ecrm-0500'>58</span><span class='ectt-0800'>    .thaw = devicemodel_resume,</span> 
-<a id='x1-63118r59'></a><span class='ecrm-0500'>59</span><span class='ectt-0800'>    .restore = devicemodel_resume,</span> 
-<a id='x1-63120r60'></a><span class='ecrm-0500'>60</span><span class='ectt-0800'>};</span> 
-<a id='x1-63122r61'></a><span class='ecrm-0500'>61</span> 
-<a id='x1-63124r62'></a><span class='ecrm-0500'>62</span><span id='textcolor2944'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2945'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> platform_driver devicemodel_driver = {</span> 
-<a id='x1-63126r63'></a><span class='ecrm-0500'>63</span><span class='ectt-0800'>    .driver =</span> 
-<a id='x1-63128r64'></a><span class='ecrm-0500'>64</span><span class='ectt-0800'>        {</span> 
-<a id='x1-63130r65'></a><span class='ecrm-0500'>65</span><span class='ectt-0800'>            .name = </span><span id='textcolor2946'><span class='ectt-0800'>"devicemodel_example"</span></span><span class='ectt-0800'>,</span> 
-<a id='x1-63132r66'></a><span class='ecrm-0500'>66</span><span class='ectt-0800'>            .owner = THIS_MODULE,</span> 
-<a id='x1-63134r67'></a><span class='ecrm-0500'>67</span><span class='ectt-0800'>            .pm = &amp;devicemodel_pm_ops,</span> 
-<a id='x1-63136r68'></a><span class='ecrm-0500'>68</span><span class='ectt-0800'>        },</span> 
-<a id='x1-63138r69'></a><span class='ecrm-0500'>69</span><span class='ectt-0800'>    .probe = devicemodel_probe,</span> 
-<a id='x1-63140r70'></a><span class='ecrm-0500'>70</span><span class='ectt-0800'>    .remove = devicemodel_remove,</span> 
-<a id='x1-63142r71'></a><span class='ecrm-0500'>71</span><span class='ectt-0800'>};</span> 
-<a id='x1-63144r72'></a><span class='ecrm-0500'>72</span> 
-<a id='x1-63146r73'></a><span class='ecrm-0500'>73</span><span id='textcolor2947'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2948'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> devicemodel_init(</span><span id='textcolor2949'><span class='ectt-0800'>void</span></span><span class='ectt-0800'>)</span> 
-<a id='x1-63148r74'></a><span class='ecrm-0500'>74</span><span class='ectt-0800'>{</span> 
-<a id='x1-63150r75'></a><span class='ecrm-0500'>75</span><span class='ectt-0800'>    </span><span id='textcolor2950'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> ret;</span> 
-<a id='x1-63152r76'></a><span class='ecrm-0500'>76</span> 
-<a id='x1-63154r77'></a><span class='ecrm-0500'>77</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor2951'><span class='ectt-0800'>"devicemodel init</span></span><span id='textcolor2952'><span class='ectt-0800'>\n</span></span><span id='textcolor2953'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>);</span> 
-<a id='x1-63156r78'></a><span class='ecrm-0500'>78</span> 
-<a id='x1-63158r79'></a><span class='ecrm-0500'>79</span><span class='ectt-0800'>    ret = platform_driver_register(&amp;devicemodel_driver);</span> 
-<a id='x1-63160r80'></a><span class='ecrm-0500'>80</span> 
-<a id='x1-63162r81'></a><span class='ecrm-0500'>81</span><span class='ectt-0800'>    </span><span id='textcolor2954'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (ret) {</span> 
-<a id='x1-63164r82'></a><span class='ecrm-0500'>82</span><span class='ectt-0800'>        pr_err(</span><span id='textcolor2955'><span class='ectt-0800'>"Unable to register driver</span></span><span id='textcolor2956'><span class='ectt-0800'>\n</span></span><span id='textcolor2957'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>);</span> 
-<a id='x1-63166r83'></a><span class='ecrm-0500'>83</span><span class='ectt-0800'>        </span><span id='textcolor2958'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> ret;</span> 
-<a id='x1-63168r84'></a><span class='ecrm-0500'>84</span><span class='ectt-0800'>    }</span> 
-<a id='x1-63170r85'></a><span class='ecrm-0500'>85</span> 
-<a id='x1-63172r86'></a><span class='ecrm-0500'>86</span><span class='ectt-0800'>    </span><span id='textcolor2959'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> 0;</span> 
-<a id='x1-63174r87'></a><span class='ecrm-0500'>87</span><span class='ectt-0800'>}</span> 
-<a id='x1-63176r88'></a><span class='ecrm-0500'>88</span> 
-<a id='x1-63178r89'></a><span class='ecrm-0500'>89</span><span id='textcolor2960'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2961'><span class='ectt-0800'>void</span></span><span class='ectt-0800'> devicemodel_exit(</span><span id='textcolor2962'><span class='ectt-0800'>void</span></span><span class='ectt-0800'>)</span> 
-<a id='x1-63180r90'></a><span class='ecrm-0500'>90</span><span class='ectt-0800'>{</span> 
-<a id='x1-63182r91'></a><span class='ecrm-0500'>91</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor2963'><span class='ectt-0800'>"devicemodel exit</span></span><span id='textcolor2964'><span class='ectt-0800'>\n</span></span><span id='textcolor2965'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>);</span> 
-<a id='x1-63184r92'></a><span class='ecrm-0500'>92</span><span class='ectt-0800'>    platform_driver_unregister(&amp;devicemodel_driver);</span> 
-<a id='x1-63186r93'></a><span class='ecrm-0500'>93</span><span class='ectt-0800'>}</span> 
-<a id='x1-63188r94'></a><span class='ecrm-0500'>94</span> 
-<a id='x1-63190r95'></a><span class='ecrm-0500'>95</span><span class='ectt-0800'>module_init(devicemodel_init);</span> 
-<a id='x1-63192r96'></a><span class='ecrm-0500'>96</span><span class='ectt-0800'>module_exit(devicemodel_exit);</span> 
-<a id='x1-63194r97'></a><span class='ecrm-0500'>97</span> 
-<a id='x1-63196r98'></a><span class='ecrm-0500'>98</span><span class='ectt-0800'>MODULE_LICENSE(</span><span id='textcolor2966'><span class='ectt-0800'>"GPL"</span></span><span class='ectt-0800'>);</span> 
-<a id='x1-63198r99'></a><span class='ecrm-0500'>99</span><span class='ectt-0800'>MODULE_DESCRIPTION(</span><span id='textcolor2967'><span class='ectt-0800'>"Linux Device Model example"</span></span><span class='ectt-0800'>);</span></pre>
-<!-- l. 1868 --><p class='noindent'>
+   <pre class='fancyvrb' id='fancyvrb83'><a id='x1-64002r1'></a><span class='ecrm-0500'>1</span><span id='textcolor2892'><span class='ectt-0800'>/*</span></span> 
+<a id='x1-64004r2'></a><span class='ecrm-0500'>2</span><span id='textcolor2893'><span class='ectt-0800'> * devicemodel.c</span></span> 
+<a id='x1-64006r3'></a><span class='ecrm-0500'>3</span><span id='textcolor2894'><span class='ectt-0800'> */</span></span> 
+<a id='x1-64008r4'></a><span class='ecrm-0500'>4</span><span id='textcolor2895'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor2896'><span class='ectt-0800'>&lt;linux/kernel.h&gt;</span></span> 
+<a id='x1-64010r5'></a><span class='ecrm-0500'>5</span><span id='textcolor2897'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor2898'><span class='ectt-0800'>&lt;linux/module.h&gt;</span></span> 
+<a id='x1-64012r6'></a><span class='ecrm-0500'>6</span><span id='textcolor2899'><span class='ectt-0800'>#include</span></span><span class='ectt-0800'> </span><span id='textcolor2900'><span class='ectt-0800'>&lt;linux/platform_device.h&gt;</span></span> 
+<a id='x1-64014r7'></a><span class='ecrm-0500'>7</span> 
+<a id='x1-64016r8'></a><span class='ecrm-0500'>8</span><span id='textcolor2901'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> devicemodel_data {</span> 
+<a id='x1-64018r9'></a><span class='ecrm-0500'>9</span><span class='ectt-0800'>    </span><span id='textcolor2902'><span class='ectt-0800'>char</span></span><span class='ectt-0800'> *greeting;</span> 
+<a id='x1-64020r10'></a><span class='ecrm-0500'>10</span><span class='ectt-0800'>    </span><span id='textcolor2903'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> number;</span> 
+<a id='x1-64022r11'></a><span class='ecrm-0500'>11</span><span class='ectt-0800'>};</span> 
+<a id='x1-64024r12'></a><span class='ecrm-0500'>12</span> 
+<a id='x1-64026r13'></a><span class='ecrm-0500'>13</span><span id='textcolor2904'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2905'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> devicemodel_probe(</span><span id='textcolor2906'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> platform_device *dev)</span> 
+<a id='x1-64028r14'></a><span class='ecrm-0500'>14</span><span class='ectt-0800'>{</span> 
+<a id='x1-64030r15'></a><span class='ecrm-0500'>15</span><span class='ectt-0800'>    </span><span id='textcolor2907'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> devicemodel_data *pd =</span> 
+<a id='x1-64032r16'></a><span class='ecrm-0500'>16</span><span class='ectt-0800'>        (</span><span id='textcolor2908'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> devicemodel_data *)(dev-&gt;dev.platform_data);</span> 
+<a id='x1-64034r17'></a><span class='ecrm-0500'>17</span> 
+<a id='x1-64036r18'></a><span class='ecrm-0500'>18</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor2909'><span class='ectt-0800'>"devicemodel probe</span></span><span id='textcolor2910'><span class='ectt-0800'>\n</span></span><span id='textcolor2911'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>);</span> 
+<a id='x1-64038r19'></a><span class='ecrm-0500'>19</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor2912'><span class='ectt-0800'>"devicemodel greeting: %s; %d</span></span><span id='textcolor2913'><span class='ectt-0800'>\n</span></span><span id='textcolor2914'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>, pd-&gt;greeting, pd-&gt;number);</span> 
+<a id='x1-64040r20'></a><span class='ecrm-0500'>20</span> 
+<a id='x1-64042r21'></a><span class='ecrm-0500'>21</span><span class='ectt-0800'>    </span><span id='textcolor2915'><span class='ectt-0800'>/* Your device initialization code */</span></span> 
+<a id='x1-64044r22'></a><span class='ecrm-0500'>22</span> 
+<a id='x1-64046r23'></a><span class='ecrm-0500'>23</span><span class='ectt-0800'>    </span><span id='textcolor2916'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> 0;</span> 
+<a id='x1-64048r24'></a><span class='ecrm-0500'>24</span><span class='ectt-0800'>}</span> 
+<a id='x1-64050r25'></a><span class='ecrm-0500'>25</span> 
+<a id='x1-64052r26'></a><span class='ecrm-0500'>26</span><span id='textcolor2917'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2918'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> devicemodel_remove(</span><span id='textcolor2919'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> platform_device *dev)</span> 
+<a id='x1-64054r27'></a><span class='ecrm-0500'>27</span><span class='ectt-0800'>{</span> 
+<a id='x1-64056r28'></a><span class='ecrm-0500'>28</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor2920'><span class='ectt-0800'>"devicemodel example removed</span></span><span id='textcolor2921'><span class='ectt-0800'>\n</span></span><span id='textcolor2922'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>);</span> 
+<a id='x1-64058r29'></a><span class='ecrm-0500'>29</span> 
+<a id='x1-64060r30'></a><span class='ecrm-0500'>30</span><span class='ectt-0800'>    </span><span id='textcolor2923'><span class='ectt-0800'>/* Your device removal code */</span></span> 
+<a id='x1-64062r31'></a><span class='ecrm-0500'>31</span> 
+<a id='x1-64064r32'></a><span class='ecrm-0500'>32</span><span class='ectt-0800'>    </span><span id='textcolor2924'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> 0;</span> 
+<a id='x1-64066r33'></a><span class='ecrm-0500'>33</span><span class='ectt-0800'>}</span> 
+<a id='x1-64068r34'></a><span class='ecrm-0500'>34</span> 
+<a id='x1-64070r35'></a><span class='ecrm-0500'>35</span><span id='textcolor2925'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2926'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> devicemodel_suspend(</span><span id='textcolor2927'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> device *dev)</span> 
+<a id='x1-64072r36'></a><span class='ecrm-0500'>36</span><span class='ectt-0800'>{</span> 
+<a id='x1-64074r37'></a><span class='ecrm-0500'>37</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor2928'><span class='ectt-0800'>"devicemodel example suspend</span></span><span id='textcolor2929'><span class='ectt-0800'>\n</span></span><span id='textcolor2930'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>);</span> 
+<a id='x1-64076r38'></a><span class='ecrm-0500'>38</span> 
+<a id='x1-64078r39'></a><span class='ecrm-0500'>39</span><span class='ectt-0800'>    </span><span id='textcolor2931'><span class='ectt-0800'>/* Your device suspend code */</span></span> 
+<a id='x1-64080r40'></a><span class='ecrm-0500'>40</span> 
+<a id='x1-64082r41'></a><span class='ecrm-0500'>41</span><span class='ectt-0800'>    </span><span id='textcolor2932'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> 0;</span> 
+<a id='x1-64084r42'></a><span class='ecrm-0500'>42</span><span class='ectt-0800'>}</span> 
+<a id='x1-64086r43'></a><span class='ecrm-0500'>43</span> 
+<a id='x1-64088r44'></a><span class='ecrm-0500'>44</span><span id='textcolor2933'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2934'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> devicemodel_resume(</span><span id='textcolor2935'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> device *dev)</span> 
+<a id='x1-64090r45'></a><span class='ecrm-0500'>45</span><span class='ectt-0800'>{</span> 
+<a id='x1-64092r46'></a><span class='ecrm-0500'>46</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor2936'><span class='ectt-0800'>"devicemodel example resume</span></span><span id='textcolor2937'><span class='ectt-0800'>\n</span></span><span id='textcolor2938'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>);</span> 
+<a id='x1-64094r47'></a><span class='ecrm-0500'>47</span> 
+<a id='x1-64096r48'></a><span class='ecrm-0500'>48</span><span class='ectt-0800'>    </span><span id='textcolor2939'><span class='ectt-0800'>/* Your device resume code */</span></span> 
+<a id='x1-64098r49'></a><span class='ecrm-0500'>49</span> 
+<a id='x1-64100r50'></a><span class='ecrm-0500'>50</span><span class='ectt-0800'>    </span><span id='textcolor2940'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> 0;</span> 
+<a id='x1-64102r51'></a><span class='ecrm-0500'>51</span><span class='ectt-0800'>}</span> 
+<a id='x1-64104r52'></a><span class='ecrm-0500'>52</span> 
+<a id='x1-64106r53'></a><span class='ecrm-0500'>53</span><span id='textcolor2941'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2942'><span class='ectt-0800'>const</span></span><span class='ectt-0800'> </span><span id='textcolor2943'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> dev_pm_ops devicemodel_pm_ops = {</span> 
+<a id='x1-64108r54'></a><span class='ecrm-0500'>54</span><span class='ectt-0800'>    .suspend = devicemodel_suspend,</span> 
+<a id='x1-64110r55'></a><span class='ecrm-0500'>55</span><span class='ectt-0800'>    .resume = devicemodel_resume,</span> 
+<a id='x1-64112r56'></a><span class='ecrm-0500'>56</span><span class='ectt-0800'>    .poweroff = devicemodel_suspend,</span> 
+<a id='x1-64114r57'></a><span class='ecrm-0500'>57</span><span class='ectt-0800'>    .freeze = devicemodel_suspend,</span> 
+<a id='x1-64116r58'></a><span class='ecrm-0500'>58</span><span class='ectt-0800'>    .thaw = devicemodel_resume,</span> 
+<a id='x1-64118r59'></a><span class='ecrm-0500'>59</span><span class='ectt-0800'>    .restore = devicemodel_resume,</span> 
+<a id='x1-64120r60'></a><span class='ecrm-0500'>60</span><span class='ectt-0800'>};</span> 
+<a id='x1-64122r61'></a><span class='ecrm-0500'>61</span> 
+<a id='x1-64124r62'></a><span class='ecrm-0500'>62</span><span id='textcolor2944'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2945'><span class='ectt-0800'>struct</span></span><span class='ectt-0800'> platform_driver devicemodel_driver = {</span> 
+<a id='x1-64126r63'></a><span class='ecrm-0500'>63</span><span class='ectt-0800'>    .driver =</span> 
+<a id='x1-64128r64'></a><span class='ecrm-0500'>64</span><span class='ectt-0800'>        {</span> 
+<a id='x1-64130r65'></a><span class='ecrm-0500'>65</span><span class='ectt-0800'>            .name = </span><span id='textcolor2946'><span class='ectt-0800'>"devicemodel_example"</span></span><span class='ectt-0800'>,</span> 
+<a id='x1-64132r66'></a><span class='ecrm-0500'>66</span><span class='ectt-0800'>            .owner = THIS_MODULE,</span> 
+<a id='x1-64134r67'></a><span class='ecrm-0500'>67</span><span class='ectt-0800'>            .pm = &amp;devicemodel_pm_ops,</span> 
+<a id='x1-64136r68'></a><span class='ecrm-0500'>68</span><span class='ectt-0800'>        },</span> 
+<a id='x1-64138r69'></a><span class='ecrm-0500'>69</span><span class='ectt-0800'>    .probe = devicemodel_probe,</span> 
+<a id='x1-64140r70'></a><span class='ecrm-0500'>70</span><span class='ectt-0800'>    .remove = devicemodel_remove,</span> 
+<a id='x1-64142r71'></a><span class='ecrm-0500'>71</span><span class='ectt-0800'>};</span> 
+<a id='x1-64144r72'></a><span class='ecrm-0500'>72</span> 
+<a id='x1-64146r73'></a><span class='ecrm-0500'>73</span><span id='textcolor2947'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2948'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> devicemodel_init(</span><span id='textcolor2949'><span class='ectt-0800'>void</span></span><span class='ectt-0800'>)</span> 
+<a id='x1-64148r74'></a><span class='ecrm-0500'>74</span><span class='ectt-0800'>{</span> 
+<a id='x1-64150r75'></a><span class='ecrm-0500'>75</span><span class='ectt-0800'>    </span><span id='textcolor2950'><span class='ectt-0800'>int</span></span><span class='ectt-0800'> ret;</span> 
+<a id='x1-64152r76'></a><span class='ecrm-0500'>76</span> 
+<a id='x1-64154r77'></a><span class='ecrm-0500'>77</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor2951'><span class='ectt-0800'>"devicemodel init</span></span><span id='textcolor2952'><span class='ectt-0800'>\n</span></span><span id='textcolor2953'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>);</span> 
+<a id='x1-64156r78'></a><span class='ecrm-0500'>78</span> 
+<a id='x1-64158r79'></a><span class='ecrm-0500'>79</span><span class='ectt-0800'>    ret = platform_driver_register(&amp;devicemodel_driver);</span> 
+<a id='x1-64160r80'></a><span class='ecrm-0500'>80</span> 
+<a id='x1-64162r81'></a><span class='ecrm-0500'>81</span><span class='ectt-0800'>    </span><span id='textcolor2954'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (ret) {</span> 
+<a id='x1-64164r82'></a><span class='ecrm-0500'>82</span><span class='ectt-0800'>        pr_err(</span><span id='textcolor2955'><span class='ectt-0800'>"Unable to register driver</span></span><span id='textcolor2956'><span class='ectt-0800'>\n</span></span><span id='textcolor2957'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>);</span> 
+<a id='x1-64166r83'></a><span class='ecrm-0500'>83</span><span class='ectt-0800'>        </span><span id='textcolor2958'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> ret;</span> 
+<a id='x1-64168r84'></a><span class='ecrm-0500'>84</span><span class='ectt-0800'>    }</span> 
+<a id='x1-64170r85'></a><span class='ecrm-0500'>85</span> 
+<a id='x1-64172r86'></a><span class='ecrm-0500'>86</span><span class='ectt-0800'>    </span><span id='textcolor2959'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> 0;</span> 
+<a id='x1-64174r87'></a><span class='ecrm-0500'>87</span><span class='ectt-0800'>}</span> 
+<a id='x1-64176r88'></a><span class='ecrm-0500'>88</span> 
+<a id='x1-64178r89'></a><span class='ecrm-0500'>89</span><span id='textcolor2960'><span class='ectt-0800'>static</span></span><span class='ectt-0800'> </span><span id='textcolor2961'><span class='ectt-0800'>void</span></span><span class='ectt-0800'> devicemodel_exit(</span><span id='textcolor2962'><span class='ectt-0800'>void</span></span><span class='ectt-0800'>)</span> 
+<a id='x1-64180r90'></a><span class='ecrm-0500'>90</span><span class='ectt-0800'>{</span> 
+<a id='x1-64182r91'></a><span class='ecrm-0500'>91</span><span class='ectt-0800'>    pr_info(</span><span id='textcolor2963'><span class='ectt-0800'>"devicemodel exit</span></span><span id='textcolor2964'><span class='ectt-0800'>\n</span></span><span id='textcolor2965'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>);</span> 
+<a id='x1-64184r92'></a><span class='ecrm-0500'>92</span><span class='ectt-0800'>    platform_driver_unregister(&amp;devicemodel_driver);</span> 
+<a id='x1-64186r93'></a><span class='ecrm-0500'>93</span><span class='ectt-0800'>}</span> 
+<a id='x1-64188r94'></a><span class='ecrm-0500'>94</span> 
+<a id='x1-64190r95'></a><span class='ecrm-0500'>95</span><span class='ectt-0800'>module_init(devicemodel_init);</span> 
+<a id='x1-64192r96'></a><span class='ecrm-0500'>96</span><span class='ectt-0800'>module_exit(devicemodel_exit);</span> 
+<a id='x1-64194r97'></a><span class='ecrm-0500'>97</span> 
+<a id='x1-64196r98'></a><span class='ecrm-0500'>98</span><span class='ectt-0800'>MODULE_LICENSE(</span><span id='textcolor2966'><span class='ectt-0800'>"GPL"</span></span><span class='ectt-0800'>);</span> 
+<a id='x1-64198r99'></a><span class='ecrm-0500'>99</span><span class='ectt-0800'>MODULE_DESCRIPTION(</span><span id='textcolor2967'><span class='ectt-0800'>"Linux Device Model example"</span></span><span class='ectt-0800'>);</span></pre>
+<!-- l. 1874 --><p class='noindent'>
 </p>
-   <h3 class='sectionHead' id='optimizations'><span class='titlemark'>18   </span> <a id='x1-6400018'></a>Optimizations</h3>
-<!-- l. 1870 --><p class='noindent'>
+   <h3 class='sectionHead' id='optimizations'><span class='titlemark'>19   </span> <a id='x1-6500019'></a>Optimizations</h3>
+<!-- l. 1876 --><p class='noindent'>
 </p>
-   <h4 class='subsectionHead' id='likely-and-unlikely-conditions'><span class='titlemark'>18.1   </span> <a id='x1-6500018.1'></a>Likely and Unlikely conditions</h4>
-<!-- l. 1872 --><p class='noindent'>Sometimes you might want your code to run as quickly as possible,
+   <h4 class='subsectionHead' id='likely-and-unlikely-conditions'><span class='titlemark'>19.1   </span> <a id='x1-6600019.1'></a>Likely and Unlikely conditions</h4>
+<!-- l. 1878 --><p class='noindent'>Sometimes you might want your code to run as quickly as possible,
 especially if it is handling an interrupt or doing something which might
 cause noticeable latency. If your code contains boolean conditions and if
 you know that the conditions are almost always likely to evaluate as either
@@ -5667,54 +5672,54 @@ you know that the conditions are almost always likely to evaluate as either
 <code> <span class='ectt-1000'>likely</span>
 </code> and <code>  <span class='ectt-1000'>unlikely</span>
 </code> macros. For example, when allocating memory you are almost always expecting this
-to succeed.
-</p><!-- l. 1 --><p class='indent'>
-</p>
-   <pre class='fancyvrb' id='fancyvrb84'><a id='x1-65012r1'></a><span class='ecrm-0500'>1</span><span class='ectt-0800'>bvl = bvec_alloc(gfp_mask, nr_iovecs, &amp;idx);</span> 
-<a id='x1-65014r2'></a><span class='ecrm-0500'>2</span><span id='textcolor2968'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (unlikely(!bvl)) {</span> 
-<a id='x1-65016r3'></a><span class='ecrm-0500'>3</span><span class='ectt-0800'>    mempool_free(bio, bio_pool);</span> 
-<a id='x1-65018r4'></a><span class='ecrm-0500'>4</span><span class='ectt-0800'>    bio = NULL;</span> 
-<a id='x1-65020r5'></a><span class='ecrm-0500'>5</span><span class='ectt-0800'>    </span><span id='textcolor2969'><span class='ectt-0800'>goto</span></span><span class='ectt-0800'> out;</span> 
-<a id='x1-65022r6'></a><span class='ecrm-0500'>6</span><span class='ectt-0800'>}</span></pre>
                                                                   
 
                                                                   
-<!-- l. 1886 --><p class='indent'>   When the <code>  <span class='ectt-1000'>unlikely</span>
+to succeed.
+</p><!-- l. 1 --><p class='indent'>
+</p>
+   <pre class='fancyvrb' id='fancyvrb84'><a id='x1-66012r1'></a><span class='ecrm-0500'>1</span><span class='ectt-0800'>bvl = bvec_alloc(gfp_mask, nr_iovecs, &amp;idx);</span> 
+<a id='x1-66014r2'></a><span class='ecrm-0500'>2</span><span id='textcolor2968'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (unlikely(!bvl)) {</span> 
+<a id='x1-66016r3'></a><span class='ecrm-0500'>3</span><span class='ectt-0800'>    mempool_free(bio, bio_pool);</span> 
+<a id='x1-66018r4'></a><span class='ecrm-0500'>4</span><span class='ectt-0800'>    bio = NULL;</span> 
+<a id='x1-66020r5'></a><span class='ecrm-0500'>5</span><span class='ectt-0800'>    </span><span id='textcolor2969'><span class='ectt-0800'>goto</span></span><span class='ectt-0800'> out;</span> 
+<a id='x1-66022r6'></a><span class='ecrm-0500'>6</span><span class='ectt-0800'>}</span></pre>
+<!-- l. 1892 --><p class='indent'>   When the <code>  <span class='ectt-1000'>unlikely</span>
 </code> macro is used, the compiler alters its machine instruction output, so that it
 continues along the false branch and only jumps if the condition is true. That
 avoids flushing the processor pipeline. The opposite happens if you use the
 <code> <span class='ectt-1000'>likely</span>
 </code> macro.
-</p><!-- l. 1890 --><p class='noindent'>
+</p><!-- l. 1896 --><p class='noindent'>
 </p>
-   <h3 class='sectionHead' id='common-pitfalls'><span class='titlemark'>19   </span> <a id='x1-6600019'></a>Common Pitfalls</h3>
-<!-- l. 1893 --><p class='noindent'>
+   <h3 class='sectionHead' id='common-pitfalls'><span class='titlemark'>20   </span> <a id='x1-6700020'></a>Common Pitfalls</h3>
+<!-- l. 1899 --><p class='noindent'>
 </p>
-   <h4 class='subsectionHead' id='using-standard-libraries'><span class='titlemark'>19.1   </span> <a id='x1-6700019.1'></a>Using standard libraries</h4>
-<!-- l. 1895 --><p class='noindent'>You can not do that. In a kernel module, you can only use kernel functions which are
+   <h4 class='subsectionHead' id='using-standard-libraries'><span class='titlemark'>20.1   </span> <a id='x1-6800020.1'></a>Using standard libraries</h4>
+<!-- l. 1901 --><p class='noindent'>You can not do that. In a kernel module, you can only use kernel functions which are
 the functions you can see in <span class='obeylines-h'><span class='verb'><span class='ectt-1000'>/proc/kallsyms</span></span></span>.
-</p><!-- l. 1898 --><p class='noindent'>
+</p><!-- l. 1904 --><p class='noindent'>
 </p>
-   <h4 class='subsectionHead' id='disabling-interrupts'><span class='titlemark'>19.2   </span> <a id='x1-6800019.2'></a>Disabling interrupts</h4>
-<!-- l. 1900 --><p class='noindent'>You might need to do this for a short time and that is OK, but if you do not enable
+   <h4 class='subsectionHead' id='disabling-interrupts'><span class='titlemark'>20.2   </span> <a id='x1-6900020.2'></a>Disabling interrupts</h4>
+<!-- l. 1906 --><p class='noindent'>You might need to do this for a short time and that is OK, but if you do not enable
 them afterwards, your system will be stuck and you will have to power it
 off.
-</p><!-- l. 1902 --><p class='noindent'>
+</p><!-- l. 1908 --><p class='noindent'>
 </p>
-   <h3 class='sectionHead' id='where-to-go-from-here'><span class='titlemark'>20   </span> <a id='x1-6900020'></a>Where To Go From Here?</h3>
-<!-- l. 1904 --><p class='noindent'>For people seriously interested in kernel programming, I recommend <a href='https://kernelnewbies.org'>kernelnewbies.org</a>
+   <h3 class='sectionHead' id='where-to-go-from-here'><span class='titlemark'>21   </span> <a id='x1-7000021'></a>Where To Go From Here?</h3>
+<!-- l. 1910 --><p class='noindent'>For people seriously interested in kernel programming, I recommend <a href='https://kernelnewbies.org'>kernelnewbies.org</a>
 and the <a href='https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/tree/Documentation'>Documentation</a> subdirectory within the kernel source code which is not
 always easy to understand but can be a starting point for further investigation. Also,
 as Linus Torvalds said, the best way to learn the kernel is to read the source code
 yourself.
-</p><!-- l. 1907 --><p class='indent'>   If you would like to contribute to this guide or notice anything glaringly wrong,
+</p><!-- l. 1913 --><p class='indent'>   If you would like to contribute to this guide or notice anything glaringly wrong,
 please create an issue at <a class='url' href='https://github.com/sysprog21/lkmpg'><span class='ectt-1000'>https://github.com/sysprog21/lkmpg</span></a>. Your pull requests
 will be appreciated.
-</p><!-- l. 1910 --><p class='indent'>   Happy hacking!
-</p>
                                                                   
 
                                                                   
+</p><!-- l. 1916 --><p class='indent'>   Happy hacking!
+</p>
    <div class='footnotes'><!-- l. 1745 --><p class='indent'>     <span class='footnote-mark'><a href='#fn1x0-bk' id='fn1x0'><sup class='textsuperscript'>1</sup></a></span><span class='ecrm-0800'>The goal of threaded interrupts is to push more of the work to separate threads, so that the
 </span><span class='ecrm-0800'>minimum needed for acknowledging an interrupt is reduced, and therefore the time spent handling
 </span><span class='ecrm-0800'>the interrupt (where it can’t handle any other interrupts at the same time) is reduced. See</span>
