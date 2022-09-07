@@ -1761,7 +1761,7 @@ concurrency details in the <a href='#avoiding-collisions-and-deadlocks'>12<!-- t
 <a id='x1-31304r149'></a><span class='ecrm-0500'>149</span><span class='ectt-0800'>                            </span><span id='textcolor565'><span class='ectt-0800'>size_t</span></span><span class='ectt-0800'> len, loff_t *off)</span> 
 <a id='x1-31306r150'></a><span class='ecrm-0500'>150</span><span class='ectt-0800'>{</span> 
 <a id='x1-31308r151'></a><span class='ecrm-0500'>151</span><span class='ectt-0800'>    pr_alert(</span><span id='textcolor566'><span class='ectt-0800'>"Sorry, this operation is not supported.</span></span><span id='textcolor567'><span class='ectt-0800'>\n</span></span><span id='textcolor568'><span class='ectt-0800'>"</span></span><span class='ectt-0800'>);</span> 
-<a id='x1-31310r152'></a><span class='ecrm-0500'>152</span><span class='ectt-0800'>    </span><span id='textcolor569'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> -EOPNOTSUPP;</span> 
+<a id='x1-31310r152'></a><span class='ecrm-0500'>152</span><span class='ectt-0800'>    </span><span id='textcolor569'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> -EINVAL;</span> 
 <a id='x1-31312r153'></a><span class='ecrm-0500'>153</span><span class='ectt-0800'>}</span> 
 <a id='x1-31314r154'></a><span class='ecrm-0500'>154</span> 
 <a id='x1-31316r155'></a><span class='ecrm-0500'>155</span><span class='ectt-0800'>module_init(chardev_init);</span> 
