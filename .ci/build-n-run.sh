@@ -14,8 +14,9 @@ function list_mod()
 function run_mod()
 {
     # insert/remove twice to ensure resource allocations
-    ( sudo insmod "examples/$1.ko" && sudo rmmod "$1" ) || exit 1
-    ( sudo insmod "examples/$1.ko" && sudo rmmod "$1" ) || exit 1
+    ( sudo insmod "examples/$1.ko" && sudo rmmod "$1" ) || ( echo "first $1" && exit 1 )
+    ( sudo insmod "examples/$1.ko" && sudo rmmod "$1" ) || ( echo "second $1" && exit 1 )
+    #( sudo insmod "examples/$1.ko" && sudo rmmod "$1" ) || exit 1
 }
 
 function run_examples()
@@ -26,5 +27,8 @@ function run_examples()
     done
 }
 
+sudo cat /proc/kallsyms | grep "__x64_sys_openat"
+table=`sudo cat /proc/kallsyms | grep "sys_call_table" | awk '{print $1}'`
 build_example
+( sudo insmod "examples/syscall-steal.ko" && sudo rmmod "syscall-steal" ) || ( sudo dmesg && exit 1 )
 run_examples

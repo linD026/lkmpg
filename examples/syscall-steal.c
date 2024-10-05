@@ -242,6 +242,7 @@ static int __init syscall_steal_start(void)
 {
 #if USE_KPROBES_PRE_HANDLER_BEFORE_SYSCALL
     int err;
+    pr_err("unreachable\n");
     /* use symbol name from the module parameter */
     syscall_kprobe.symbol_name = syscall_sym;
     err = register_kprobe(&syscall_kprobe);
@@ -250,15 +251,22 @@ static int __init syscall_steal_start(void)
         pr_err("Please check the symbol name from 'syscall_sym' parameter.\n");
         return err;
     }
+
+    return 0;
 #else
-    if (!(sys_call_table_stolen = acquire_sys_call_table()))
+    if (!(sys_call_table_stolen = acquire_sys_call_table())) {
+        pr_err("table doesn't exist\n");
         return -1;
+    }
+
+    pr_err("disable wp\n");
 
     disable_write_protection();
 
     /* keep track of the original open function */
     original_call = (void *)sys_call_table_stolen[__NR_openat];
 
+    pr_err("write to the table\n");
     /* use our openat function instead */
     sys_call_table_stolen[__NR_openat] = (unsigned long *)our_sys_openat;
 
@@ -273,6 +281,7 @@ static void __exit syscall_steal_end(void)
 {
 #if USE_KPROBES_PRE_HANDLER_BEFORE_SYSCALL
     unregister_kprobe(&syscall_kprobe);
+    return;
 #else
     if (!sys_call_table_stolen)
         return;
