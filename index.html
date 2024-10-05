@@ -3775,7 +3775,7 @@ dry run of this example, you will have to patch your current kernel in order to 
 <a id='x1-41546r252'></a><span class='ecrm-0500'>252</span><span class='ectt-0800'>    }</span> 
 <a id='x1-41548r253'></a><span class='ecrm-0500'>253</span><span id='textcolor1784'><span class='ectt-0800'>#else</span></span> 
 <a id='x1-41550r254'></a><span class='ecrm-0500'>254</span><span class='ectt-0800'>    </span><span id='textcolor1785'><span class='ectt-0800'>if</span></span><span class='ectt-0800'> (!(sys_call_table_stolen = acquire_sys_call_table()))</span> 
-<a id='x1-41552r255'></a><span class='ecrm-0500'>255</span><span class='ectt-0800'>        </span><span id='textcolor1786'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> -1;</span> 
+<a id='x1-41552r255'></a><span class='ecrm-0500'>255</span><span class='ectt-0800'>        </span><span id='textcolor1786'><span class='ectt-0800'>return</span></span><span class='ectt-0800'> 0;</span> 
 <a id='x1-41554r256'></a><span class='ecrm-0500'>256</span> 
 <a id='x1-41556r257'></a><span class='ecrm-0500'>257</span><span class='ectt-0800'>    disable_write_protection();</span> 
 <a id='x1-41558r258'></a><span class='ecrm-0500'>258</span> 
